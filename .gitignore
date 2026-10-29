@@ -27,3 +27,6 @@ yarn-error.log*
 # Ignore all env files
 *.env
 *.env.*
+
+# Local design references
+/design-references/
