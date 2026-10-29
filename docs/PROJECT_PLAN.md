@@ -1,129 +1,137 @@
-# E-handelsprojekt: målbild och arbetsordning
+# E-commerce project: vision and delivery plan
 
-## Syfte och beslut
+## Purpose and decisions
 
-Modernisera den befintliga Flowers-kodbasen till en portfoliodemo för hörlurar.
-Butikens nya namn är inte bestämt. Köp och betalningar ska vara tydligt märkta
-som demo. Projektet ska visa både genomarbetad UX och testbar affärslogik.
+Modernize the existing Flowers codebase into a headphone store portfolio demo.
+The store's new name has not been decided. Purchases and payments must be clearly
+identified as demos. The project should demonstrate thoughtful UX and testable
+business logic.
 
-- Behåll React, Node.js/Express, Sequelize och MariaDB.
-- Använd JavaScript, inte TypeScript.
-- Arbeta i små, sammanhängande ändringar som användaren kan granska och committa.
-- Bevara befintlig data under ombyggnaden. Kör inte nuvarande `migrate.js`
-  som en vanlig migration: det raderar tabeller.
-- Välj bildmaterial tillsammans efter att layoutens bildbehov blivit tydliga.
+- Keep React, Node.js/Express, Sequelize, and MariaDB.
+- Use JavaScript, not TypeScript.
+- Keep all project documentation, code comments, UI copy, and commit messages
+  in English. Conversations may use English or Swedish.
+- Work in small, cohesive changes that the user can review and commit.
+- Preserve existing data during the rebuild. Do not run the current `migrate.js`
+  as a regular migration: it drops tables.
+- Select images together once the layout's image requirements are clear.
 
-## Visuell riktning
+## Visual direction
 
-Utgå från VELOUR-referenserna i `design-references/`: ljusgrå och vit bas,
-svart sans-serif-typografi i stor skala och sparsamma orange accenter.
-Använd asymmetrisk komposition, mycket luft, stora produktmotiv, små etiketter
-och tunna linjer. Mörka fotografiska sektioner kan skapa kontrast längre ned.
-Skapa ett eget butiksuttryck; referensens texter, logotyper och statistik ingår
-inte i vår design.
+Use the VELOUR references in `design-references/` as inspiration: a light gray
+and white base, oversized black sans-serif typography, and restrained orange
+accents. Use asymmetric composition, generous whitespace, large product imagery,
+small labels, and fine lines. Dark photographic sections can introduce contrast
+further down the page. Develop an original store identity; the reference's copy,
+logos, and statistics are not part of our design.
 
-MUI får ett eget tema för färger, typografi, avstånd och komponenter.
-Befintlig Tailwind-styling ersätts stegvis när respektive vy omarbetas.
+Create a custom MUI theme for colors, typography, spacing, and components.
+Replace existing Tailwind styling gradually as each view is redesigned.
 
-### Bildplatshållare först
+### Image placeholders first
 
-- Hero: stor reserverad yta för hörlurar med rubriken komponerad runt motivet.
-- Produktöversikt: konsekventa bildproportioner och bakgrunder.
-- Redaktionella sektioner: större ytor för detaljbilder och miljöbilder.
-- Ange bildsyfte och format under prototyparbetet. Dekorativa platshållare
-  ska inte annonseras som verkliga produktbilder för skärmläsare.
-- Reservera bildutrymmet för att undvika layoutförskjutningar vid laddning.
+- Hero: reserve a large area for headphones, with the headline composed around
+  the product.
+- Product listing: use consistent image proportions and backgrounds.
+- Editorial sections: provide larger areas for detail and lifestyle photography.
+- Specify image purpose and format during prototyping. Decorative placeholders
+  must not be announced as actual product images to screen readers.
+- Reserve image space to prevent layout shifts during loading.
 
-Fotografierna som finns nu visar flera befintliga tillverkares produkter.
-De ska inte presenteras som butikens egenutvecklade produkter. Modellnamn,
-bildkällor och användningsvillkor kontrolleras före publicering.
+The existing photographs show products from several established manufacturers.
+Do not present them as products developed by the store. Verify model names,
+image sources, and usage terms before publication.
 
-### Rörelse och tillgänglighet
+### Motion and accessibility
 
-Motion används för samordnade introduktioner, layoutförändringar, dialoger,
-varukorg och sidövergångar. Utvalda React Bits-komponenter kan komplettera
-uttrycket efter kontroll av beroenden, licens och tillgänglighet.
+Use Motion for coordinated introductions, layout changes, dialogs, the cart,
+and page transitions. Selected React Bits components may complement the design
+after checking their dependencies, license, and accessibility.
 
-Prova rörelse i en körbar prototyp. Anpassa produktberoende effekter när
-slutbilderna är valda. Behåll fungerande tangentbordsnavigation, synligt fokus,
-tydliga felmeddelanden och stöd för reducerad rörelse. WCAG 2.2 AA är målet;
-det behöver verifieras i det färdiga gränssnittet.
+Evaluate motion in a working prototype. Refine product-specific effects once
+final images are selected. Maintain keyboard navigation, visible focus, clear
+error messages, and reduced-motion support. WCAG 2.2 AA is the target and must
+be verified in the finished interface.
 
-## Målarkitektur
+## Target architecture
 
-Backend är en modulär monolit med en gemensam MariaDB-databas.
+The backend is a modular monolith with a shared MariaDB database.
 
-| Modul | Ansvar |
+| Module | Responsibility |
 | --- | --- |
-| Auth | Registrering, lösenordshashning, sessioner och utloggning. |
-| Catalog | Produkter, varianter, kategorier och administration. |
-| Cart | Gäst- och kundvarukorg, antal och övergång vid inloggning. |
-| Orders | Orderläggning, historiska orderrader och statusövergångar. |
-| Inventory | Lagersaldo, reservationer och frisläppning. |
-| Payments | Simulerade betalningsförsök och resultat. |
-| Reviews | Betyg, validering och ägarskap. |
+| Auth | Registration, password hashing, sessions, and logout. |
+| Catalog | Products, variants, categories, and administration. |
+| Cart | Guest and customer carts, quantities, and the sign-in transition. |
+| Orders | Order placement, historical order lines, and status transitions. |
+| Inventory | Stock levels, reservations, and reservation release. |
+| Payments | Simulated payment attempts and outcomes. |
+| Reviews | Ratings, validation, and ownership. |
 
-Separera HTTP-hantering, användningsfall, domänregler och infrastruktur inom
-modulerna där det behövs. Domänregler ska kunna testas utan Express och
-Sequelize. Undvik generiska abstraktioner som inte löser ett konkret behov.
-Moduler använder uttryckliga gränssnitt för att ändra varandras data.
+Separate HTTP handling, use cases, domain rules, and infrastructure within
+modules where needed. Domain rules must be testable without Express or
+Sequelize. Avoid generic abstractions that do not address a concrete need.
+Modules use explicit interfaces to modify one another's data.
 
-Frontend organiseras efter funktion med gemensam layout, UI-komponenter och
-API-klient. Serverdata, formulärdata och lokalt UI-tillstånd har tydliga ägare.
-Varukorgens olika vyer använder samma dataformat och källa för tillstånd.
-API-svar formas uttryckligen; råa Sequelize-modeller exponeras inte.
+Organize the frontend by feature, with shared layout, UI components, and an API
+client. Give server data, form data, and local UI state clear owners. All cart
+views use the same data format and source of state. Shape API responses
+explicitly; do not expose raw Sequelize models.
 
-### Garantier för köpflödet
+### Checkout guarantees
 
-- Backend räknar priser och validerar positiva heltalsantal och varianter.
-- Orderrader bevarar pris, valuta och produktbeskrivning från köptillfället.
-- Orderskapande och lagerreservation sker i en gemensam kort transaktion,
-  via modulernas operationer med samma transaktionskontext.
-- Samtidiga köp får inte reservera samma sista exemplar.
-- Idempotens skyddar mot dubbla order och dubbla betalningseffekter.
-- Betalning hanteras utanför databastransaktionen, bakom ett leverantörsgränssnitt.
-- Reservationer har en livscykel. Sena betalningsresultat, timeout och
-  återförsök behöver uttryckliga regler och tester.
-- Beständiga bakgrundsuppdrag/outbox används när arbete måste överleva krascher.
+- The backend calculates prices and validates positive integer quantities
+  and product variants.
+- Order lines preserve the price, currency, and product description at purchase.
+- Order creation and stock reservation share one short transaction, using
+  module operations with the same transaction context.
+- Concurrent purchases must not reserve the same last item.
+- Idempotency prevents duplicate orders and duplicate payment effects.
+- Payment processing runs outside the database transaction, behind a provider
+  interface.
+- Reservations have a lifecycle. Late payment results, timeouts, and retries
+  require explicit rules and tests.
+- Use durable background jobs or an outbox when work must survive crashes.
 
-### Säkerhet och drift
+### Security and operations
 
-Inför säkra lösenordshashar, serverhanterade sessioner, lämpliga cookieflaggor,
-CSRF-skydd samt roll- och ägarskapskontroller. Ta bort känslig loggning och
-validera indata på servern. Befintliga klartextkonton behöver en uttrycklig
-övergångsstrategi före ändring av lösenordslagringen.
+Introduce secure password hashes, server-managed sessions, appropriate cookie
+flags, CSRF protection, and role and ownership checks. Remove sensitive logging
+and validate input on the server. Existing plaintext-password accounts need an
+explicit transition strategy before password storage changes.
 
-Samla miljökonfiguration och API-adresser. Separera serverstart från appbygge,
-versionshantera migreringar och håll demodata/reset separat. Lägg till Docker
-Compose, CI, hälsokontroller och dokumenterad drift efter respektive grundsteg.
+Centralize environment configuration and API addresses. Separate server startup
+from application construction, version database migrations, and keep demo seed
+data and reset operations separate. Add Docker Compose, CI, health checks, and
+operational documentation as the corresponding foundations are completed.
 
-## Små leveranser
+## Small deliveries
 
-Varje rad är en etapp som kan innehålla flera avgränsade commits.
-Tester tillkommer med respektive beteendeförändring.
+Each item is a stage that may contain several focused commits.
+Add tests alongside the corresponding behavior changes.
 
-1. Dokumentera beslut och arbetsordning (detta dokument).
-2. Skapa en isolerad visuell prototyp med tema, sidhuvud och hero med
-   bildplatshållare. Granska desktop och mobil innan fler sektioner byggs.
-3. Samla konfiguration och separera Express-app från serverstart.
-4. Inför säkra användarsvar, lösenordshashning, sessioner och behörighet
-   i sammanhängande steg som håller frontend och backend kompatibla.
-5. Inför migreringar och modellera order, varianter och lagerreservationer.
-6. Samla varukorgens datahantering och bygg ett transaktionssäkert köpflöde
-   med betalningssimulering och skydd mot dubbla anrop.
-7. För över godkänd design till katalog, produktvy, varukorg, checkout,
-   konto och administration, en del i taget.
-8. Slutför Docker Compose, CI, driftsättning och portfoliodokumentation.
+1. Document decisions and delivery order (this document).
+2. Create an isolated visual prototype with a theme, header, and hero using
+   image placeholders. Review desktop and mobile before adding more sections.
+3. Centralize configuration and separate the Express app from server startup.
+4. Introduce safe user responses, password hashing, sessions, and authorization
+   in cohesive steps that keep the frontend and backend compatible.
+5. Introduce migrations and model orders, variants, and stock reservations.
+6. Consolidate cart data handling and build a transaction-safe checkout with
+   simulated payments and protection against duplicate requests.
+7. Apply the approved design to the catalog, product view, cart, checkout,
+   account, and administration, one area at a time.
+8. Complete Docker Compose, CI, deployment, and portfolio documentation.
 
-Den visuella prototypen är separat från den befintliga oskyddade API-driften.
-En offentlig demo ska inte exponera nuvarande användar- och adminendpoints.
+Keep the visual prototype separate from the existing unprotected API runtime.
+A public demo must not expose the current user and administration endpoints.
 
-## Klart för en commit
+## Ready for a commit
 
-- Ändringen har ett tydligt syfte och rimlig granskningsstorlek.
-- Filer och komponenter har fokuserade ansvar; stora filer delas efter ansvar.
-- Relevanta kontroller är genomförda och begränsningar redovisade.
-- UI-ändringar granskas i webbläsaren på desktop och mobil.
-- Säkerhet och köpflöde verifieras med beteendetester, inklusive fel- och
-  samtidighetsfall där det är relevant.
-- Ett commit-meddelande föreslås; användaren gör commiten.
+- The change has a clear purpose and a manageable review scope.
+- Files and components have focused responsibilities; split large files by
+  responsibility.
+- Relevant checks are complete and limitations are documented.
+- UI changes are reviewed in the browser on desktop and mobile.
+- Security and checkout are verified with behavior tests, including failure
+  and concurrency scenarios where relevant.
+- Suggest a commit message; the user makes the commit.
