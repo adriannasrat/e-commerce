@@ -30,3 +30,6 @@ yarn-error.log*
 
 # Local design references
 /design-references/
+
+# Local-only prototype photography
+/public/local-preview/

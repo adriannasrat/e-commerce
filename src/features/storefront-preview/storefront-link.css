@@ -1,0 +1,30 @@
+.storefront-preview .preview-storefront-link {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 10px 18px;
+  border: 1px solid #151515;
+  border-radius: 24px;
+  background: #151515;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.storefront-preview .preview-storefront-link:hover,
+.storefront-preview .preview-storefront-link:focus-visible {
+  background: #292929;
+  color: #fff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .storefront-preview .preview-storefront-link {
+    transition: none;
+  }
+}
