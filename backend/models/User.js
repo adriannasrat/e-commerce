@@ -18,9 +18,5 @@ const User = sequelize.define("User", {
   },
 });
 
-(async () => {
-  // await User.sync({ alter: true });
-  console.log("Users table created");
-})();
 
 module.exports = User;

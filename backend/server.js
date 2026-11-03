@@ -1,35 +1,33 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const sequelize = require("./config/database");
-const userRoutes = require("./routes/userRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const cartRowRoutes = require("./routes/cartRowRoutes");
-const productRoutes = require("./routes/productRoutes");
-const ratingRoutes = require("./routes/ratingRoutes");
-
-const app = express();
-const PORT = process.env.PORT || 5000;
-const path = require("path");
-
-// Serve static images correctly
-app.use("/images", express.static(path.join(__dirname, "images")));
-app.use(cors());
-app.use(express.json());
-
-app.use("/users", userRoutes);
-app.use("/carts", cartRoutes);
-app.use("/cart_rows", cartRowRoutes);
-app.use("/products", productRoutes);
-app.use("/ratings", ratingRoutes);
-
-app.listen(PORT, async () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-
+async function startServer({ app, database, port }) {
   try {
-    await sequelize.authenticate();
-    console.log("Database connected");
+    await database.authenticate();
+    return await new Promise((resolve, reject) => {
+      const server = app.listen(port);
+      server.once('listening', () => resolve(server));
+      server.once('error', reject);
+    });
   } catch (error) {
-    console.error("Database connection failed: ", error);
+    // Failed startup must also release any connection-pool resources.
+    await database.close().catch(() => {});
+    throw error;
   }
-});
+}
+
+if (require.main === module) {
+  async function main() {
+    const { readEnvironment } = require('./config/environment');
+    const { port } = readEnvironment();
+    const { createApp } = require('./app');
+    const database = require('./config/database');
+    await startServer({ app: createApp(), database, port });
+    console.log(`API listening on port ${port}`);
+  }
+
+  main().catch(() => {
+    // Driver errors can include connection credentials; do not log them here.
+    console.error('API startup failed. Check configuration, database availability and port availability.');
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { startServer };

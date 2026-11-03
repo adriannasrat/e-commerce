@@ -1,8 +1,6 @@
-const { capitalize } = require("@mui/material");
 const Cart = require("../models/Cart");
 const CartRow = require("../models/CartRow");
 const Product = require("../models/Product");
-const { deleteProduct } = require("./productService");
 
 const createCart = async (data) => {
   return await Cart.create(data);

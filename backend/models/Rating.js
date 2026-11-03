@@ -25,9 +25,5 @@ const Rating = sequelize.define("Rating", {
   },
 });
 
-(async () => {
-  // await Rating.sync({ alter: true });
-  console.log("Rating table synced!");
-})();
 
 module.exports = Rating;

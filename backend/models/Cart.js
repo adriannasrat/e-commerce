@@ -22,9 +22,5 @@ const Cart = sequelize.define("Cart", {
   },
 });
 
-(async () => {
-  // await Cart.sync({ alter: true });
-  console.log("Carts table created");
-})();
 
 module.exports = Cart;

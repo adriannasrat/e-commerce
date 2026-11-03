@@ -29,7 +29,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "migrate": "node backend/migrate.js"
+    "migrate": "node backend/migrate.js",
+    "start:api": "node backend/server.js",
+    "test:api": "node --test backend/tests/*.test.js"
   },
   "eslintConfig": {
     "extends": [
