@@ -3,7 +3,6 @@ const styles = [
   {
     ".storefront-preview": {
       "minHeight": "100vh",
-      "padding": "0 3.5vw 24px",
       "background": "#eeedeb !important",
       "color": "#151515"
     }
@@ -20,21 +19,8 @@ const styles = [
     }
   },
   {
-    ".preview-notice": {
-      "display": "flex",
-      "justifyContent": "space-between",
-      "padding": "15px 3px",
-      "fontSize": "9px",
-      "letterSpacing": "0.12em"
-    }
-  },
-  {
     ".preview-shell": {
-      "maxWidth": "1600px",
-      "margin": "auto",
       "background": "#f7f7f5",
-      "border": "1px solid #fff",
-      "borderRadius": "28px",
       "overflow": "hidden"
     }
   },
@@ -356,17 +342,6 @@ const styles = [
   },
   {
     "@media (max-width: 600px)": [
-      {
-        ".storefront-preview": {
-          "padding": "0 12px 12px"
-        }
-      },
-      {
-        ".preview-notice": {
-          "fontSize": "7px",
-          "gap": "12px"
-        }
-      },
       {
         ".preview-header": {
           "height": "72px",

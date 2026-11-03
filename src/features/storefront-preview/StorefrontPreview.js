@@ -45,7 +45,6 @@ export default function StorefrontPreview() {
       <StorefrontStyles />
       <ScopedCssBaseline className="storefront-preview" id="preview-home">
         <a className="preview-skip" href="#preview-main">Skip to content</a>
-        <div className="preview-notice">INDEPENDENT DESIGN CONCEPT <span>DEMO / NO REAL PURCHASES</span></div>
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
           <main id="preview-main" tabIndex={-1}>
@@ -66,7 +65,7 @@ export default function StorefrontPreview() {
             <ProductShowcase />
             </div>
           </main>
-          <ScrollReveal as="footer" className="preview-footer"><span>RESONANCE / WORKING NAME</span><span>DESIGN PREVIEW — ADRIAN NASRAT</span></ScrollReveal>
+          <ScrollReveal as="footer" className="preview-footer"><span>RESONANCE</span><span>DESIGNED & BUILT BY ADRIAN NASRAT</span></ScrollReveal>
         </div>
       </ScopedCssBaseline>
     </ThemeProvider>
