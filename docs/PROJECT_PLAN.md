@@ -3,7 +3,7 @@
 ## Purpose and decisions
 
 Modernize the existing Flowers codebase into a headphone store portfolio demo.
-The store's new name has not been decided. Purchases and payments must be clearly
+The store's name is RESONANCE. Purchases and payments must be clearly
 identified as demos. The project should demonstrate thoughtful UX and testable
 business logic.
 
@@ -135,3 +135,44 @@ A public demo must not expose the current user and administration endpoints.
 - Security and checkout are verified with behavior tests, including failure
   and concurrency scenarios where relevant.
 - Suggest a commit message; the user makes the commit.
+
+
+## Accepted functional delivery sequence
+
+The approved design is the baseline. First commit it in cohesive groups, separately
+from backend work; see `COMMIT_PLAN.md`. Then deliver the following stages in small
+reviewable commits, with behavior tests alongside each change:
+
+1. **Backend foundation:** separate app construction from startup, centralize
+   environment configuration and remove credential logging. Implemented locally;
+   database authentication precedes HTTP listening. See `BACKEND_DEVELOPMENT.md`.
+2. **Safe schema evolution:** version migrations without dropping existing data;
+   preserve the `users`, `cart`, `cart_row`, `products`, `ratings` relationships.
+   Inspect the actual schema before migrations. The current model already uses an
+   integer price, but its monetary unit must migrate deliberately to minor units
+   (SEK öre). `ratings.user_id` also already exists in the model; verify its actual
+   column and foreign key. Enforce positive integer quantities, unique cart/product
+   pairs, valid ratings and user ownership. Existing invalid or duplicate data needs
+   an explicit repair policy before constraints are added.
+3. **Authentication:** password hashing, sessions, safe API responses and ownership
+   checks, then connect the approved sign-up/sign-in forms. Decide how existing
+   plaintext-password accounts transition; never silently keep plaintext fallback.
+4. **Catalog integration:** replace hardcoded preview products with API data,
+   including loading, empty and error states. Map existing product identifiers,
+   category, finish and image metadata explicitly.
+5. **Cart:** enforce at most one active cart per user, creating it on demand;
+   preserve completed carts as historical purchases. Merge guest carts on sign-in
+   using validated quantities and a single authoritative server state. Enforce
+   uniqueness even under concurrent requests, not just with a preceding lookup.
+6. **Checkout and ratings:** read the user's persisted cart and prices on the server;
+   atomically validate/decrement stock and complete the demo purchase. Preserve
+   purchased rows with immutable price/currency snapshots. Rename or migrate legacy
+   `payed` to `paid` rather than introducing two competing flags. Make completion
+   idempotent and test stock contention, rollback, repeated requests and historical
+   price stability. Add ownership-aware ratings and their constraints.
+
+These five core entities remain the starting schema. Dedicated orders, payment
+attempts and reservations from the longer-term architecture are extensions to design
+when required, not prerequisites for the first working demo. Real payment-provider
+calls must not run inside database transactions. Docker Compose and CI can be
+introduced as focused infrastructure deliveries as the backend foundations stabilize.
