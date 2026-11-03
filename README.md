@@ -1,241 +1,129 @@
-#  React Webshop — Fullstack E-commerce Project
+# RESONANCE
 
-A full-featured, modern webshop built with **React** on the frontend and **Node.js**, **Express**, and **MariaDB** on the backend. The project uses **Sequelize** as an ORM to manage SQL-based data efficiently. The architecture follows a clean, modular service-based structure, making it scalable, maintainable, and easy to extend.
+An in-ear and over-ear headphone storefront built with React and JavaScript.
+RESONANCE is an ongoing rebuild of a student e-commerce project, combining a
+finished visual direction with a backend that is being modernized in small,
+tested steps.
 
----
+The new storefront is the application's main interface at `/`.
 
-###  Architecture Breakdown
-- **Frontend**: React + Tailwind CSS
-- **API Layer** (`Express`)
-  - `app.js` connects routes and middleware.
-  - `userRoutes` and `productRoutes` handle incoming API requests.
-- **Service Layer**
-  - `userService` and `productService` process logic and forward queries to the database layer.
-- **Sequelize Models**
-  - Models define the schema and handle relationships with MariaDB.
-- **Database**: **MariaDB** (via Sequelize)
+## Current functionality
 
----
+- Responsive collection and product pages with image selection and zoom.
+- Category switching, product recommendations and animated navigation.
+- A shopping bag with quantity controls and totals, persisted on the current device.
+- Locally saved favourite products.
+- Matching sign-in and sign-up interfaces with form validation.
+- Keyboard focus handling and reduced-motion support.
 
-##  Database & Sequelize Models
+The catalog currently uses local data. Authentication forms are not connected to
+account services yet, and checkout does not process payments or create orders.
+The bag and saved products are browser-local, not synchronized with MariaDB.
 
-###  Database: MariaDB
+## Stack and architecture
 
-The project uses **MariaDB**, a robust, open-source SQL database system ideal for transactional applications and large data operations.
+| Area | Current implementation |
+| --- | --- |
+| UI | React, JavaScript, MUI and Emotion |
+| Styling | Feature-local JavaScript style objects; a minimal Tailwind entry point remains |
+| API | Node.js and Express |
+| Persistence | MariaDB and Sequelize |
+| Tests | React Testing Library, Jest and Node's test runner |
 
-###  Sequelize ORM
+The backend is being developed as a modular monolith. HTTP handling, application
+logic and persistence will have separate responsibilities, with repositories added
+as each feature is modernized. This separation is a delivery goal, not a claim
+that the legacy backend already implements every layer.
 
-All database interactions are abstracted using Sequelize, which allows:
-- Defining models for tables
-- Auto-generating queries
-- Managing associations (e.g. one-to-many, many-to-many)
+Application construction and server startup are already separated. Configuration
+is centralized, and the API checks its database connection before accepting traffic.
+Existing authentication, authorization and checkout logic still need replacement;
+the legacy API is not ready for public deployment.
 
-###  Database Tables
+The core database relationships remain:
 
-- `user`: Stores user data (ID, name, email, password)
-- `products`: Contains all product information
-- `cart`: Maps users to products with quantities
-- `rating`: Handles product reviews and ratings
+- Users have carts and ratings.
+- Carts contain products through cart rows, which hold quantities.
+- Products can appear in multiple carts and receive multiple ratings.
 
-###  Relationships
+Upcoming work includes safe migrations, password hashing and sessions, ownership
+checks, API-backed catalog and cart state, and transactional checkout with preserved
+purchase history. The old flower catalog will be replaced with headphone products.
 
-- **user ↔ cart**: One-to-many
-- **user ↔ rating**: One-to-many
-- **product ↔ rating**: One-to-many
-- **cart ↔ products**: Many-to-many via cart table
+## Run the storefront
 
----
-
-##  Key Features (Frontend)
-
-###  Core User Flow
-- Browse products with dynamic rendering
-- Add/remove items to/from cart
-- View product details
-- Adjust item quantities
-- Cart persists across app views
-
-###  Cart System
-- Managed by `CartContext` (React Context API)
-- Real-time updates across components
-- Sidebar and navbar badge stay in sync
-
-###  Smart Component Design
-- `Navbar`, `CartSidebar`, `CartItems`, and `UserDropdown` extracted into separate reusable components
-- Clean state flow: no prop drilling
-
-###  Image Pathing
-- Product images are referenced by filename only (e.g. `flower.jpg`)
-- Frontend resolves them as full URLs (e.g. `http://localhost:3001/images/flower.jpg`)
-
----
-
-### Folder Structure
-
-- frontend/
-  - public/
-  - src/
-    - components/
-      - CartSidebar.js
-      - CartItems.js
-      - Navbar.js
-      - UserDropdown.js
-    - context/
-      - CartContext.js
-    - pages/
-      - ProductList.js
-      - ProductDetails.js
-      - MyCart.js
-    - App.js
-    - main.jsx
-
-- backend/
-  - app.js
-  - config/
-    - database.js
-  - models/
-    - user.js
-    - product.js
-    - cart.js
-    - rating.js
-  - routes/
-    - userRoutes.js
-    - productRoutes.js
-  - services/
-    - userService.js
-    - productService.js
-
-- .env
-- package.json
-- README.md
-
-
-### Service Logic
-
-Each route is mapped to a service:
-- `userRoutes` → `userService`
-- `productRoutes` → `productService`
-
-These services are the brain of your backend logic:
-- Validate data
-- Communicate with Sequelize models
-- Handle business logic and structure responses
-
----
-
-##  Setup Instructions
-
-###  Prerequisites
-
-- Node.js
-- MariaDB
-- npm or yarn
-
-
-## Backend Setup
-
-### 1. Install Dependencies
-
-From the root of your project, install the backend dependencies:
+Use a Node.js version that supports the built-in `node --test` runner and npm.
+From the repository root:
 
 ```bash
-npm install
-```
-
-> This will install both Express, Sequelize, and the MariaDB driver (`mariadb`).
-
----
-
-### 2. Create Your `.env` File
-
-Create a `.env` file inside the **`backend/` folder** (or project root if you prefer), and include your database credentials:
-
-```bash
-DB_NAME=shop_db
-DB_USER=webshop_user
-DB_PASSWORD=yourpassword
-DB_HOST=localhost
-DB_DIALECT=mariadb
-```
-
-> Replace `webshop_user` and `yourpassword` with your actual MariaDB user credentials.  
-> Make sure this user has access to create and drop tables in `shop_db`.
-
----
-
-### 3. Ensure Database Exists
-
-Make sure the `shop_db` database exists in MariaDB. You can do this from the terminal:
-
-```bash
-mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS shop_db;"
-```
-
----
-
-### 4. Run the Migration Script
-
-Run the custom Sequelize-based migration script to:
-
-- Drop existing tables in the correct foreign key order
-- Recreate all tables
-- Insert seed product data
-
-```bash
-npm run migrate
-```
-
-This script is defined in your `package.json`:
-
-```json
-"scripts": {
-  "migrate": "node backend/migrate.js"
-}
-```
-
-> Make sure `migrate.js` is inside the `backend/` folder and is correctly wired to `require("./config/database")` and `require("./models")`.
-
----
-
-### 5. Start the Backend Server
-
-After successful migration, start the backend API server:
-
-```bash
-cd backend
-node server.js
-```
-
-Your Express server will now be running on `http://localhost:3001` (or whichever port you've defined).
-
----
-
-### Troubleshooting Tips
-
-- **Logged-in but no users in DB?**  
-  → You likely have a leftover login token in localStorage or cookies. Clear browser storage.
-
-- **Access denied for user?**  
-  → Check your `.env` values. Make sure the user exists in MariaDB and has full access to `shop_db`.
-  
-
- ## Frontend setup
-```bash
-npm install
+npm ci
 npm start
 ```
 
-### Author
+Open http://localhost:3000. The current storefront can run without MariaDB.
 
-- Adrian Nasrat
-- Systems Scientist | Dalarna University
-- Junior Software Engineer
-- Portfolio: https://a-n-v.vercel.app/
+Product photographs in `public/local-preview/` and reference files in
+`design-references/` are intentionally excluded from Git. A fresh clone will not
+include those images. Use appropriately licensed local assets matching the paths
+in `src/features/storefront-preview/headphoneImages.js` to reproduce the imagery.
+The directory's historical name does not denote a separate application.
 
-# Images of the shop
-### Login page
-![](./assets/loginPage.png)
-### Home page
-![](./assets/homePage.png)
-### Cart page
-![](./assets/cartPage.png)
+## Run the API locally
+
+With MariaDB running and an existing `shop_db`, create a root `.env`:
+
+```dotenv
+PORT=5000
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=shop_db
+DB_USER=webshop_user
+DB_PASS=your-local-password
+```
+
+Use credentials for your local database. Shell environment variables take
+precedence over the root `.env`, followed by `backend/.env`.
+
+```bash
+npm run start:api
+```
+
+The default API address is http://localhost:5000. `GET /health` reports process
+liveness, not ongoing database readiness.
+
+**Do not use `npm run migrate` to initialize or upgrade data you want to keep.**
+The legacy script still drops tables and seeds flowers. Versioned, non-destructive
+migrations are the next backend delivery; fresh-database setup is not automated yet.
+
+## Checks
+
+```bash
+npm run test:api
+CI=true npm test -- --watchAll=false --runInBand
+npm run build
+```
+
+Backend tests currently cover configuration and startup without a live database.
+Database integration, concurrency and security tests will accompany their features.
+
+## Project layout
+
+| Path | Purpose |
+| --- | --- |
+| `src/App.js` | Main storefront entry |
+| `src/features/storefront-preview/` | Active storefront, account forms, bag and styles |
+| `backend/app.js` | Express application construction |
+| `backend/server.js` | Database authentication and HTTP startup |
+| `backend/config/` | Environment and database configuration |
+| `backend/routes/`, `backend/services/`, `backend/models/` | Backend being modernized |
+| `backend/tests/` | Backend behavior tests |
+| `docs/` | Architecture, development notes and styling guidance |
+
+Older components remain in the repository while their functionality is replaced;
+they are not the active storefront.
+
+See [the delivery plan](docs/PROJECT_PLAN.md),
+[backend development](docs/BACKEND_DEVELOPMENT.md) and
+[styling architecture](docs/STYLING.md).
+
+Built by Adrian Nasrat.
