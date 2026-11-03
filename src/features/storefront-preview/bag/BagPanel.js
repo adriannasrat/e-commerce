@@ -4,7 +4,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import HeadphoneImage from '../HeadphoneImage';
 import { productHref } from '../usePreviewRoute';
 import { formatPrice } from '../products';
-import './bag.css';
 import BagProfileLinks from './BagProfileLinks';
 
 export default function BagPanel({ open, onClose, bag, onProfile }) {

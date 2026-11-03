@@ -9,7 +9,6 @@ import { productHref } from './usePreviewRoute';
 import ProductPurchaseOptions from './ProductPurchaseOptions';
 import ProductInformation from './ProductInformation';
 import RelatedProducts from './RelatedProducts';
-import './product-detail.css';
 
 const finishColors = { Graphite: '#363735', Chalk: '#eeede7', Silver: '#b6b8ba', Crimson: '#a92c38' };
 

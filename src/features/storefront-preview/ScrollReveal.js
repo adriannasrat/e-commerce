@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { useMediaQuery } from '@mui/material';
-import './scroll-reveal.css';
 
 // Prepare before paint; focus or completion permanently settles this entrance.
 export default function ScrollReveal({ as: Element = 'div', delay = 0, className = '', style,

@@ -8,7 +8,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HeadphoneImage from './HeadphoneImage';
 import { headphoneImages } from './headphoneImages';
 import { listeningStories } from './listening-story-data';
-import './listening-stories.css';
 import useStoryGallery from './useStoryGallery';
 import { productHref } from './usePreviewRoute';
 

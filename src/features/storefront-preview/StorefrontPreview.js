@@ -1,3 +1,4 @@
+import StorefrontStyles from './StorefrontStyles';
 import ScrollReveal from './ScrollReveal';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScopedCssBaseline } from '@mui/material';
@@ -15,8 +16,6 @@ import usePreviewBag from './bag/usePreviewBag';
 import BagPage from './bag/BagPage';
 import AddedToBag from './recommendations/AddedToBag';
 import SignInPage from './auth/SignInPage';
-import './preview.css';
-import './navigation.css';
 
 export default function StorefrontPreview() {
   const [selected, setSelected] = useState('black');
@@ -43,6 +42,7 @@ export default function StorefrontPreview() {
 
   return (
     <ThemeProvider theme={theme}>
+      <StorefrontStyles />
       <ScopedCssBaseline className="storefront-preview" id="preview-home">
         <a className="preview-skip" href="#preview-main">Skip to content</a>
         <div className="preview-notice">INDEPENDENT DESIGN CONCEPT <span>DEMO / NO REAL PURCHASES</span></div>

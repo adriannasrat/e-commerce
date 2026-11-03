@@ -5,7 +5,6 @@ import ScrollReveal from '../ScrollReveal';
 import { products, formatPrice } from '../products';
 import { productHref } from '../usePreviewRoute';
 import RecommendationCard from './RecommendationCard';
-import './recommendations.css';
 
 export default function AddedToBag({ product, bag }) {
   const heading = useRef(null);

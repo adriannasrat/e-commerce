@@ -1,5 +1,4 @@
 import React from 'react';
-import './storefront-link.css';
 
 export default function StorefrontLink({ href, onClick, children }) {
   return (

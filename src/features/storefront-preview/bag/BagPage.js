@@ -5,7 +5,6 @@ import HeadphoneImage from '../HeadphoneImage';
 import { productHref } from '../usePreviewRoute';
 import { formatPrice } from '../products';
 import { MAX_QUANTITY } from './bagState';
-import './bag.css';
 
 export default function BagPage({ bag }) {
   const heading = useRef(null);

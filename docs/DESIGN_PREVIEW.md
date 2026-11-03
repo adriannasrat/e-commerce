@@ -155,3 +155,11 @@ The account icon and the bag menu's Account / Sign in actions open `/preview#sig
 The preview includes labelled email/password fields, a password visibility toggle, native required/email validation, keyboard focus on entry, and reduced-motion support. Authentication is not connected: submission clears the fields and explains that no credentials were sent or saved. Registration and recovery actions explain their unavailable status. The reference and product image files remain ignored by Git.
 
 Sign-in and sign-up now share the same persistent artwork and page shell. Links between `/preview#sign-in` and `/preview#sign-up` replace only the form, clear transient credentials, and focus the new heading without resetting scroll or replaying the artwork reveal. Registration includes name, email, password and password confirmation, with matching-password validation. Both forms use charcoal buttons, subtle hover states and neutral grey input focus rings. Registration remains a preview and does not create an account or transmit credentials.
+
+### JavaScript styling
+
+The storefront's standalone CSS files have been migrated to feature-local MUI
+style objects in JavaScript. `StorefrontStyles` applies them once, including portal
+styles, with the established cascade order preserved. See `STYLING.md` for the
+architecture, verification and focused commit sequence. The legacy application
+still needs the three Tailwind directives in `src/index.css`.

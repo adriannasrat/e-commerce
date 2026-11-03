@@ -1,6 +1,5 @@
 import React from 'react';
 import HeadphoneImage from './HeadphoneImage';
-import './gallery.css';
 
 export default function HeadphonePicker({ images, selected, onSelect }) {
   const selectedIndex = images.findIndex(({ id }) => id === selected);

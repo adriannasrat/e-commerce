@@ -2,7 +2,6 @@ import React from 'react';
 import HeadphoneImage from './HeadphoneImage';
 import ScrollReveal from './ScrollReveal';
 import { products } from './products';
-import './product-showcase.css';
 
 const tiles = [
   { id: 'white', category: 'over-ear', name: 'Over-ear', tone: 'chalk', caption: 'A little space. Just for you.' },

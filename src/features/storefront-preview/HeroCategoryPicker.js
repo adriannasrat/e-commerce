@@ -1,5 +1,4 @@
 import React from 'react';
-import './hero-category-picker.css';
 
 export default function HeroCategoryPicker({ selected, onSelect }) {
   return (

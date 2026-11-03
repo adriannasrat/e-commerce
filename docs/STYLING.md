@@ -1,0 +1,53 @@
+# Storefront styling
+
+The RESONANCE preview uses JavaScript style objects rendered through MUI
+`GlobalStyles`, backed by the existing Emotion dependency. Feature styles live
+beside their components in `*.styles.js` modules. No new styling dependency or
+TypeScript is introduced.
+
+`StorefrontStyles.js` composes the modules in the original stylesheet import order.
+It is mounted once under the storefront theme. This also covers MUI dialogs rendered
+in portals outside the storefront DOM subtree. Keep selectors feature-specific;
+avoid introducing unscoped element rules that affect the legacy application.
+
+Style arrays deliberately retain rule ordering and repeated media-query blocks.
+Values keep their explicit units to avoid changing Emotion's numeric-value handling.
+The arrays are declared outside React components and reused across renders.
+
+For new isolated components, prefer MUI `sx` or `styled` when that simplifies local
+styling. Use the feature modules for rules shared across a feature, responsive
+layouts and portal content. Keep the theme as the source for new shared design tokens.
+
+## Remaining CSS entry point
+
+`src/index.css` contains only the three Tailwind directives used by the legacy
+application. It is framework setup, not storefront styling. Keep it until the old
+Tailwind-based screens have been retired. CSS is still generated for the browser;
+JavaScript styling does not remove CSS from the rendering platform.
+
+## Migration validation
+
+All 14 former storefront CSS files were parsed and converted to objects. Their
+Emotion-serialized rules were parsed again and compared with the originals for
+selector order, declarations, values, important flags, media queries and keyframes.
+All matched. The 29 storefront tests and production build passed. Browser visual
+verification is still needed; rule equivalence does not prove every runtime layout.
+
+## Focused commit sequence
+
+Add style modules first while the committed application still uses its existing CSS:
+
+1. Reveal, menu glyph, links, gallery and category picker style modules.
+2. Preview layout style module.
+3. Collection and showcase style modules.
+4. Listening stories style module.
+5. Bag and recommendation style modules.
+6. Product detail style module.
+7. Authentication and navigation style modules.
+8. Mount `StorefrontStyles`, remove component CSS imports and delete the old CSS
+   files together. This final wiring commit has a large mechanical deletion but
+   switches one styling mechanism without changing application behavior.
+9. Record the styling documentation.
+
+Do not commit removal of the old CSS separately from its import removal. Do not
+rerun the historical design-baseline commit helper after this migration.

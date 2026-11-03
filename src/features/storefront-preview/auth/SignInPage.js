@@ -6,7 +6,6 @@ import HeadphoneImage from '../HeadphoneImage';
 import { headphoneImages } from '../headphoneImages';
 import ScrollReveal from '../ScrollReveal';
 import AuthForm from './AuthForm';
-import './sign-in.css';
 
 const image = headphoneImages.find(item => item.id === 'silver');
 

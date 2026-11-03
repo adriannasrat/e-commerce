@@ -2,7 +2,6 @@ import ScrollReveal from './ScrollReveal';
 import React from 'react';
 import HeadphoneImage from './HeadphoneImage';
 import { products, formatPrice } from './products';
-import './collection.css';
 import { productHref } from './usePreviewRoute';
 
 export default function HeadphoneCollection() {
