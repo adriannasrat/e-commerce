@@ -1,0 +1,362 @@
+.resonance-sign-in {
+  padding: clamp(20px, 4vw, 64px);
+  background:
+    radial-gradient(ellipse at 15% 30%, #d8d0c7, transparent 60%), #eeedeb;
+}
+.sign-in-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1180px;
+  margin: auto;
+  min-height: 710px;
+  background: #25231f;
+  border-radius: 36px;
+  box-shadow: 0 24px 48px -30px #25231f70;
+}
+.sign-in-art {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-width: 0;
+  border-radius: 36px 0 0 36px;
+  color: #f7f7f5;
+  background: radial-gradient(
+    ellipse at 55% 70%,
+    #514b40 0,
+    #292620 50%,
+    #25231f 80%
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sign-in-art-eyebrow {
+  margin: 40px 20px 0;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  color: #d0cec7;
+  text-align: center;
+}
+.sign-in-art h2 {
+  margin: 66px 24px 0;
+  font-size: clamp(42px, 4.6vw, 68px);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+  font-weight: 500;
+  text-align: center;
+  z-index: 1;
+}
+.sign-in-orbits {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  top: 84px;
+  border: 1px solid #ffffff0d;
+  border-radius: 50%;
+}
+.sign-in-orbits::before,
+.sign-in-orbits::after {
+  content: "";
+  position: absolute;
+  inset: 25px;
+  border: 1px solid #ffffff0d;
+  border-radius: 50%;
+}
+.sign-in-orbits::after {
+  inset: -25px;
+}
+.sign-in-headphones {
+  display: block;
+  width: 85%;
+  height: 385px;
+  margin: 18px auto 24px;
+  transform: rotate(-12deg);
+  filter: drop-shadow(0 25px 18px #0005);
+}
+.sign-in-art-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 0 30px 28px;
+  margin-top: auto;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: #c4c1b8;
+}
+.sign-in-panel {
+  min-width: 0;
+  background: #fdfdfb;
+  border-radius: 36px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+}
+.sign-in-panel-top,
+.sign-in-panel-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+.sign-in-brand {
+  font-weight: 800;
+  letter-spacing: -0.07em;
+  font-size: 20px;
+  text-decoration: none;
+}
+.sign-in-text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  padding: 10px 0;
+  color: #5b5b57;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.sign-in-text-button:hover {
+  color: #151515;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sign-in-text-button svg {
+  width: 17px;
+  height: 17px;
+}
+.sign-in-form-area {
+  width: 100%;
+  max-width: 340px;
+  margin: auto;
+  padding: 36px 0 24px;
+}
+.sign-in-kicker {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: #777770;
+  margin: 0 0 16px;
+}
+.sign-in-form-area h1 {
+  font-size: clamp(38px, 4vw, 50px);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 1.1;
+  margin: 0 0 14px;
+}
+.sign-in-form-area h1:focus {
+  outline: none;
+}
+.sign-in-intro {
+  font-size: 12px;
+  color: #73736c;
+  margin: 0 0 30px;
+}
+.sign-in-field {
+  display: block;
+  font-size: 11px;
+  color: #55554e;
+  margin: 0 0 8px;
+}
+.sign-in-field input,
+.sign-in-password input {
+  width: 100%;
+  border: 1px solid #deded9;
+  background: transparent;
+  border-radius: 28px;
+  min-height: 48px;
+  padding: 12px 18px;
+  color: #151515;
+  font: inherit;
+  font-size: 12px;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.sign-in-field input {
+  display: block;
+  margin: 8px 0 18px;
+}
+.sign-in-field input:hover,
+.sign-in-password input:hover {
+  border-color: #aaa9a1;
+}
+.sign-in-password {
+  position: relative;
+}
+.sign-in-password input {
+  padding-right: 50px;
+}
+.sign-in-password .MuiIconButton-root {
+  position: absolute;
+  right: 3px;
+  top: 2px;
+  color: #84847d;
+}
+.sign-in-password svg {
+  width: 18px;
+  height: 18px;
+}
+.sign-in-forgot {
+  color: #5b5b57;
+  margin: 4px 0 12px 14px;
+}
+.sign-in-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  width: 100%;
+  border: 0;
+  border-radius: 28px;
+  background: #151515;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.sign-in-submit:hover {
+  background: #303030;
+}
+.sign-in-submit:active {
+  transform: translateY(1px);
+}
+.sign-in-submit svg {
+  width: 18px;
+  height: 18px;
+}
+.sign-in-demo {
+  color: #76766e;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 16px;
+}
+.sign-in-feedback {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #5b5b57;
+  margin: 16px 0 0;
+}
+.sign-in-panel-bottom {
+  font-size: 9px;
+  color: #777770;
+}
+.sign-in-panel-bottom a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  text-decoration: none;
+}
+.sign-in-panel-bottom a:hover {
+  text-decoration: underline;
+}
+.sign-in-panel-bottom svg {
+  width: 14px;
+  height: 14px;
+}
+.sign-in-panel-bottom > span {
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+@media (max-width: 850px) {
+  .sign-in-panel {
+    padding: 26px;
+  }
+  .sign-in-art-caption {
+    flex-direction: column;
+  }
+  .sign-in-panel-bottom > span {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  .resonance-sign-in {
+    padding: 16px;
+  }
+  .sign-in-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    border-radius: 24px;
+  }
+  .sign-in-art {
+    min-height: 205px;
+    border-radius: 24px 24px 0 0;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px;
+  }
+  .sign-in-art-eyebrow {
+    margin: 0 0 14px;
+    font-size: 7px;
+    max-width: 52%;
+    text-align: left;
+  }
+  .sign-in-art h2 {
+    font-size: clamp(30px, 7vw, 44px);
+    text-align: left;
+    margin: 0;
+  }
+  .sign-in-headphones {
+    position: absolute;
+    right: -8px;
+    top: 10px;
+    width: 47%;
+    height: 190px;
+    margin: 0;
+  }
+  .sign-in-art-caption {
+    display: none;
+  }
+  .sign-in-orbits {
+    width: 170px;
+    height: 170px;
+    top: 20px;
+    right: 0;
+  }
+  .sign-in-panel {
+    border-radius: 24px;
+    padding: 24px;
+  }
+  .sign-in-form-area {
+    padding: 42px 0 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .resonance-sign-in *,
+  .resonance-sign-in *::before,
+  .resonance-sign-in *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.sign-in-panel .sign-in-text-button {
+  text-decoration: none;
+}
+.sign-in-panel .sign-in-text-button:hover {
+  text-decoration: underline;
+}
+.storefront-preview .resonance-sign-in :focus-visible {
+  outline: 2px solid #777771;
+  outline-offset: 4px;
+}
+.storefront-preview .resonance-sign-in input:focus {
+  outline: 2px solid #777771;
+  outline-offset: 2px;
+  border-color: #777771;
+  background: #f7f7f5;
+}
+.storefront-preview .resonance-sign-in h1:focus {
+  outline: none;
+}
+.sign-in-confirm {
+  margin-top: 18px;
+}
