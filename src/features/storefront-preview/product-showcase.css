@@ -1,0 +1,185 @@
+.product-showcase {
+  padding: 64px 12px 32px;
+  background: #fafaf8;
+}
+.product-showcase-heading {
+  padding: 0 28px 38px;
+}
+.product-showcase-heading > p {
+  margin: 0 0 18px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #686862;
+}
+.product-showcase-heading h2 {
+  margin: 0;
+  font-size: clamp(40px, 5.5vw, 76px);
+  line-height: 1;
+  letter-spacing: -0.065em;
+  font-weight: 400;
+}
+.product-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.product-showcase-tile {
+  --tile-ink: #151515;
+  --tile-muted: #64645f;
+  --tile-button: #151515;
+  --tile-button-text: #fff;
+  --tile-hover: #30302c;
+  min-width: 0;
+  min-height: 590px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  color: var(--tile-ink);
+}
+.product-showcase-chalk {
+  background: #f0f0ed;
+}
+.product-showcase-dark {
+  background: #242523;
+  --tile-ink: #f6f6f2;
+  --tile-muted: #c4c4bd;
+  --tile-button: #f0f0ea;
+  --tile-button-text: #242523;
+  --tile-hover: #ddddd6;
+}
+.product-showcase-warm {
+  background: #ece2db;
+}
+.product-showcase-silver {
+  background: #dedfdd;
+}
+.product-showcase-copy {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 38px 24px 0;
+  text-align: center;
+}
+.product-showcase-category {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tile-muted);
+  margin: 0 0 14px;
+}
+.product-showcase-copy h3 {
+  font-size: clamp(36px, 4.2vw, 60px);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  margin: 0 0 12px;
+}
+.product-showcase-caption {
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.4;
+  margin: 0;
+}
+.product-showcase-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+.product-showcase-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid var(--tile-button);
+  border-radius: 24px;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.2;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.product-showcase-actions .product-showcase-primary {
+  background: var(--tile-button);
+  color: var(--tile-button-text);
+}
+.product-showcase-actions .product-showcase-primary:hover {
+  background: var(--tile-hover);
+  border-color: var(--tile-hover);
+}
+.product-showcase-actions .product-showcase-secondary {
+  color: var(--tile-ink);
+  background: transparent;
+}
+.product-showcase-actions .product-showcase-secondary:hover {
+  background: #88888814;
+}
+.product-showcase-image {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 360px;
+  margin-top: 22px;
+  padding: 12px 48px 28px;
+}
+.product-showcase-image svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(var(--showcase-image-angle, -6deg));
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.product-showcase-tile:nth-child(even) {
+  --showcase-image-angle: 6deg;
+}
+.product-showcase-tile:focus-within {
+  outline-offset: -5px;
+}
+.product-showcase-image:focus-visible {
+  outline-offset: -8px;
+}
+.product-showcase-note {
+  margin: 24px 28px 0;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #686862;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .product-showcase-image:hover svg {
+    transform: rotate(0) scale(1.025);
+  }
+}
+@media (max-width: 600px) {
+  .product-showcase {
+    padding: 44px 8px 26px;
+  }
+  .product-showcase-heading {
+    padding: 0 12px 30px;
+  }
+  .product-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .product-showcase-tile {
+    min-height: 510px;
+  }
+  .product-showcase-copy {
+    padding: 30px 20px 0;
+  }
+  .product-showcase-image {
+    height: 300px;
+    padding: 10px 36px 24px;
+  }
+  .product-showcase-note {
+    margin-inline: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-showcase * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
