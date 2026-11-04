@@ -525,24 +525,21 @@ const styles = [
     },
   },
   {
-    ".product-detail-information details": {
+    ".product-detail-information > .disclosure": {
       borderBottom: "1px solid #d6d6d3",
     },
   },
   {
-    ".product-detail-information summary": {
+    ".product-detail-information .disclosure-heading > button": {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
       gap: "20px",
       cursor: "pointer",
+      width: "100%",
+      textAlign: "left",
       padding: "30px 0",
       listStyle: "none",
-    },
-  },
-  {
-    ".product-detail-information summary::-webkit-details-marker": {
-      display: "none",
     },
   },
   {
@@ -554,16 +551,11 @@ const styles = [
     },
   },
   {
-    ".product-detail-information summary > svg": {
+    ".product-detail-information .disclosure-heading > button > svg": {
       color: "#888884",
       width: "34px",
       height: "34px",
       transition: "transform 0.25s ease",
-    },
-  },
-  {
-    ".product-detail-information details[open] summary > svg": {
-      transform: "rotate(180deg)",
     },
   },
   {
@@ -746,7 +738,7 @@ const styles = [
         },
       },
       {
-        ".product-detail-information summary": {
+        ".product-detail-information .disclosure-heading > button": {
           padding: "24px 0",
         },
       },
