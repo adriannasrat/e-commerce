@@ -1,23 +1,51 @@
 import React from "react";
 import { collectionHref } from "./collections/collections";
 import HeadphoneImage from "./HeadphoneImage";
-import ScrollReveal from "./ScrollReveal";
 import { products } from "./products";
+import { productHref } from "./usePreviewRoute";
 
+// The two-column promo grid: each tile has a headline, a line of copy, two
+// actions and the product underneath, alternating light and dark.
 const tiles = [
   {
     id: "white",
-    category: "over-ear",
     name: "Over-ear",
-    tone: "chalk",
+    kicker: "Form series",
+    tone: "light",
     caption: "A little space. Just for you.",
+    learn: collectionHref("over-ear"),
+    buy: collectionHref("over-ear", "models"),
+    label: "Over-ear headphones",
   },
   {
     id: "in-ear-black",
-    category: "in-ear",
     name: "In-ear",
+    kicker: "Pocket series",
     tone: "dark",
     caption: "Your everyday. In your pocket.",
+    learn: collectionHref("in-ear"),
+    buy: collectionHref("in-ear", "models"),
+    label: "In-ear headphones",
+  },
+  {
+    id: "black",
+    name: "Form 01",
+    kicker: "Graphite",
+    tone: "dark",
+    caption: "A little closer to the music.",
+    learn: productHref("black"),
+    buy: productHref("black"),
+    label: "Form 01",
+  },
+  {
+    id: "in-ear-red",
+    name: "Pocket 03",
+    kicker: "New in Crimson",
+    tone: "warm",
+    caption: "A little colour. A lot of character.",
+    learn: productHref("in-ear-red"),
+    buy: productHref("in-ear-red"),
+    label: "Pocket 03",
   },
 ];
 
@@ -28,39 +56,34 @@ export default function ProductShowcase() {
       id="preview-showcase"
       aria-labelledby="showcase-title"
     >
-      <ScrollReveal className="product-showcase-heading">
-        <p>SHOP BY CATEGORY</p>
-        <h2 id="showcase-title">Two ways to listen.</h2>
-      </ScrollReveal>
+      <h2 id="showcase-title" className="preview-sr-only">
+        Two ways to listen.
+      </h2>
       <div className="product-showcase-grid">
-        {tiles.map(({ id, category, name, tone, caption }, index) => {
+        {tiles.map(({ id, name, kicker, tone, caption, learn, buy, label }) => {
           const product = products.find((item) => item.id === id);
           return (
-            <ScrollReveal
-              as="article"
+            <article
               key={id}
-              delay={(index % 2) * 80}
-              className={`product-showcase-tile product-showcase-${tone}`}
+              className={`product-showcase-tile product-showcase-${tone}${tone === "dark" ? " rx-dark" : ""}`}
               aria-labelledby={`showcase-${id}`}
             >
               <div className="product-showcase-copy">
-                <p className="product-showcase-category">
-                  {category === "over-ear" ? "FORM SERIES" : "POCKET SERIES"}
-                </p>
+                <p className="product-showcase-category">{kicker}</p>
                 <h3 id={`showcase-${id}`}>{name}</h3>
                 <p className="product-showcase-caption">{caption}</p>
-                <div className="product-showcase-actions">
+                <div className="rx-actions">
                   <a
-                    className="product-showcase-primary"
-                    href={collectionHref(category)}
-                    aria-label={`Learn more about ${name} headphones`}
+                    className="rx-btn rx-btn--small"
+                    href={learn}
+                    aria-label={`Learn more about ${label}`}
                   >
                     Learn more
                   </a>
                   <a
-                    className="product-showcase-secondary"
-                    href={collectionHref(category, "models")}
-                    aria-label={`Buy ${name} headphones`}
+                    className="rx-btn rx-btn--small rx-btn--ghost"
+                    href={buy}
+                    aria-label={`Buy ${label}`}
                   >
                     Buy
                   </a>
@@ -68,12 +91,13 @@ export default function ProductShowcase() {
               </div>
               <a
                 className="product-showcase-image"
-                href={collectionHref(category)}
-                aria-label={`Explore ${name} headphones`}
+                href={learn}
+                aria-label={`Explore ${label}`}
+                tabIndex={-1}
               >
                 <HeadphoneImage image={product.image} decorative />
               </a>
-            </ScrollReveal>
+            </article>
           );
         })}
       </div>

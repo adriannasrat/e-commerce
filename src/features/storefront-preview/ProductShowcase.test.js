@@ -1,10 +1,11 @@
 import React from "react";
+import "@testing-library/jest-dom";
 import { render, screen, within } from "@testing-library/react";
 import ProductShowcase from "./ProductShowcase";
 
-test("shows one card per category with matching collection links", () => {
+test("shows one promo tile per category with matching collection links", () => {
   render(<ProductShowcase />);
-  expect(screen.getAllByRole("article")).toHaveLength(2);
+  expect(screen.getAllByRole("article")).toHaveLength(4);
   ["Over-ear", "In-ear"].forEach((name) => {
     const tile = screen.getByRole("article", { name });
     const learnMore = within(tile).getByRole("link", {
@@ -20,4 +21,12 @@ test("shows one card per category with matching collection links", () => {
       `#collection/${name.toLowerCase()}/models`,
     );
   });
+});
+
+test("model tiles link straight to their product pages", () => {
+  render(<ProductShowcase />);
+  const tile = screen.getByRole("article", { name: "Pocket 03" });
+  expect(
+    within(tile).getByRole("link", { name: "Buy Pocket 03" }),
+  ).toHaveAttribute("href", "#product/in-ear-red");
 });

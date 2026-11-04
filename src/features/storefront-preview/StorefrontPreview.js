@@ -1,4 +1,5 @@
 import JournalFeature from "./shopping/JournalFeature";
+import Highlights from "./ui/Highlights";
 import CategoryPage from "./collections/CategoryPage";
 import Campaign from "./collections/Campaign";
 import { collections, collectionRoute } from "./collections/collections";
@@ -159,6 +160,7 @@ export default function StorefrontPreview() {
             {isCatalog && <HeadphoneCollection onAddToBag={addToBag} />}
             {isJournal && <ListeningStories />}
             <div
+              className="rx-home"
               hidden={
                 isCatalog ||
                 isJournal ||
@@ -171,7 +173,9 @@ export default function StorefrontPreview() {
             >
               <PreviewHero selected={selected} onSelect={setSelected} />
               <Campaign category="over-ear" />
+              <Campaign category="in-ear" />
               <ProductShowcase />
+              <Highlights />
               <JournalFeature />
             </div>
           </main>

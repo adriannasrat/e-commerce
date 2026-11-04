@@ -1,26 +1,35 @@
 import React from "react";
-import StorefrontLink from "./StorefrontLink";
-import { formatPrice } from "./products";
+import { collectionHref } from "./collections/collections";
+import { formatPrice, newModels } from "./products";
+import { productHref } from "./usePreviewRoute";
 
 export default function HeroProductInfo({ product }) {
   return (
-    <div className="preview-hero-bottom">
+    <div className="preview-hero-copy">
       <div
         key={product.id}
         className="preview-product-info"
         aria-live="polite"
         aria-atomic="true"
       >
-        <p className="preview-eyebrow">{product.finishName} / CONCEPT MODEL</p>
-        <h2>{product.name}</h2>
-        <p>{product.tagline}</p>
+        {newModels.includes(product.id) && <p className="rx-new">New</p>}
+        <h2 className="rx-hero-title">{product.name}</h2>
+        <p className="rx-hero-sub">{product.tagline}</p>
         <p className="preview-demo-price">
-          {formatPrice(product.price)} <span>Demo price</span>
+          From {formatPrice(product.price)}
         </p>
       </div>
-      <StorefrontLink href="#preview-direction">
-        Explore headphones
-      </StorefrontLink>
+      <div className="rx-actions">
+        <a className="rx-btn" href={productHref(product.id)}>
+          Learn more
+        </a>
+        <a
+          className="rx-btn rx-btn--ghost"
+          href={collectionHref(product.image.category, "models")}
+        >
+          Shop {product.image.category === "over-ear" ? "Over-ear" : "In-ear"}
+        </a>
+      </div>
     </div>
   );
 }

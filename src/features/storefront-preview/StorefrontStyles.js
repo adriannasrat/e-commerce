@@ -9,13 +9,9 @@ import systemStyles from "./ui/system.styles";
 import revealStyles from "./scroll-reveal.styles";
 import bagStyles from "./bag/bag.styles";
 import menuGlyphStyles from "./menu-glyph.styles";
-import linkStyles from "./storefront-link.styles";
-import galleryStyles from "./gallery.styles";
-import categoryPickerStyles from "./hero-category-picker.styles";
 import collectionStyles from "./collection.styles";
 import storyStyles from "./listening-stories.styles";
 import productDetailStyles from "./product-detail.styles";
-import showcaseStyles from "./product-showcase.styles";
 import recommendationStyles from "./recommendations/recommendations.styles";
 import authStyles from "./auth/sign-in.styles";
 import previewStyles from "./preview.styles";
@@ -32,13 +28,9 @@ const styles = gateHover([
   revealStyles,
   bagStyles,
   menuGlyphStyles,
-  linkStyles,
-  galleryStyles,
-  categoryPickerStyles,
   collectionStyles,
   storyStyles,
   productDetailStyles,
-  showcaseStyles,
   recommendationStyles,
   authStyles,
   previewStyles,
