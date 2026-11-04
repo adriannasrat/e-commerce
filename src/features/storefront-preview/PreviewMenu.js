@@ -30,7 +30,7 @@ export default function PreviewMenu({ open, onClose, togglePosition }) {
         </IconButton>
       </div>
       <nav aria-label="Main navigation" className="preview-menu-content">
-        <h2 id="preview-menu-title">TUNE INTO SOMETHING DIFFERENT</h2>
+        <h2 id="preview-menu-title">Explore RESONANCE</h2>
         {navigationLinks.map((link, index) => (
           <a
             key={link.href}
@@ -49,8 +49,8 @@ export default function PreviewMenu({ open, onClose, togglePosition }) {
         ))}
       </nav>
       <div className="preview-menu-bottom">
-        <span>PERSONAL AUDIO. INDIVIDUAL TASTE.</span>
-        <span>DESIGN CONCEPT / 01</span>
+        <span>Personal audio. Individual taste.</span>
+        <span>A concept storefront</span>
       </div>
     </StorefrontDialog>
   );
