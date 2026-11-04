@@ -112,3 +112,18 @@ test("recommendation navigation exposes other products", () => {
   expect(next).toBeDisabled();
   expect(pages[pages.length - 1]).toHaveAttribute("aria-current", "page");
 });
+
+test("models with lifestyle photography offer extra gallery views", () => {
+  const pocket = products.find((item) => item.id === "in-ear-white");
+  render(<ProductDetail product={pocket} />);
+  const views = screen.getByRole("group", { name: "Product image view" });
+  expect(within(views).getAllByRole("button")).toHaveLength(4);
+  fireEvent.click(within(views).getByRole("button", { name: "Pocket 02 in context" }));
+  expect(
+    screen.getByRole("img", { name: "Pocket 02 earbuds and case on black" }),
+  ).toBeInTheDocument();
+  fireEvent.click(within(views).getByRole("button", { name: "Buds out of the case" }));
+  expect(
+    screen.getByRole("img", { name: "Pocket 02 earbuds beside their open case" }),
+  ).toBeInTheDocument();
+});

@@ -43,7 +43,7 @@ export default function ProductPurchaseOptions({ product, onAddToBag }) {
     writeSavedProducts(next);
   }
   return (
-    <div className="product-purchase">
+    <div className="product-purchase" data-reveal="up">
       <div className="product-fulfilment">
         <div>
           <LocalShippingOutlined />

@@ -3,7 +3,6 @@ import { IconButton, useMediaQuery } from "@mui/material";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import HeadphoneImage from "./HeadphoneImage";
-import ScrollReveal from "./ScrollReveal";
 import { products, formatPrice } from "./products";
 import { productHref } from "./usePreviewRoute";
 
@@ -15,13 +14,14 @@ export default function RelatedProducts({ product }) {
   const pages = Math.ceil(related.length / count);
   const currentPage = Math.min(page, pages - 1);
   return (
-    <ScrollReveal
-      as="section"
+    <section
       className="product-related"
       aria-labelledby="related-title"
     >
-      <h2 id="related-title">You may also like</h2>
-      <div className="product-related-gallery">
+      <h2 id="related-title" data-reveal="up">
+        You may also like
+      </h2>
+      <div className="product-related-gallery" data-reveal="up">
         <IconButton
           aria-label="Previous recommendations"
           disabled={currentPage === 0}
@@ -70,6 +70,6 @@ export default function RelatedProducts({ product }) {
           </button>
         ))}
       </nav>
-    </ScrollReveal>
+    </section>
   );
 }

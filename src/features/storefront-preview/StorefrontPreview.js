@@ -133,7 +133,11 @@ export default function StorefrontPreview() {
           <main id="preview-main" tabIndex={-1} ref={main}>
             {productId !== null ? (
               product ? (
-                <ProductDetail product={product} onAddToBag={addToBag} />
+                <ProductDetail
+                  key={product.id}
+                  product={product}
+                  onAddToBag={addToBag}
+                />
               ) : (
                 <NotFound
                   title="Product not found."
