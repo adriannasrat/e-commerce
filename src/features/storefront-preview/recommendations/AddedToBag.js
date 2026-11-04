@@ -20,7 +20,7 @@ export default function AddedToBag({ product, bag }) {
     heading.current.focus({ preventScroll: true });
   }, [product.id]);
   return <div className="added-page">
-    <div className="added-summary">
+    <div className="added-summary" data-reveal="up">
       <HeadphoneImage image={product.image} decorative />
       <div><h1 ref={heading} tabIndex={-1}>{inBag && <CheckCircleOutlineIcon aria-hidden="true" />}{inBag ? 'Added to your bag.' : 'Explore your selection.'}</h1>
         <a href={productHref(product.id)}>{product.name} — {product.finishName}</a><p>{formatPrice(product.price)} · Demo price</p></div>
@@ -30,6 +30,6 @@ export default function AddedToBag({ product, bag }) {
       <ScrollReveal className="recommendation-heading"><h2 id={`recommendation-heading-${index}`}>{section.title}</h2><p>{section.description}</p></ScrollReveal>
       <div className="recommendation-grid">{section.items.map(item => <RecommendationCard key={item.id} product={item} bag={bag} />)}</div>
     </section>)}
-    <div className="added-bottom"><p>Ready to take a closer look at your choices?</p><a href="#bag" className="bag-button">Review bag ({bag.count})</a></div>
+    <div className="added-bottom" data-reveal="up"><p>Ready to take a closer look at your choices?</p><a href="#bag" className="bag-button">Review bag ({bag.count})</a></div>
   </div>;
 }

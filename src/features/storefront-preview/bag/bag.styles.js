@@ -8,9 +8,9 @@ const styles = [
       alignItems: "center",
       minHeight: "44px",
       padding: "12px 28px",
-      border: "1px solid #151515",
+      border: "1px solid #1d1d1f",
       borderRadius: "24px",
-      background: "#151515",
+      background: "#1d1d1f",
       color: "#fff",
       font: "inherit",
       fontSize: "13px",
@@ -26,7 +26,7 @@ const styles = [
   },
   {
     ".bag-button:hover": {
-      background: "#30302c",
+      background: "#333336",
     },
   },
   {
@@ -47,7 +47,7 @@ const styles = [
       fontSize: "clamp(32px, 4vw, 52px)",
       lineHeight: "1.1",
       fontWeight: "400",
-      letterSpacing: "-0.055em",
+      letterSpacing: "-0.01em",
       margin: "0 0 18px",
     },
   },
@@ -60,7 +60,7 @@ const styles = [
     ".bag-page-heading p": {
       fontSize: "14px",
       marginBottom: "26px",
-      color: "#686862",
+      color: "#6e6e73",
     },
   },
   {
@@ -68,7 +68,7 @@ const styles = [
       display: "block",
       marginTop: "16px",
       fontSize: "10px",
-      color: "#757570",
+      color: "#6e6e73",
     },
   },
   {
@@ -101,14 +101,14 @@ const styles = [
     ".bag-row-description h2": {
       margin: "10px 0",
       fontSize: "27px",
-      letterSpacing: "-0.04em",
+      letterSpacing: "-0.01em",
       fontWeight: "500",
     },
   },
   {
     ".bag-row-description p": {
       fontSize: "12px",
-      color: "#686862",
+      color: "#6e6e73",
       lineHeight: "1.6",
     },
   },
@@ -123,7 +123,7 @@ const styles = [
       flexDirection: "column",
       gap: "8px",
       fontSize: "10px",
-      color: "#686862",
+      color: "#6e6e73",
     },
   },
   {
@@ -132,7 +132,7 @@ const styles = [
       minHeight: "44px",
       border: "1px solid #d1d1cb",
       borderRadius: "8px",
-      color: "#151515",
+      color: "#1d1d1f",
       background: "transparent",
       fontSize: "16px",
       padding: "6px",
@@ -163,7 +163,7 @@ const styles = [
       textDecoration: "underline",
       textUnderlineOffset: "4px",
       cursor: "pointer",
-      color: "#62625c",
+      color: "#6e6e73",
     },
   },
   {
@@ -207,13 +207,13 @@ const styles = [
   },
   {
     ".preview-bag-badge .MuiBadge-badge": {
-      background: "#151515",
+      background: "#1d1d1f",
       color: "white",
       minWidth: "16px",
       height: "16px",
       padding: "0 4px",
       fontSize: "11px",
-      border: "1px solid #eeedeb",
+      border: "1px solid #f5f5f7",
     },
   },
   {
@@ -234,8 +234,8 @@ const styles = [
       margin: "0",
       maxHeight: "min(75vh, 650px)",
       borderRadius: "0 0 24px 24px",
-      background: "#f5f5f3",
-      color: "#151515",
+      background: "#ffffff",
+      color: "#1d1d1f",
     },
   },
   {
@@ -252,7 +252,7 @@ const styles = [
       position: "absolute",
       top: "14px",
       right: "28px",
-      color: "#151515",
+      color: "#1d1d1f",
     },
   },
   {
@@ -268,7 +268,7 @@ const styles = [
     ".bag-panel-heading h2": {
       fontWeight: "400",
       fontSize: "32px",
-      letterSpacing: "-0.04em",
+      letterSpacing: "-0.01em",
       margin: "0",
     },
   },
@@ -307,7 +307,7 @@ const styles = [
     ".bag-panel-items small": {
       display: "block",
       marginTop: "6px",
-      color: "#686862",
+      color: "#6e6e73",
     },
   },
   {
@@ -321,7 +321,7 @@ const styles = [
       display: "flex",
       justifyContent: "space-between",
       paddingTop: "18px",
-      borderTop: "1px solid #deded9",
+      borderTop: "1px solid #d2d2d7",
       fontSize: "12px",
     },
   },
@@ -337,7 +337,7 @@ const styles = [
   },
   {
     ".bag-panel-profile > span": {
-      color: "#757570",
+      color: "#6e6e73",
       fontSize: "10px",
     },
   },
@@ -357,7 +357,7 @@ const styles = [
   },
   {
     ".bag-panel :focus-visible": {
-      outline: "2px solid #777771",
+      outline: "2px solid #6e6e73",
       outlineOffset: "4px",
     },
   },
@@ -502,12 +502,12 @@ const styles = [
   {
     ".bag-panel-profile button svg": {
       fontSize: "15px",
-      color: "#74746e",
+      color: "#6e6e73",
     },
   },
   {
     ".bag-panel-profile button:hover": {
-      color: "#151515",
+      color: "#1d1d1f",
       textDecoration: "underline",
       textUnderlineOffset: "4px",
     },

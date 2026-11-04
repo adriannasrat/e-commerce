@@ -33,7 +33,7 @@ export default function AuthForm({ signingUp }) {
 
   return (
     <div className="sign-in-form-area">
-      <p className="sign-in-kicker">YOUR OWN FREQUENCY</p>
+      <p className="sign-in-kicker">Your own frequency</p>
       <h1 id="sign-in-title" ref={heading} tabIndex={-1}>
         {signingUp ? "Sign up." : "Sign in."}
       </h1>

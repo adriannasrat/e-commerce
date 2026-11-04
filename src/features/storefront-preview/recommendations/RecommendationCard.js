@@ -6,7 +6,7 @@ import { productHref } from '../usePreviewRoute';
 export default function RecommendationCard({ product, bag }) {
   const [expanded, setExpanded] = useState(false);
   const quantity = bag.items.find(item => item.id === product.id)?.quantity || 0;
-  return <article className="recommendation-card" aria-labelledby={`recommend-${product.id}`}>
+  return <article className="recommendation-card" aria-labelledby={`recommend-${product.id}`} data-reveal="item">
     <a className="recommendation-image" href={productHref(product.id)} aria-label={`View ${product.name}`}><HeadphoneImage image={product.image} decorative /></a>
     <p className="recommendation-label">{product.image.category} / Concept model</p>
     <h3 id={`recommend-${product.id}`}><a href={productHref(product.id)}>{product.name}</a></h3>

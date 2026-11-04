@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HeadphoneImage from "./HeadphoneImage";
+import Photo from "./ui/Photo";
 import { headphoneImages } from "./headphoneImages";
 import { listeningStories } from "./listening-story-data";
 import useStoryGallery from "./useStoryGallery";
@@ -27,7 +28,7 @@ export default function ListeningStories() {
     >
       <ScrollReveal className="listening-heading">
         <div>
-          <p className="listening-eyebrow">RESONANCE / EDITORIAL</p>
+          <p className="listening-eyebrow">Editorial</p>
           <h1 tabIndex={-1} id="listening-title">
             Listening journal.
           </h1>
@@ -44,15 +45,16 @@ export default function ListeningStories() {
         onScroll={updatePosition}
         role="region"
         aria-label="Listening stories"
+        data-reveal-group=""
         tabIndex={0}
         onKeyDown={onKeyDown}
       >
-        {listeningStories.map((item, index) => (
+        {listeningStories.map((item) => (
           <ScrollReveal
             as="button"
             key={item.id}
+            variant="item"
             className={`listening-card listening-${item.tone}`}
-            delay={index * 80}
             onClick={() => {
               setStory(item);
               setDetailOpen(true);
@@ -75,7 +77,7 @@ export default function ListeningStories() {
           </ScrollReveal>
         ))}
       </div>
-      <ScrollReveal className="listening-controls">
+      <ScrollReveal className="listening-controls" variant="fade">
         <span>EXPLORE YOUR EVERYDAY</span>
         <div>
           <IconButton
@@ -112,10 +114,16 @@ export default function ListeningStories() {
             >
               <CloseIcon />
             </IconButton>
-            <div className={`listening-detail-image listening-${story.tone}`}>
-              <HeadphoneImage
-                image={headphoneImages.find((image) => image.id === story.id)}
-              />
+            <div
+              className={`listening-detail-image listening-${story.tone}${story.photo ? " listening-detail-image--photo" : ""}`}
+            >
+              {story.photo ? (
+                <Photo photo={story.photo} eager />
+              ) : (
+                <HeadphoneImage
+                  image={headphoneImages.find((image) => image.id === story.id)}
+                />
+              )}
             </div>
             <div className="listening-detail-copy">
               <p className="listening-eyebrow">{story.label}</p>

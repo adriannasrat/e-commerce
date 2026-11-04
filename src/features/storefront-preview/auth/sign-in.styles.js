@@ -4,7 +4,7 @@ const styles = [
     ".resonance-sign-in": {
       padding: "clamp(20px, 4vw, 64px)",
       background:
-        "radial-gradient(ellipse at 15% 30%, #d8d0c7, transparent 60%), #eeedeb",
+        "radial-gradient(ellipse at 15% 30%, #d8d0c7, transparent 60%), #f5f5f7",
     },
   },
   {
@@ -26,7 +26,7 @@ const styles = [
       overflow: "hidden",
       minWidth: "0",
       borderRadius: "36px 0 0 36px",
-      color: "#f7f7f5",
+      color: "#ffffff",
       background:
         "radial-gradient(\n    ellipse at 55% 70%,\n    #514b40 0,\n    #292620 50%,\n    #25231f 80%\n  )",
       display: "flex",
@@ -48,7 +48,7 @@ const styles = [
       margin: "66px 24px 0",
       fontSize: "clamp(42px, 4.6vw, 68px)",
       lineHeight: "0.95",
-      letterSpacing: "-0.065em",
+      letterSpacing: "-0.01em",
       fontWeight: "500",
       textAlign: "center",
       zIndex: "1",
@@ -122,7 +122,7 @@ const styles = [
   {
     ".sign-in-brand": {
       fontWeight: "800",
-      letterSpacing: "-0.07em",
+      letterSpacing: "-0.01em",
       fontSize: "20px",
       textDecoration: "none",
     },
@@ -135,7 +135,7 @@ const styles = [
       border: "0",
       background: "transparent",
       padding: "10px 0",
-      color: "#5b5b57",
+      color: "#6e6e73",
       font: "inherit",
       fontSize: "11px",
       cursor: "pointer",
@@ -144,7 +144,7 @@ const styles = [
   },
   {
     ".sign-in-text-button:hover": {
-      color: "#151515",
+      color: "#1d1d1f",
       textDecoration: "underline",
       textUnderlineOffset: "4px",
     },
@@ -175,7 +175,7 @@ const styles = [
     ".sign-in-form-area h1": {
       fontSize: "clamp(38px, 4vw, 50px)",
       fontWeight: "400",
-      letterSpacing: "-0.065em",
+      letterSpacing: "-0.01em",
       lineHeight: "1.1",
       margin: "0 0 14px",
     },
@@ -203,12 +203,12 @@ const styles = [
   {
     ".sign-in-field input,\n.sign-in-password input": {
       width: "100%",
-      border: "1px solid #deded9",
+      border: "1px solid #d2d2d7",
       background: "transparent",
       borderRadius: "28px",
       minHeight: "48px",
       padding: "12px 18px",
-      color: "#151515",
+      color: "#1d1d1f",
       font: "inherit",
       fontSize: "12px",
       transition: "border-color 0.2s,\n    background 0.2s",
@@ -251,7 +251,7 @@ const styles = [
   },
   {
     ".sign-in-forgot": {
-      color: "#5b5b57",
+      color: "#6e6e73",
       margin: "4px 0 12px 14px",
     },
   },
@@ -265,7 +265,7 @@ const styles = [
       width: "100%",
       border: "0",
       borderRadius: "28px",
-      background: "#151515",
+      background: "#1d1d1f",
       color: "#fff",
       font: "inherit",
       fontSize: "13px",
@@ -276,7 +276,7 @@ const styles = [
   },
   {
     ".sign-in-submit:hover": {
-      background: "#303030",
+      background: "#333336",
     },
   },
   {
@@ -300,7 +300,7 @@ const styles = [
     ".sign-in-feedback": {
       fontSize: "12px",
       lineHeight: "1.6",
-      color: "#5b5b57",
+      color: "#6e6e73",
       margin: "16px 0 0",
     },
   },
@@ -452,16 +452,16 @@ const styles = [
   },
   {
     ".storefront-preview .resonance-sign-in :focus-visible": {
-      outline: "2px solid #777771",
+      outline: "2px solid #6e6e73",
       outlineOffset: "4px",
     },
   },
   {
     ".storefront-preview .resonance-sign-in input:focus": {
-      outline: "2px solid #777771",
+      outline: "2px solid #6e6e73",
       outlineOffset: "2px",
-      borderColor: "#777771",
-      background: "#f7f7f5",
+      borderColor: "#6e6e73",
+      background: "#ffffff",
     },
   },
   {

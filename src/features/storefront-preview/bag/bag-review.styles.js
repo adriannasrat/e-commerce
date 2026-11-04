@@ -12,7 +12,7 @@ export default {
   ".bag-checkout-actions .bag-button": { margin: 0, borderRadius: 10 },
   ".bag-checkout-actions .bag-button:last-of-type": {
     background: "#e8e7e3",
-    color: "#151515",
+    color: "#1d1d1f",
     borderColor: "#e8e7e3",
   },
   ".bag-checkout-actions .bag-button:last-of-type:hover": {
@@ -79,7 +79,7 @@ export default {
   ".bag-suggestions svg": { width: "100%", height: 180, marginBottom: 16 },
   ".bag-suggestions span, .bag-collection-banner small": {
     fontSize: 11,
-    color: "#5b5b57",
+    color: "#6e6e73",
     letterSpacing: ".06em",
   },
   ".bag-suggestions h3": { fontSize: 18, margin: "6px 0" },
@@ -91,7 +91,7 @@ export default {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     alignItems: "center",
-    background: "#eeedeb",
+    background: "#f5f5f7",
     marginBlock: "32px 42px",
     textAlign: "center",
     padding: "28px 5%",

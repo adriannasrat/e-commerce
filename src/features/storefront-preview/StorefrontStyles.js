@@ -16,6 +16,7 @@ import recommendationStyles from "./recommendations/recommendations.styles";
 import authStyles from "./auth/sign-in.styles";
 import previewStyles from "./preview.styles";
 import navigationStyles from "./navigation.styles";
+import pageStyles from "./ui/pages.styles";
 
 // Keep the established cascade order, including styles for portalled dialogs.
 // Foundation tokens come first; shared press and dialog feedback come last.
@@ -35,6 +36,7 @@ const styles = gateHover([
   authStyles,
   previewStyles,
   navigationStyles,
+  pageStyles,
   interactionStyles,
 ]);
 

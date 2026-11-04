@@ -36,7 +36,7 @@ export default function BagPage({ bag }) {
   }, []);
   return (
     <section className="bag-page" aria-labelledby="bag-title">
-      <header className="bag-page-heading">
+      <header className="bag-page-heading" data-reveal="up">
         <h1 ref={heading} tabIndex={-1} id="bag-title">
           {bag.count
             ? `Your bag total is ${formatPrice(bag.total)}.`
@@ -59,7 +59,12 @@ export default function BagPage({ bag }) {
         {bag.count} items in your bag. Total {formatPrice(bag.total)}.
       </p>
       {bag.items.map(({ product, quantity }) => (
-        <article className="bag-row" key={product.id} aria-label={product.name}>
+        <article
+          className="bag-row"
+          key={product.id}
+          aria-label={product.name}
+          data-reveal="item"
+        >
           <a
             className="bag-row-image"
             href={productHref(product.id)}
@@ -117,7 +122,7 @@ export default function BagPage({ bag }) {
         </article>
       ))}
       {bag.count > 0 && (
-        <div className="bag-summary">
+        <div className="bag-summary" data-reveal="up">
           <div>
             <span>Subtotal</span>
             <span>{formatPrice(bag.total)}</span>

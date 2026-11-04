@@ -3,7 +3,7 @@ const styles = [
   {
     ".listening-stories": {
       padding: "80px 0 54px",
-      background: "#eeedeb",
+      background: "#f5f5f7",
     },
   },
   {
@@ -28,7 +28,7 @@ const styles = [
     ".listening-heading h1": {
       fontSize: "clamp(40px, 5.5vw, 80px)",
       fontWeight: "400",
-      letterSpacing: "-0.065em",
+      letterSpacing: "-0.01em",
       lineHeight: "1",
       margin: "0",
     },
@@ -38,7 +38,7 @@ const styles = [
       fontSize: "13px",
       lineHeight: "1.7",
       margin: "0",
-      color: "#62625c",
+      color: "#6e6e73",
     },
   },
   {
@@ -69,7 +69,7 @@ const styles = [
       padding: "32px",
       textAlign: "left",
       font: "inherit",
-      color: "#151515",
+      color: "#1d1d1f",
       cursor: "pointer",
       scrollSnapAlign: "start",
       display: "flex",
@@ -79,8 +79,8 @@ const styles = [
   },
   {
     ".listening-chalk": {
-      background: "#fafaf8",
-      color: "#151515",
+      background: "#ffffff",
+      color: "#1d1d1f",
     },
   },
   {
@@ -91,8 +91,8 @@ const styles = [
   },
   {
     ".listening-silver": {
-      background: "#deded9",
-      color: "#151515",
+      background: "#d2d2d7",
+      color: "#1d1d1f",
     },
   },
   {
@@ -100,7 +100,7 @@ const styles = [
       whiteSpace: "pre-line",
       fontSize: "clamp(30px, 3.4vw, 48px)",
       fontWeight: "400",
-      letterSpacing: "-0.055em",
+      letterSpacing: "-0.01em",
       lineHeight: "1.04",
       margin: "0",
     },
@@ -183,7 +183,7 @@ const styles = [
     ".listening-detail.MuiDialog-paper": {
       borderRadius: "28px",
       background: "#f5f5f2",
-      color: "#151515",
+      color: "#1d1d1f",
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
     },
@@ -194,8 +194,8 @@ const styles = [
       top: "12px",
       right: "12px",
       zIndex: "1",
-      background: "#eeedeb",
-      color: "#151515",
+      background: "#f5f5f7",
+      color: "#1d1d1f",
     },
   },
   {
@@ -221,7 +221,7 @@ const styles = [
       whiteSpace: "pre-line",
       fontSize: "42px",
       lineHeight: "1.05",
-      letterSpacing: "-0.055em",
+      letterSpacing: "-0.01em",
       fontWeight: "400",
       margin: "0 0 24px",
     },
@@ -230,13 +230,13 @@ const styles = [
     ".listening-detail-copy > p:not(.listening-eyebrow)": {
       fontSize: "14px",
       lineHeight: "1.7",
-      color: "#62625c",
+      color: "#6e6e73",
     },
   },
   {
     ".listening-detail-copy a": {
       display: "inline-block",
-      background: "#151515",
+      background: "#1d1d1f",
       color: "white",
       borderRadius: "24px",
       padding: "14px 20px",
@@ -248,12 +248,12 @@ const styles = [
   },
   {
     ".listening-detail-copy a:hover": {
-      background: "#292929",
+      background: "#333336",
     },
   },
   {
     ".listening-detail :focus-visible": {
-      outline: "2px solid #777771",
+      outline: "2px solid #6e6e73",
       outlineOffset: "4px",
     },
   },

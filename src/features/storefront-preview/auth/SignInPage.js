@@ -19,7 +19,7 @@ export default function SignInPage({ mode = "sign-in" }) {
     <section className="resonance-sign-in" aria-labelledby="sign-in-title">
       <ScrollReveal className="sign-in-card">
         <aside className="sign-in-art" aria-label="Find your own frequency">
-          <p className="sign-in-art-eyebrow">A LITTLE CLOSER TO THE MUSIC.</p>
+          <p className="sign-in-art-eyebrow">A little closer to the music.</p>
           <div className="sign-in-orbits" aria-hidden="true" />
           <h2>
             Your sound.
@@ -28,8 +28,8 @@ export default function SignInPage({ mode = "sign-in" }) {
           </h2>
           <HeadphoneImage image={image} className="sign-in-headphones" />
           <div className="sign-in-art-caption">
-            <span>FORM 03 / SILVER</span>
-            <span>MADE FOR YOUR MOMENTS.</span>
+            <span>Form 03 · Silver</span>
+            <span>Made for your moments.</span>
           </div>
         </aside>
         <div className="sign-in-panel">
@@ -54,7 +54,7 @@ export default function SignInPage({ mode = "sign-in" }) {
             <a href="#preview-direction">
               <ArrowBack /> Back to the collection
             </a>
-            <span>LISTEN YOUR WAY.</span>
+            <span>Listen your way.</span>
           </div>
         </div>
       </ScrollReveal>
