@@ -1,90 +1,153 @@
-import JournalFeature from './shopping/JournalFeature';
-import CategoryPage from './collections/CategoryPage';
-import Campaign from './collections/Campaign';
-import { collections, collectionRoute } from './collections/collections';
-import StorefrontStyles from './StorefrontStyles';
-import StorefrontFooter from './footer/StorefrontFooter';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { ScopedCssBaseline } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import PreviewHeader from './PreviewHeader';
-import PreviewHero from './PreviewHero';
-import HeadphoneCollection from './HeadphoneCollection';
-import theme from './theme';
-import ListeningStories from './ListeningStories';
-import ProductDetail from './ProductDetail';
-import ProductShowcase from './ProductShowcase';
-import { products } from './products';
-import usePreviewRoute from './usePreviewRoute';
-import usePreviewBag from './bag/usePreviewBag';
-import BagPage from './bag/BagPage';
-import AddedToBag from './recommendations/AddedToBag';
-import SignInPage from './auth/SignInPage';
+import JournalFeature from "./shopping/JournalFeature";
+import CategoryPage from "./collections/CategoryPage";
+import Campaign from "./collections/Campaign";
+import { collections, collectionRoute } from "./collections/collections";
+import StorefrontStyles from "./StorefrontStyles";
+import StorefrontFooter from "./footer/StorefrontFooter";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { ScopedCssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import PreviewHeader from "./PreviewHeader";
+import PreviewHero from "./PreviewHero";
+import HeadphoneCollection from "./HeadphoneCollection";
+import theme from "./theme";
+import ListeningStories from "./ListeningStories";
+import ProductDetail from "./ProductDetail";
+import ProductShowcase from "./ProductShowcase";
+import { products } from "./products";
+import usePreviewRoute from "./usePreviewRoute";
+import usePreviewBag from "./bag/usePreviewBag";
+import BagPage from "./bag/BagPage";
+import AddedToBag from "./recommendations/AddedToBag";
+import SignInPage from "./auth/SignInPage";
 
 export default function StorefrontPreview() {
-  const [selected, setSelected] = useState('black');
+  const [selected, setSelected] = useState("black");
   const { hash, productId, addedId } = usePreviewRoute();
   const bag = usePreviewBag();
   const category = collectionRoute(hash);
   const categoryId = category?.id;
-  const isCatalog = ['#preview-direction', '#preview-over-ear', '#preview-in-ear', '#compare-headphones'].includes(hash);
-  const isJournal = hash === '#preview-stories';
-  const isBag = hash === '#bag';
-  const isSignUp = hash === '#sign-up';
-  const isSignIn = hash === '#sign-in' || isSignUp;
+  const isCatalog = [
+    "#preview-direction",
+    "#preview-over-ear",
+    "#preview-in-ear",
+    "#compare-headphones",
+  ].includes(hash);
+  const isJournal = hash === "#preview-stories";
+  const isBag = hash === "#bag";
+  const isSignUp = hash === "#sign-up";
+  const isSignIn = hash === "#sign-in" || isSignUp;
   function addToBag(id) {
     bag.add(id);
     window.location.hash = `added/${encodeURIComponent(id)}`;
   }
-  const addedProduct = products.find(item => item.id === addedId);
-  const product = products.find(item => item.id === productId);
-  const pageName = product?.name || (categoryId && collections[categoryId].name) ||
-    (addedId !== null && 'Your selection') || (isBag && 'Your bag') ||
-    (isSignIn && (isSignUp ? 'Sign up' : 'Sign in')) ||
-    (isCatalog && 'The collection') || (isJournal && 'Listening journal') || 'Home';
+  const addedProduct = products.find((item) => item.id === addedId);
+  const product = products.find((item) => item.id === productId);
+  const pageName =
+    product?.name ||
+    (categoryId && collections[categoryId].name) ||
+    (addedId !== null && "Your selection") ||
+    (isBag && "Your bag") ||
+    (isSignIn && (isSignUp ? "Sign up" : "Sign in")) ||
+    (isCatalog && "The collection") ||
+    (isJournal && "Listening journal") ||
+    "Home";
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = pageName === 'Home' ? 'RESONANCE' : `${pageName} — RESONANCE`;
-    return () => { document.title = previousTitle; };
+    document.title =
+      pageName === "Home" ? "RESONANCE" : `${pageName} — RESONANCE`;
+    return () => {
+      document.title = previousTitle;
+    };
   }, [pageName]);
   useLayoutEffect(() => {
-    if (productId !== null || isBag || isSignIn || addedId !== null || categoryId) return;
+    if (
+      productId !== null ||
+      isBag ||
+      isSignIn ||
+      addedId !== null ||
+      categoryId
+    )
+      return;
     if (isCatalog || isJournal) {
-      if (hash === '#compare-headphones') {
-        const heading = document.getElementById('compare-all-title');
+      if (hash === "#compare-headphones") {
+        const heading = document.getElementById("compare-all-title");
         heading?.focus({ preventScroll: true });
-        heading?.scrollIntoView({ block: 'start', behavior: 'instant' });
+        heading?.scrollIntoView({ block: "start", behavior: "instant" });
         return;
       }
-      document.querySelector('main h1')?.focus({ preventScroll: true });
-      if (hash === '#preview-direction' || isJournal) {
-        window.scrollTo({ top: 0, behavior: 'instant' });
+      document.querySelector("main h1")?.focus({ preventScroll: true });
+      if (hash === "#preview-direction" || isJournal) {
+        window.scrollTo({ top: 0, behavior: "instant" });
         return;
       }
     }
-    document.getElementById(hash.slice(1) || 'preview-home')?.scrollIntoView({ behavior: 'instant' });
-  }, [hash, productId, isBag, addedId, isSignIn, categoryId, isCatalog, isJournal]);
+    document
+      .getElementById(hash.slice(1) || "preview-home")
+      ?.scrollIntoView({ behavior: "instant" });
+  }, [
+    hash,
+    productId,
+    isBag,
+    addedId,
+    isSignIn,
+    categoryId,
+    isCatalog,
+    isJournal,
+  ]);
 
   return (
     <ThemeProvider theme={theme}>
       <StorefrontStyles />
       <ScopedCssBaseline className="storefront-preview" id="preview-home">
-        <a className="preview-skip" href="#preview-main" onClick={event => {
-          event.preventDefault();
-          document.getElementById('preview-main')?.focus();
-        }}>Skip to content</a>
+        <a
+          className="preview-skip"
+          href="#preview-main"
+          onClick={(event) => {
+            event.preventDefault();
+            document.getElementById("preview-main")?.focus();
+          }}
+        >
+          Skip to content
+        </a>
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
           <main id="preview-main" tabIndex={-1}>
-            {productId !== null ? (product ? <ProductDetail product={product} onAddToBag={addToBag} /> :
-              <section className="product-detail"><h1>Product not found</h1><a href="#preview-direction">Back to the collection</a></section>) : null}
+            {productId !== null ? (
+              product ? (
+                <ProductDetail product={product} onAddToBag={addToBag} />
+              ) : (
+                <section className="product-detail">
+                  <h1>Product not found</h1>
+                  <a href="#preview-direction">Back to the collection</a>
+                </section>
+              )
+            ) : null}
             {category && <CategoryPage key={category.id} {...category} />}
             {isBag && <BagPage bag={bag} />}
-            {isSignIn && <SignInPage mode={isSignUp ? 'sign-up' : 'sign-in'} />}
-            {addedId !== null && (addedProduct ? <AddedToBag product={addedProduct} bag={bag} /> : <section className="product-detail"><h1>Selection not found</h1><a href="#bag">Review bag</a></section>)}
+            {isSignIn && <SignInPage mode={isSignUp ? "sign-up" : "sign-in"} />}
+            {addedId !== null &&
+              (addedProduct ? (
+                <AddedToBag product={addedProduct} bag={bag} />
+              ) : (
+                <section className="product-detail">
+                  <h1>Selection not found</h1>
+                  <a href="#bag">Review bag</a>
+                </section>
+              ))}
             {isCatalog && <HeadphoneCollection onAddToBag={addToBag} />}
             {isJournal && <ListeningStories />}
-            <div hidden={isCatalog || isJournal || Boolean(categoryId) || productId !== null || isBag || isSignIn || addedId !== null}>
+            <div
+              hidden={
+                isCatalog ||
+                isJournal ||
+                Boolean(categoryId) ||
+                productId !== null ||
+                isBag ||
+                isSignIn ||
+                addedId !== null
+              }
+            >
               <PreviewHero selected={selected} onSelect={setSelected} />
               <Campaign category="over-ear" />
               <ProductShowcase />

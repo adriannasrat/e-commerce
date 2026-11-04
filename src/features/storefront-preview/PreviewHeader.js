@@ -1,5 +1,5 @@
-import BagPanel from './bag/BagPanel';
-import ScrollReveal from './ScrollReveal';
+import BagPanel from "./bag/BagPanel";
+import ScrollReveal from "./ScrollReveal";
 import React, { useState } from "react";
 import { Badge, IconButton, useMediaQuery } from "@mui/material";
 import MenuGlyph from "./MenuGlyph";
@@ -29,9 +29,9 @@ export default function PreviewHeader({ bag }) {
   const [action, setAction] = useState(null);
 
   function openAction(id) {
-    if (id === 'account' || id === 'signin') {
+    if (id === "account" || id === "signin") {
       setAction(null);
-      window.location.hash = 'sign-in';
+      window.location.hash = "sign-in";
       return;
     }
     setAction(id);
@@ -63,12 +63,26 @@ export default function PreviewHeader({ bag }) {
           {actions.map(({ id, label, Icon }) => (
             <IconButton
               key={id}
-              aria-label={id === "bag" ? `Shopping bag, ${bag.count} ${bag.count === 1 ? "item" : "items"}` : label}
+              aria-label={
+                id === "bag"
+                  ? `Shopping bag, ${bag.count} ${bag.count === 1 ? "item" : "items"}`
+                  : label
+              }
               aria-haspopup={id === "account" ? undefined : "dialog"}
               aria-expanded={id === "account" ? undefined : action === id}
               onClick={() => openAction(id)}
             >
-              {id === "bag" ? <Badge badgeContent={bag.count} max={99} className="preview-bag-badge"><Icon fontSize="small" /></Badge> : <Icon fontSize="small" />}
+              {id === "bag" ? (
+                <Badge
+                  badgeContent={bag.count}
+                  max={99}
+                  className="preview-bag-badge"
+                >
+                  <Icon fontSize="small" />
+                </Badge>
+              ) : (
+                <Icon fontSize="small" />
+              )}
             </IconButton>
           ))}
           {compactNavigation && (
@@ -88,8 +102,16 @@ export default function PreviewHeader({ bag }) {
         open={menuOpen && compactNavigation}
         onClose={() => setMenuOpen(false)}
       />
-      <BagPanel open={action === "bag"} onClose={() => setAction(null)} bag={bag} onProfile={openAction} />
-      <PreviewActionDialog action={action === "bag" ? null : action} onClose={() => setAction(null)} />
+      <BagPanel
+        open={action === "bag"}
+        onClose={() => setAction(null)}
+        bag={bag}
+        onProfile={openAction}
+      />
+      <PreviewActionDialog
+        action={action === "bag" ? null : action}
+        onClose={() => setAction(null)}
+      />
     </>
   );
 }
