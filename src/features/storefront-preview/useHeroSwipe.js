@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
 // The image remains a normal product link for taps and keyboard activation.
 export default function useHeroSwipe(step) {
@@ -29,16 +29,16 @@ export default function useHeroSwipe(step) {
       }
     },
     onPointerDown(event) {
-      if (event.pointerType === 'mouse') suppressClick.current = false;
+      if (event.pointerType === "mouse") suppressClick.current = false;
     },
     onClick(event) {
       if (suppressClick.current && event.detail !== 0) event.preventDefault();
       suppressClick.current = false;
     },
     onKeyDown(event) {
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
       event.preventDefault();
-      step(event.key === 'ArrowRight' ? 1 : -1);
+      step(event.key === "ArrowRight" ? 1 : -1);
     },
   };
 }
