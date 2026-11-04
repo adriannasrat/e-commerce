@@ -7,6 +7,26 @@ import { productHref } from "../usePreviewRoute";
 import { formatPrice } from "../products";
 import { MAX_QUANTITY } from "./bagState";
 
+import BagDiscovery from "./BagDiscovery";
+import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
+import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
+
+function CheckoutActions({ onSelect }) {
+  return (
+    <div className="bag-checkout-actions">
+      <button
+        className="bag-button"
+        onClick={() => onSelect("Express checkout")}
+      >
+        Express checkout
+      </button>
+      <button className="bag-button" onClick={() => onSelect("Check out")}>
+        Check out
+      </button>
+    </div>
+  );
+}
+
 export default function BagPage({ bag }) {
   const heading = useRef(null);
   const [checkout, setCheckout] = useState(false);
@@ -28,15 +48,12 @@ export default function BagPage({ bag }) {
             : "Your next favourite is waiting."}
         </p>
         {bag.count ? (
-          <button className="bag-button" onClick={() => setCheckout(true)}>
-            Check out
-          </button>
+          <CheckoutActions onSelect={setCheckout} />
         ) : (
           <a className="bag-button" href="#preview-direction">
             Explore headphones
           </a>
         )}
-        <small>Design demo · No real orders or payments</small>
       </header>
       <p className="bag-sr-only" role="status">
         {bag.count} items in your bag. Total {formatPrice(bag.total)}.
@@ -84,6 +101,19 @@ export default function BagPage({ bag }) {
               Remove
             </button>
           </div>
+          <div className="bag-item-services">
+            <a href={productHref(product.id)}>View product details</a>
+            <div>
+              <span>
+                <ShoppingBagOutlined />
+                Pickup unavailable
+              </span>
+              <span>
+                <LocalShippingOutlined />
+                Delivery unavailable
+              </span>
+            </div>
+          </div>
         </article>
       ))}
       {bag.count > 0 && (
@@ -100,21 +130,20 @@ export default function BagPage({ bag }) {
             <strong>Total</strong>
             <strong>{formatPrice(bag.total)}</strong>
           </div>
-          <button className="bag-button" onClick={() => setCheckout(true)}>
-            Check out
-          </button>
+          <CheckoutActions onSelect={setCheckout} />
           <a href="#preview-direction">Continue exploring</a>
         </div>
       )}
+      {bag.count > 0 && <BagDiscovery bag={bag} />}
       <StorefrontDialog
-        open={checkout}
+        open={Boolean(checkout)}
         onClose={() => setCheckout(false)}
         aria-labelledby="demo-checkout-title"
         maxWidth="xs"
         fullWidth
       >
         <DialogTitle id="demo-checkout-title">
-          You’re exploring a demo
+          {checkout || "Checkout"}
           <IconButton
             aria-label="Close checkout information"
             onClick={() => setCheckout(false)}
