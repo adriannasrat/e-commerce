@@ -1,5 +1,9 @@
 // Feature styles consumed by StorefrontStyles through MUI GlobalStyles.
 const styles = [
+  { '.preview-gallery': { touchAction: 'pan-y pinch-zoom' }, '.hero-swipe-tip': { display: 'none' } },
+  { '@media (pointer: coarse) and (max-width: 600px)': {
+    '.hero-swipe-tip': { display: 'block', textAlign: 'center', fontSize: 11, color: '#66665f', marginTop: 8 },
+  } },
   {
     ".preview-gallery-picker": {
       "position": "absolute",

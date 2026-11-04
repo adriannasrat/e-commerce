@@ -1,14 +1,17 @@
+import useHeroSwipe from './useHeroSwipe';
 import React, { useState } from 'react';
 import { productHref } from './usePreviewRoute';
 import HeadphoneImage from './HeadphoneImage';
 import ProductPlaceholder from './ProductPlaceholder';
 import { headphoneImages } from './headphoneImages';
 
-export default function ProductVisual({ selected }) {
+export default function ProductVisual({ selected, onStep }) {
   const [failedImages, setFailedImages] = useState({});
 
+  const gesture = useHeroSwipe(onStep);
+
   return (
-    <a className="preview-product preview-product--photo preview-gallery" href={productHref(selected)} aria-label="View selected headphone details">
+    <a {...gesture} className="preview-product preview-product--photo preview-gallery" href={productHref(selected)} aria-label="View selected headphone details">
       {headphoneImages.map((image) => {
         const { id, finish } = image;
         return (
