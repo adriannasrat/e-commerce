@@ -4,7 +4,8 @@ import Campaign from "./collections/Campaign";
 import { collections, collectionRoute } from "./collections/collections";
 import StorefrontStyles from "./StorefrontStyles";
 import StorefrontFooter from "./footer/StorefrontFooter";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import useReveal from "./ui/useReveal";
 import { ScopedCssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import PreviewHeader from "./PreviewHeader";
@@ -39,6 +40,8 @@ export default function StorefrontPreview() {
   const [selected, setSelected] = useState("black");
   const { hash, productId, addedId } = usePreviewRoute();
   const bag = usePreviewBag();
+  const main = useRef(null);
+  useReveal(main, hash);
   const category = collectionRoute(hash);
   const categoryId = category?.id;
   const isCatalog = [
@@ -126,7 +129,7 @@ export default function StorefrontPreview() {
         </a>
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
-          <main id="preview-main" tabIndex={-1}>
+          <main id="preview-main" tabIndex={-1} ref={main}>
             {productId !== null ? (
               product ? (
                 <ProductDetail product={product} onAddToBag={addToBag} />
