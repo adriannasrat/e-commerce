@@ -5,6 +5,7 @@ import React from "react";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { foundationStyles, interactionStyles } from "./foundation.styles";
 import gateHover from "./gateHover";
+import systemStyles from "./ui/system.styles";
 import revealStyles from "./scroll-reveal.styles";
 import bagStyles from "./bag/bag.styles";
 import menuGlyphStyles from "./menu-glyph.styles";
@@ -24,6 +25,7 @@ import navigationStyles from "./navigation.styles";
 // Foundation tokens come first; shared press and dialog feedback come last.
 const styles = gateHover([
   foundationStyles,
+  systemStyles,
   shoppingStyles,
   footerStyles,
   collectionPageStyles,
