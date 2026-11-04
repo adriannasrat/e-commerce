@@ -57,6 +57,27 @@ export const foundationStyles = [
     },
   },
   {
+    // Product photos fade in once decoded instead of popping in. If a load
+    // event is ever missed, the fallback animation shows the photo anyway.
+    ".rx-photo": {
+      transition: "opacity 360ms ease",
+    },
+  },
+  {
+    '.rx-photo[data-loaded="false"]': {
+      opacity: "0",
+      animation: "rx-photo-fallback 1ms 1200ms forwards",
+    },
+  },
+  {
+    "@keyframes rx-photo-fallback": [{ to: { opacity: "1" } }],
+  },
+  {
+    "@media (prefers-reduced-motion: reduce)": {
+      ".rx-photo, .rx-photo[data-loaded='false']": { opacity: "1 !important" },
+    },
+  },
+  {
     [`${scope} :where(.MuiDialog-paper, .preview-menu, .bag-panel)`]: {
       overscrollBehavior: "contain",
     },
