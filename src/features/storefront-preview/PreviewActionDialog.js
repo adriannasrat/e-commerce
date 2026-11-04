@@ -1,4 +1,4 @@
-import CatalogSearch from './shopping/CatalogSearch';
+import CatalogSearch from "./shopping/CatalogSearch";
 import StorefrontDialog from "./StorefrontDialog";
 import React from "react";
 import {
@@ -27,7 +27,6 @@ const content = {
   },
   search: {
     title: "Find your frequency",
-
   },
   account: {
     title: "Your space",
@@ -63,7 +62,11 @@ export default function PreviewActionDialog({ action, onClose }) {
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ pb: 4 }}>
-        {action === "search" ? <CatalogSearch onSelect={onClose} /> : <Typography>{selected?.text}</Typography>}
+        {action === "search" ? (
+          <CatalogSearch onSelect={onClose} />
+        ) : (
+          <Typography>{selected?.text}</Typography>
+        )}
         {action === "saves" &&
           (saved.length ? (
             <ul>
