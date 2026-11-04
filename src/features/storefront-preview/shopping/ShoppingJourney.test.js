@@ -14,7 +14,7 @@ test('catalog filters narrow the grid and adding a model opens its confirmation'
   window.history.replaceState({}, '', '/#preview-direction');
   render(<StorefrontPreview />);
   const filters = screen.getByRole('group', { name: 'Filter by fit' });
-  fireEvent.click(within(filters).getByRole('button', { name: 'in-ear' }));
+  fireEvent.click(within(filters).getByRole('button', { name: 'In-ear' }));
   expect(screen.getAllByRole('button', { name: /Add Pocket .* to bag/ })).toHaveLength(collectionModels('in-ear').length);
   expect(screen.queryByRole('button', { name: /Add Form .* to bag/ })).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Add Pocket 03 to bag' }));
