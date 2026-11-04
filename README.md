@@ -65,7 +65,8 @@ Open http://localhost:3000. The current storefront can run without MariaDB.
 Product photographs in `public/local-preview/` and reference files in
 `design-references/` are intentionally excluded from Git. A fresh clone will not
 include those images. Use appropriately licensed local assets matching the paths
-in `src/features/storefront-preview/headphoneImages.js` to reproduce the imagery.
+in `src/features/storefront-preview/headphoneImages.js` and
+`src/features/storefront-preview/lifestyleImages.js` to reproduce the imagery.
 The directory's historical name does not denote a separate application.
 
 ## Run the API locally
