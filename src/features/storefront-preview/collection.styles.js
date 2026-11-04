@@ -61,7 +61,7 @@ const styles = [
     }
   },
   {
-    ".preview-collection-heading h2": {
+    ".preview-collection-heading h1": {
       "margin": "0",
       "fontSize": "clamp(40px, 5.5vw, 80px)",
       "fontWeight": "400",

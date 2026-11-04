@@ -9,7 +9,7 @@ test('shows one card per category with matching collection links', () => {
     const tile = screen.getByRole('article', { name });
     const learnMore = within(tile).getByRole('link', { name: `Learn more about ${name} headphones` });
     const buy = within(tile).getByRole('link', { name: `Buy ${name} headphones` });
-    expect(learnMore.getAttribute('href')).toBe(`#preview-${name.toLowerCase()}`);
-    expect(buy.getAttribute('href')).toBe(`#preview-${name.toLowerCase()}`);
+    expect(learnMore.getAttribute('href')).toBe(`#collection/${name.toLowerCase()}`);
+    expect(buy.getAttribute('href')).toBe(`#collection/${name.toLowerCase()}/models`);
   });
 });

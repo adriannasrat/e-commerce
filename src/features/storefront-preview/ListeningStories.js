@@ -27,12 +27,10 @@ export default function ListeningStories() {
     >
       <ScrollReveal className="listening-heading">
         <div>
-          <p className="listening-eyebrow">02 / A MORE PERSONAL PERSPECTIVE</p>
-          <h2 id="listening-title">
-            Made for your
-            <br />
-            kind of listening.
-          </h2>
+          <p className="listening-eyebrow">RESONANCE / EDITORIAL</p>
+          <h1 tabIndex={-1} id="listening-title">
+            Listening journal.
+          </h1>
         </div>
         <p>
           Different moments. Different moods.

@@ -25,7 +25,7 @@ const styles = [
     }
   },
   {
-    ".listening-heading h2": {
+    ".listening-heading h1": {
       "fontSize": "clamp(40px, 5.5vw, 80px)",
       "fontWeight": "400",
       "letterSpacing": "-0.065em",

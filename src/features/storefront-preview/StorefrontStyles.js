@@ -1,3 +1,6 @@
+import shoppingStyles from './shopping/shopping.styles';
+import footerStyles from './footer/footer.styles';
+import collectionPageStyles from './collections/collection-pages.styles';
 import React from 'react';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import revealStyles from './scroll-reveal.styles';
@@ -17,6 +20,9 @@ import navigationStyles from './navigation.styles';
 
 // Keep the established cascade order, including styles for portalled dialogs.
 const styles = [
+  shoppingStyles,
+  footerStyles,
+  collectionPageStyles,
   revealStyles,
   bagStyles,
   menuGlyphStyles,

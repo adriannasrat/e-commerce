@@ -1,4 +1,5 @@
 import StorefrontDialog from "./StorefrontDialog";
+import { collectionHref } from './collections/collections';
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { IconButton, useMediaQuery } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -53,7 +54,7 @@ export default function ProductDetail({ product, onAddToBag }) {
   return (
     <div className="product-detail">
       <nav className="product-detail-breadcrumb" aria-label="Breadcrumb">
-        <a href="#preview-direction">The collection</a>
+        <a href={collectionHref(product.image.category)}>{category} collection</a>
         <span aria-hidden="true">/</span>
         <span>{product.name}</span>
       </nav>

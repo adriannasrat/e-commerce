@@ -1,5 +1,9 @@
+import JournalFeature from './shopping/JournalFeature';
+import CategoryPage from './collections/CategoryPage';
+import Campaign from './collections/Campaign';
+import { collections, collectionRoute } from './collections/collections';
 import StorefrontStyles from './StorefrontStyles';
-import ScrollReveal from './ScrollReveal';
+import StorefrontFooter from './footer/StorefrontFooter';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScopedCssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -21,6 +25,10 @@ export default function StorefrontPreview() {
   const [selected, setSelected] = useState('black');
   const { hash, productId, addedId } = usePreviewRoute();
   const bag = usePreviewBag();
+  const category = collectionRoute(hash);
+  const categoryId = category?.id;
+  const isCatalog = ['#preview-direction', '#preview-over-ear', '#preview-in-ear', '#compare-headphones'].includes(hash);
+  const isJournal = hash === '#preview-stories';
   const isBag = hash === '#bag';
   const isSignUp = hash === '#sign-up';
   const isSignIn = hash === '#sign-in' || isSignUp;
@@ -30,42 +38,60 @@ export default function StorefrontPreview() {
   }
   const addedProduct = products.find(item => item.id === addedId);
   const product = products.find(item => item.id === productId);
+  const pageName = product?.name || (categoryId && collections[categoryId].name) ||
+    (addedId !== null && 'Your selection') || (isBag && 'Your bag') ||
+    (isSignIn && (isSignUp ? 'Sign up' : 'Sign in')) ||
+    (isCatalog && 'The collection') || (isJournal && 'Listening journal') || 'Home';
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = isSignIn ? `${isSignUp ? 'Sign up' : 'Sign in'} — RESONANCE` : product ? `${product.name} — RESONANCE` : addedProduct ? 'Your selection — RESONANCE' : isBag ? 'Your bag — RESONANCE' : 'RESONANCE';
+    document.title = pageName === 'Home' ? 'RESONANCE' : `${pageName} — RESONANCE`;
     return () => { document.title = previousTitle; };
-  }, [product, isBag, addedProduct, isSignIn, isSignUp]);
+  }, [pageName]);
   useLayoutEffect(() => {
-    if (productId !== null || isBag || isSignIn || addedId !== null) return;
+    if (productId !== null || isBag || isSignIn || addedId !== null || categoryId) return;
+    if (isCatalog || isJournal) {
+      if (hash === '#compare-headphones') {
+        const heading = document.getElementById('compare-all-title');
+        heading?.focus({ preventScroll: true });
+        heading?.scrollIntoView({ block: 'start', behavior: 'instant' });
+        return;
+      }
+      document.querySelector('main h1')?.focus({ preventScroll: true });
+      if (hash === '#preview-direction' || isJournal) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        return;
+      }
+    }
     document.getElementById(hash.slice(1) || 'preview-home')?.scrollIntoView({ behavior: 'instant' });
-  }, [hash, productId, isBag, addedId, isSignIn]);
+  }, [hash, productId, isBag, addedId, isSignIn, categoryId, isCatalog, isJournal]);
 
   return (
     <ThemeProvider theme={theme}>
       <StorefrontStyles />
       <ScopedCssBaseline className="storefront-preview" id="preview-home">
-        <a className="preview-skip" href="#preview-main">Skip to content</a>
+        <a className="preview-skip" href="#preview-main" onClick={event => {
+          event.preventDefault();
+          document.getElementById('preview-main')?.focus();
+        }}>Skip to content</a>
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
           <main id="preview-main" tabIndex={-1}>
             {productId !== null ? (product ? <ProductDetail product={product} onAddToBag={addToBag} /> :
               <section className="product-detail"><h1>Product not found</h1><a href="#preview-direction">Back to the collection</a></section>) : null}
+            {category && <CategoryPage key={category.id} {...category} />}
             {isBag && <BagPage bag={bag} />}
             {isSignIn && <SignInPage mode={isSignUp ? 'sign-up' : 'sign-in'} />}
             {addedId !== null && (addedProduct ? <AddedToBag product={addedProduct} bag={bag} /> : <section className="product-detail"><h1>Selection not found</h1><a href="#bag">Review bag</a></section>)}
-            <div hidden={productId !== null || isBag || isSignIn || addedId !== null}>
-            <PreviewHero selected={selected} onSelect={setSelected} />
-            <ScrollReveal className="preview-strip" aria-label="Collection categories">
-              <span>OVER-EAR</span><span>IN-EAR</span>
-              <span>EVERYDAY LISTENING</span>
-              <span>YOUR OWN FREQUENCY</span>
-            </ScrollReveal>
-            <HeadphoneCollection />
-            <ListeningStories />
-            <ProductShowcase />
+            {isCatalog && <HeadphoneCollection onAddToBag={addToBag} />}
+            {isJournal && <ListeningStories />}
+            <div hidden={isCatalog || isJournal || Boolean(categoryId) || productId !== null || isBag || isSignIn || addedId !== null}>
+              <PreviewHero selected={selected} onSelect={setSelected} />
+              <Campaign category="over-ear" />
+              <ProductShowcase />
+              <JournalFeature />
             </div>
           </main>
-          <ScrollReveal as="footer" className="preview-footer"><span>RESONANCE</span><span>DESIGNED & BUILT BY ADRIAN NASRAT</span></ScrollReveal>
+          <StorefrontFooter currentPage={pageName} />
         </div>
       </ScopedCssBaseline>
     </ThemeProvider>
