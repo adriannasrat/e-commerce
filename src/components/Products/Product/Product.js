@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 const Product = ({ product, user }) => {
   const { handleAddToCart } = useContext(CartContext);
   const [averageRating, setAverageRating] = useState(
-    parseFloat(product.average_rating) || 0
+    parseFloat(product.average_rating) || 0,
   );
   const [userRating, setUserRating] = useState(null);
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Product = ({ product, user }) => {
     }
 
     console.log(
-      `Submitting rating: Product ID: ${product.id}, User ID: ${user.id}, Rating: ${ratingValue}`
+      `Submitting rating: Product ID: ${product.id}, User ID: ${user.id}, Rating: ${ratingValue}`,
     );
 
     try {

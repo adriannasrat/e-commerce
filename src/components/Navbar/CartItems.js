@@ -37,15 +37,15 @@ const CartItems = ({
 
     if (result && result.removed) {
       setCartItems((prev) =>
-        prev.filter((item) => item.product_id !== product.product_id)
+        prev.filter((item) => item.product_id !== product.product_id),
       );
     } else if (result) {
       setCartItems((prev) =>
         prev.map((item) =>
           item.product_id === product.product_id
             ? { ...item, quantity: result.quantity }
-            : item
-        )
+            : item,
+        ),
       );
     }
   };

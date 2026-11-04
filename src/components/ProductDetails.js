@@ -13,7 +13,7 @@ const ProductDetails = ({ user, setUser }) => {
     const fetchRating = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/ratings/${id}/average`
+          `http://localhost:3001/ratings/${id}/average`,
         );
         const data = await response.json();
         setAverageRating(data.averageRating);

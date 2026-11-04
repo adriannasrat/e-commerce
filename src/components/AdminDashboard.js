@@ -92,7 +92,7 @@ const AdminDashboard = () => {
             ...productData,
             imageUrl: formatImageUrl(productData.imageUrl),
           }),
-        }
+        },
       );
 
       if (!response.ok) throw new Error("Failed to update product");
