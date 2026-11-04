@@ -2,6 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import StorefrontPreview from '../StorefrontPreview';
+import { collectionModels } from '../collections/collections';
 
 beforeEach(() => {
   window.scrollTo = jest.fn();
@@ -14,7 +15,7 @@ test('catalog filters narrow the grid and adding a model opens its confirmation'
   render(<StorefrontPreview />);
   const filters = screen.getByRole('group', { name: 'Filter by fit' });
   fireEvent.click(within(filters).getByRole('button', { name: 'in-ear' }));
-  expect(screen.getAllByRole('button', { name: /Add Pocket .* to bag/ })).toHaveLength(3);
+  expect(screen.getAllByRole('button', { name: /Add Pocket .* to bag/ })).toHaveLength(collectionModels('in-ear').length);
   expect(screen.queryByRole('button', { name: /Add Form .* to bag/ })).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Add Pocket 03 to bag' }));
   expect(await screen.findByRole('heading', { name: /Added to your bag/i })).toBeInTheDocument();

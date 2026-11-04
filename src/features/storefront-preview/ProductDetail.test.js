@@ -106,11 +106,9 @@ test("delivery and payment actions explain the demo without starting checkout", 
 
 test("recommendation navigation exposes other products", () => {
   render(<ProductDetail product={products[0]} />);
-  fireEvent.click(screen.getByRole("button", { name: "Next recommendations" }));
-  expect(
-    screen.getByRole("button", { name: "Next recommendations" }),
-  ).toBeDisabled();
-  expect(
-    screen.getByRole("button", { name: "Recommendation page 2" }),
-  ).toHaveAttribute("aria-current", "page");
+  const next = screen.getByRole("button", { name: "Next recommendations" });
+  const pages = screen.getAllByRole("button", { name: /Recommendation page/ });
+  pages.slice(1).forEach(() => fireEvent.click(next));
+  expect(next).toBeDisabled();
+  expect(pages[pages.length - 1]).toHaveAttribute("aria-current", "page");
 });

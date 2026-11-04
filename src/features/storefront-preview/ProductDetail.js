@@ -16,11 +16,13 @@ const finishColors = {
   Chalk: "#eeede7",
   Silver: "#b6b8ba",
   Crimson: "#a92c38",
+  Onyx: "#1f1f21",
+  Espresso: "#3b2621",
 };
 
 const finishesByCategory = {
-  "over-ear": ["Graphite", "Chalk", "Silver"],
-  "in-ear": ["Graphite", "Chalk", "Crimson"],
+  "over-ear": ["Graphite", "Chalk", "Silver", "Onyx"],
+  "in-ear": ["Graphite", "Chalk", "Crimson", "Espresso", "Onyx"],
 };
 
 export default function ProductDetail({ product, onAddToBag }) {
