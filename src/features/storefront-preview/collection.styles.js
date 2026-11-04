@@ -12,7 +12,7 @@ const styles = [
   },
   {
     ".preview-product-info .preview-eyebrow": {
-      fontSize: "9px",
+      fontSize: "11px",
       margin: "0 0 12px",
       textTransform: "uppercase",
     },
@@ -39,7 +39,7 @@ const styles = [
   },
   {
     ".preview-demo-price span": {
-      fontSize: "9px",
+      fontSize: "11px",
       color: "#62625c",
       marginLeft: "6px",
       fontWeight: "400",
@@ -110,7 +110,7 @@ const styles = [
       height: "100%",
       minHeight: "0",
       filter: "drop-shadow(0 12px 10px #00000010)",
-      transition: "transform 0.4s ease",
+      transition: "transform 400ms var(--ease-out)",
     },
   },
   {
@@ -163,7 +163,7 @@ const styles = [
     "@media (prefers-reduced-motion: no-preference)": [
       {
         ".preview-product-info": {
-          animation: "preview-reveal 0.4s ease-out",
+          animation: "preview-reveal 0.4s var(--ease-out)",
         },
       },
       {

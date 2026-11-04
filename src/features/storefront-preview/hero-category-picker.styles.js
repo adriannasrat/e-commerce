@@ -28,7 +28,7 @@ const styles = [
       fontSize: "11px",
       fontWeight: "700",
       cursor: "pointer",
-      transition: "background-color 0.25s ease",
+      transition: "background-color 200ms ease,\n    color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {

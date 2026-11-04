@@ -10,7 +10,7 @@ const styles = [
     ".preview-header-actions .MuiIconButton-root": {
       background: "#fff",
       color: "#151515",
-      transition: "background-color 0.25s ease",
+      transition: "background-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -44,7 +44,7 @@ const styles = [
       background: "#151515",
       color: "#fff",
       border: "2px solid #151515",
-      transition: "background-color 0.2s ease,\n    color 0.2s ease",
+      transition: "background-color 200ms ease,\n    color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -95,7 +95,7 @@ const styles = [
       fontWeight: "400",
       letterSpacing: "-0.065em",
       lineHeight: "1.1",
-      transition: "transform 0.3s ease",
+      transition: "transform 250ms var(--ease-out)",
     },
   },
   {
@@ -109,7 +109,7 @@ const styles = [
     ".preview-menu-link > svg": {
       fontSize: "32px",
       color: "#70706b",
-      transition: "transform 0.3s ease",
+      transition: "transform 250ms var(--ease-out)",
     },
   },
   {
@@ -127,7 +127,7 @@ const styles = [
       marginTop: "auto",
       borderTop: "1px solid #c8c8c1",
       paddingTop: "24px",
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.09em",
     },
   },
@@ -136,8 +136,8 @@ const styles = [
       {
         '.preview-menu[data-open="true"] .preview-menu-link': {
           animation:
-            "menu-link-enter 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) both",
-          animationDelay: "calc(0.18s + var(--order) * 0.1s)",
+            "menu-link-enter 0.5s var(--ease-out) both",
+          animationDelay: "calc(0.12s + var(--order) * 0.05s)",
         },
       },
       {
@@ -145,7 +145,7 @@ const styles = [
           {
             from: {
               opacity: "0",
-              transform: "translateY(35px)",
+              transform: "translateY(20px)",
             },
           },
           {
@@ -312,7 +312,7 @@ const styles = [
       zIndex: "-1",
       background: "#eeedeb",
       clipPath: "inset(0 0 100%)",
-      transition: "clip-path 0.42s cubic-bezier(0.22, 0.7, 0.2, 1)",
+      transition: "clip-path 0.42s var(--ease-drawer)",
     },
   },
   {

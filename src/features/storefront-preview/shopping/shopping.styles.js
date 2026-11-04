@@ -3,7 +3,7 @@ const title = { margin: '8px 0 16px', fontSize: 'clamp(32px, 4.5vw, 64px)', lett
 const eyebrow = { fontSize: 11, letterSpacing: '.14em', textTransform: 'uppercase' };
 
 const shoppingStyles = {
-  '.shop-card-add': { minHeight: 44, alignSelf: 'center', border: rule, borderRadius: 24, padding: '8px 20px', background: 'transparent', color: 'inherit', fontSize: 13, cursor: 'pointer', marginTop: 8, transition: 'background .2s' },
+  '.shop-card-add': { minHeight: 44, alignSelf: 'center', border: rule, borderRadius: 24, padding: '8px 20px', background: 'transparent', color: 'inherit', fontSize: 13, cursor: 'pointer', marginTop: 8, transition: 'background-color 200ms ease, scale var(--press-duration) var(--ease-out)' },
   '.shop-card-add:hover': { background: '#eeefeb' },
   '.shop-filters, .shop-shortcuts': { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10, marginBlock: '20px 26px' },
   '.shop-filters button': { minHeight: 44, padding: '7px 20px', font: 'inherit', fontSize: 14, borderRadius: 24, border: rule, background: 'transparent', cursor: 'pointer', textTransform: 'capitalize' },
@@ -39,7 +39,7 @@ const shoppingStyles = {
   '@media (prefers-reduced-motion: no-preference)': {
     '.shop-journal[data-phase="entering"] .shop-journal-art::before': { animation: 'sound-ripple .68s ease-out both' },
     '@keyframes sound-ripple': { from: { opacity: 0, transform: 'scale(.85)' }, to: { opacity: 1, transform: 'scale(1)' } },
-    '.shop-compare-grid svg': { animation: 'sound-study-in .3s ease-out' },
+    '.shop-compare-grid svg': { animation: 'sound-study-in .3s var(--ease-out)' },
   },
   '@media (max-width: 640px)': {
     '.shop-guide, .shop-journal': { gridTemplateColumns: '1fr', gap: 22 },

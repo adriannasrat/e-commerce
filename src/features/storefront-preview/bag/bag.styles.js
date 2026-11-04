@@ -16,7 +16,7 @@ const styles = [
       fontSize: "13px",
       textDecoration: "none",
       cursor: "pointer",
-      transition: "background-color 0.2s",
+      transition: "background-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -212,7 +212,7 @@ const styles = [
       minWidth: "16px",
       height: "16px",
       padding: "0 4px",
-      fontSize: "9px",
+      fontSize: "11px",
       border: "1px solid #eeedeb",
     },
   },
@@ -382,7 +382,7 @@ const styles = [
       {
         '.bag-panel[data-open="true"] .bag-panel-inner': {
           animation:
-            "bag-panel-enter 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both",
+            "bag-panel-enter 0.28s var(--ease-out) both",
         },
       },
       {

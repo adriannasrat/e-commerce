@@ -112,7 +112,7 @@ const styles = [
       margin: "24px 0",
       filter: "drop-shadow(0 20px 20px #00000018)",
       transform: "rotate(-8deg)",
-      transition: "transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)",
+      transition: "transform 500ms var(--ease-out)",
     },
   },
   {
@@ -139,7 +139,7 @@ const styles = [
       borderRadius: "50%",
       border: "1px solid #a5a5a070",
       flexShrink: "0",
-      transition: "background-color 0.25s",
+      transition: "background-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -157,7 +157,7 @@ const styles = [
   },
   {
     ".listening-controls > span": {
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.08em",
       color: "#666660",
     },
@@ -243,7 +243,7 @@ const styles = [
       marginTop: "16px",
       fontSize: "12px",
       textDecoration: "none",
-      transition: "background-color 0.25s",
+      transition: "background-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {

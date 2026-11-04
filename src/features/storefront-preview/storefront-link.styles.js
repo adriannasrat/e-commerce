@@ -17,7 +17,7 @@ const styles = [
       fontWeight: "700",
       lineHeight: "1.4",
       textDecoration: "none",
-      transition: "background-color 0.2s ease,\n    color 0.2s ease",
+      transition: "background-color 200ms ease,\n    color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {

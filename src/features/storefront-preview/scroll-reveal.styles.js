@@ -11,7 +11,7 @@ const styles = [
       {
         '.scroll-reveal[data-phase="entering"]': {
           animation:
-            "storefront-enter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1)\n      var(--reveal-delay, 0ms) both",
+            "storefront-enter 0.7s var(--ease-out)\n      var(--reveal-delay, 0ms) both",
         },
       },
       {

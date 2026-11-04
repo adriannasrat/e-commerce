@@ -81,7 +81,7 @@ const styles = {
     display: "block",
     width: "100%",
     height: "clamp(250px, 32vw, 465px)",
-    transition: "transform .6s cubic-bezier(.2,.8,.2,1)",
+    transition: "transform .5s var(--ease-out)",
   },
   "@media (hover: hover)": {
     ".sound-art:hover svg, .sound-lineup a:hover svg": {
@@ -159,7 +159,7 @@ const styles = {
     width: "100%",
     height: "clamp(160px, 19vw, 255px)",
     marginBottom: 24,
-    transition: "transform .35s",
+    transition: "transform .35s var(--ease-out)",
   },
   ".sound-lineup h3": { ...heading, fontSize: 31, marginTop: 6 },
   ".sound-lineup p": { fontSize: 15, marginBottom: 24 },
@@ -210,7 +210,7 @@ const styles = {
     fontSize: "clamp(24px, 3vw, 40px)",
     letterSpacing: "-.045em",
   },
-  ".sound-crosslink svg": { transition: "transform .25s ease" },
+  ".sound-crosslink svg": { transition: "transform .25s var(--ease-out)" },
   ".sound-crosslink:hover svg": { transform: "translateX(3px)" },
   ".sound-studio h2": { marginTop: 14 },
   ".sound-studio p": { maxWidth: "40ch", lineHeight: 1.6 },
@@ -232,7 +232,7 @@ const styles = {
   },
   ".sound-study svg": { width: "100%", height: "clamp(190px, 27vw, 370px)" },
   "@media (prefers-reduced-motion: no-preference)": {
-    ".sound-study": { animation: "sound-study-in .35s ease-out" },
+    ".sound-study": { animation: "sound-study-in .35s var(--ease-out)" },
     "@keyframes sound-study-in": {
       from: { opacity: 0, transform: "translateY(8px)" },
       to: { opacity: 1, transform: "none" },

@@ -13,6 +13,10 @@ const theme = createTheme({
   },
   shape: { borderRadius: 24 },
   components: {
+    // Material ripples clash with the storefront's press-scale feedback.
+    MuiButtonBase: {
+      defaultProps: { disableRipple: true },
+    },
     MuiButton: {
       defaultProps: { disableElevation: true },
       styleOverrides: { root: { minHeight: 44, padding: "10px 22px" } },

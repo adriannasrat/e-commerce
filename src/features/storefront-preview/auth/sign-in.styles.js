@@ -37,7 +37,7 @@ const styles = [
   {
     ".sign-in-art-eyebrow": {
       margin: "40px 20px 0",
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.13em",
       color: "#d0cec7",
       textAlign: "center",
@@ -96,7 +96,7 @@ const styles = [
       width: "100%",
       padding: "0 30px 28px",
       marginTop: "auto",
-      fontSize: "8px",
+      fontSize: "10px",
       letterSpacing: "0.08em",
       color: "#c4c1b8",
     },
@@ -165,7 +165,7 @@ const styles = [
   },
   {
     ".sign-in-kicker": {
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.14em",
       color: "#777770",
       margin: "0 0 16px",
@@ -271,7 +271,7 @@ const styles = [
       fontSize: "13px",
       fontWeight: "600",
       cursor: "pointer",
-      transition: "background 0.2s,\n    transform 0.2s",
+      transition: "background-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -280,9 +280,7 @@ const styles = [
     },
   },
   {
-    ".sign-in-submit:active": {
-      transform: "translateY(1px)",
-    },
+    ".sign-in-submit:active": {},
   },
   {
     ".sign-in-submit svg": {
@@ -308,7 +306,7 @@ const styles = [
   },
   {
     ".sign-in-panel-bottom": {
-      fontSize: "9px",
+      fontSize: "11px",
       color: "#777770",
     },
   },
@@ -334,7 +332,7 @@ const styles = [
   },
   {
     ".sign-in-panel-bottom > span": {
-      fontSize: "8px",
+      fontSize: "10px",
       letterSpacing: "0.08em",
     },
   },
@@ -383,7 +381,7 @@ const styles = [
       {
         ".sign-in-art-eyebrow": {
           margin: "0 0 14px",
-          fontSize: "7px",
+          fontSize: "10px",
           maxWidth: "52%",
           textAlign: "left",
         },

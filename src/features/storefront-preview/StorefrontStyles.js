@@ -3,6 +3,8 @@ import footerStyles from "./footer/footer.styles";
 import collectionPageStyles from "./collections/collection-pages.styles";
 import React from "react";
 import GlobalStyles from "@mui/material/GlobalStyles";
+import { foundationStyles, interactionStyles } from "./foundation.styles";
+import gateHover from "./gateHover";
 import revealStyles from "./scroll-reveal.styles";
 import bagStyles from "./bag/bag.styles";
 import menuGlyphStyles from "./menu-glyph.styles";
@@ -19,7 +21,9 @@ import previewStyles from "./preview.styles";
 import navigationStyles from "./navigation.styles";
 
 // Keep the established cascade order, including styles for portalled dialogs.
-const styles = [
+// Foundation tokens come first; shared press and dialog feedback come last.
+const styles = gateHover([
+  foundationStyles,
   shoppingStyles,
   footerStyles,
   collectionPageStyles,
@@ -37,7 +41,8 @@ const styles = [
   authStyles,
   previewStyles,
   navigationStyles,
-];
+  interactionStyles,
+]);
 
 export default function StorefrontStyles() {
   return <GlobalStyles styles={styles} />;

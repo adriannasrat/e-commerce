@@ -87,7 +87,7 @@ const styles = [
   },
   {
     ".product-showcase-category": {
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.1em",
       textTransform: "uppercase",
       color: "var(--tile-muted)",
@@ -131,7 +131,7 @@ const styles = [
       textDecoration: "none",
       fontSize: "12px",
       lineHeight: "1.2",
-      transition: "background-color 0.2s ease,\n    border-color 0.2s ease",
+      transition: "background-color 200ms ease,\n    border-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -173,7 +173,7 @@ const styles = [
       width: "100%",
       height: "100%",
       transform: "rotate(var(--showcase-image-angle, -6deg))",
-      transition: "transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1)",
+      transition: "transform 500ms var(--ease-out)",
     },
   },
   {

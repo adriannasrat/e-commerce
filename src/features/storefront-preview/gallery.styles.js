@@ -43,7 +43,7 @@ const styles = [
       background: "#eeedeb",
       cursor: "pointer",
       transition:
-        "border-color 0.25s,\n    background-color 0.25s,\n    transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "border-color 200ms ease,\n    background-color 200ms ease,\n    transform 400ms var(--ease-out),\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -76,8 +76,9 @@ const styles = [
       inset: "0",
       opacity: "0",
       transform: "translateY(14px) scale(0.96) rotate(-3deg)",
+      filter: "blur(4px)",
       transition:
-        "opacity 0.65s ease,\n    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "opacity 400ms ease,\n    filter 400ms ease,\n    transform 500ms var(--ease-out)",
       pointerEvents: "none",
     },
   },
@@ -85,6 +86,7 @@ const styles = [
     '.preview-gallery-slide[data-active="true"]': {
       opacity: "1",
       transform: "translateY(0) scale(1) rotate(0)",
+      filter: "blur(0)",
     },
   },
   {

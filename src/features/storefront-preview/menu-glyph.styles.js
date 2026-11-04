@@ -13,7 +13,7 @@ const styles = [
       position: "absolute",
       inset: "9px 0 auto",
       height: "1.5px",
-      transition: "transform 0.14s ease-in 0.14s",
+      transition: "transform 0.14s var(--ease-in-out) 0.14s",
     },
   },
   {
@@ -33,7 +33,7 @@ const styles = [
       height: "1.5px",
       borderRadius: "2px",
       background: "currentColor",
-      transition: "transform 0.14s ease-out",
+      transition: "transform 0.14s var(--ease-out)",
     },
   },
   {

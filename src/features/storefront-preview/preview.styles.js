@@ -2,7 +2,7 @@
 const styles = [
   {
     ".storefront-preview": {
-      minHeight: "100vh",
+      minHeight: "100svh",
       background: "#eeedeb !important",
       color: "#151515",
     },
@@ -72,7 +72,7 @@ const styles = [
     ".preview-hero-topline": {
       display: "flex",
       justifyContent: "space-between",
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.08em",
     },
   },
@@ -130,7 +130,7 @@ const styles = [
       left: "50%",
       top: "49%",
       transform: "translate(-50%, -50%) rotate(-13deg)",
-      transition: "transform 0.6s ease",
+      transition: "transform 500ms var(--ease-out)",
     },
   },
   {
@@ -235,7 +235,7 @@ const styles = [
   },
   {
     ".preview-eyebrow": {
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.1em",
       margin: "0 0 32px",
     },
@@ -271,7 +271,7 @@ const styles = [
       justifyContent: "space-between",
       gap: "20px",
       padding: "22px 40px",
-      fontSize: "9px",
+      fontSize: "11px",
       letterSpacing: "0.06em",
     },
   },
@@ -360,7 +360,7 @@ const styles = [
       },
       {
         ".preview-hero-topline": {
-          fontSize: "7px",
+          fontSize: "10px",
           gap: "16px",
         },
       },
@@ -397,7 +397,7 @@ const styles = [
           flexWrap: "wrap",
           justifyContent: "center",
           padding: "18px",
-          fontSize: "8px",
+          fontSize: "10px",
           gap: "14px",
         },
       },
@@ -472,7 +472,7 @@ const styles = [
       height: "100%",
       objectFit: "contain",
       filter: "drop-shadow(0 20px 18px #00000018)",
-      transition: "transform 0.6s ease",
+      transition: "transform 500ms var(--ease-out)",
     },
   },
   {
