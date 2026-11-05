@@ -1,44 +1,13 @@
-const Rating = require("../models/Rating");
+const { HttpError } = require('../http');
+const { Product, Rating } = require('../models');
 
-const getRatingsByProduct = async (productId) => {
-  return await Rating.findAll({ where: { product_id: productId } });
-};
-
-const addRating = async (data) => {
-  const existingRating = await Rating.findOne({
-    where: { product_id: data.product_id, user_id: data.user_id },
-  });
-
-  if (existingRating) {
-    existingRating.rating = data.rating;
-    await existingRating.save();
-    return existingRating;
+async function rateProduct(userId, productId, rating) {
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+    throw new HttpError(400, 'Rating must be a whole number from 1 to 5');
   }
-  return await Rating.create({
-    product_id: data.product_id,
-    user_id: data.user_id,
-    rating: data.rating,
-  });
-};
+  if (!(await Product.findByPk(productId))) throw new HttpError(404, 'Product not found');
+  await Rating.upsert({ product_id: productId, user_id: userId, rating });
+  return { product_id: productId, rating };
+}
 
-const getAverageRating = async (productId) => {
-  const ratings = await Rating.findAll({ where: { product_id: productId } });
-  if (ratings.length === 0) return 0;
-
-  const sum = ratings.reduce((total, rating) => total + rating.rating, 0);
-
-  return sum / ratings.length;
-};
-
-const getUserRating = async (productId, userId) => {
-  return await Rating.findOne({
-    where: { product_id: productId, user_id: userId },
-  });
-};
-
-module.exports = {
-  getRatingsByProduct,
-  addRating,
-  getAverageRating,
-  getUserRating,
-};
+module.exports = { rateProduct };
