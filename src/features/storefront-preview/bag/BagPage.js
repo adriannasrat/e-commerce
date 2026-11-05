@@ -30,6 +30,20 @@ function CheckoutActions({ onSelect }) {
 export default function BagPage({ bag }) {
   const heading = useRef(null);
   const [checkout, setCheckout] = useState(false);
+  const [order, setOrder] = useState(null);
+  const [placing, setPlacing] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+  async function placeOrder() {
+    setPlacing(true);
+    setCheckoutError("");
+    try {
+      setOrder(await bag.checkout());
+    } catch (error) {
+      setCheckoutError(error.message);
+    } finally {
+      setPlacing(false);
+    }
+  }
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     heading.current.focus({ preventScroll: true });
@@ -158,10 +172,35 @@ export default function BagPage({ bag }) {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <p>
-            Your bag is saved on this device. Checkout and payments will be
-            added in a later stage; no order has been placed.
-          </p>
+          {order ? (
+            <p role="status">
+              Order {order.id} is placed. Total {formatPrice(order.total_ore / 100)}. This
+              is a demo, so no payment was taken.
+            </p>
+          ) : bag.signedIn ? (
+            <>
+              <p>
+                Place your order for {formatPrice(bag.total)}. This is a demo, so no
+                payment is taken.
+              </p>
+              {checkoutError && <p role="alert">{checkoutError}</p>}
+              <button
+                type="button"
+                className="bag-button"
+                disabled={placing}
+                onClick={placeOrder}
+              >
+                Place order
+              </button>
+            </>
+          ) : (
+            <>
+              <p>Sign in to place your order. Your bag comes with you.</p>
+              <a className="bag-button" href="#sign-in">
+                Sign in
+              </a>
+            </>
+          )}
         </DialogContent>
       </StorefrontDialog>
     </section>

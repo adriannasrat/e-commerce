@@ -66,3 +66,24 @@ test("a failed merge keeps the guest bag for the next attempt", async () => {
   await waitFor(() => expect(result.current.error).toBe("Something went wrong"));
   expect(JSON.parse(localStorage.getItem(BAG_STORAGE_KEY))).toHaveLength(1);
 });
+
+test("checkout pays the current cart and leaves it empty", async () => {
+  useAuth.mockReturnValue({ user: { id: 7 } });
+  mockApi.on("GET /cart", 200, cart([[1, 2]]));
+  const { result } = renderHook(() => usePreviewBag());
+  await waitFor(() => expect(result.current.count).toBe(2));
+
+  let paid;
+  mockApi.on("POST /cart/checkout", 200, (body) => {
+    paid = body.cartId;
+    return { id: 1, total_ore: 358000 };
+  });
+  mockApi.on("GET /cart", 200, { id: null, items: [] });
+  let order;
+  await act(async () => {
+    order = await result.current.checkout();
+  });
+  expect(paid).toBe(1);
+  expect(order.total_ore).toBe(358000);
+  expect(result.current.count).toBe(0);
+});

@@ -31,7 +31,9 @@ export default function usePreviewBag() {
   guestRowsRef.current = guestRows;
   // Updated with each response, ahead of the render that shows it.
   const serverRowsRef = useRef(serverRows);
+  const cartId = useRef(null);
   const showCart = useCallback((cart) => {
+    cartId.current = cart.id;
     serverRowsRef.current = toRows(cart);
     setServerRows(serverRowsRef.current);
   }, []);
@@ -85,6 +87,12 @@ export default function usePreviewBag() {
     sync(() => api("PUT", `/cart/items/${apiId(id)}`, { amount: amount(id) }));
   const current = (id) => serverRowsRef.current.find((row) => row.id === id)?.quantity || 0;
 
+  async function checkout() {
+    const order = await api("POST", "/cart/checkout", { cartId: cartId.current });
+    await sync(() => api("GET", "/cart"));
+    return order;
+  }
+
   const rows = userId ? serverRows : guestRows;
   const items = rows.map((row) => ({
     ...row,
@@ -93,7 +101,8 @@ export default function usePreviewBag() {
   return {
     items,
     error,
-    refresh: () => (userId ? sync(() => api("GET", "/cart")) : Promise.resolve()),
+    signedIn: Boolean(userId),
+    checkout,
     count: items.reduce((sum, item) => sum + item.quantity, 0),
     total: items.reduce(
       (sum, item) => sum + item.quantity * item.product.price,
