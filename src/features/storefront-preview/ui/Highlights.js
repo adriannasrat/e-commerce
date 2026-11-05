@@ -8,7 +8,7 @@ import Photo from "./Photo";
 import { products } from "../products";
 import { productHref } from "../usePreviewRoute";
 
-const slides = [
+const slideContent = [
   {
     id: "silver",
     eyebrow: "Form 03",
@@ -17,7 +17,7 @@ const slides = [
   },
   {
     id: "pocket-05",
-    eyebrow: "New · Pocket 05",
+    eyebrow: "Pocket 05",
     title: "Matte, minimal, made to disappear.",
     photo: lifestyle.pocket05Slate,
   },
@@ -29,7 +29,7 @@ const slides = [
   },
   {
     id: "form-04",
-    eyebrow: "New · Form 04",
+    eyebrow: "Form 04",
     title: "Deep focus, all day long.",
     photo: lifestyle.form04Studio,
     theme: "light",
@@ -41,14 +41,15 @@ const slides = [
     title: "After hours, in every colour.",
     photo: lifestyle.silverAfterHours,
   },
-].map((slide) => ({
-  ...slide,
-  product: products.find((product) => product.id === (slide.model || slide.id)),
-}));
+];
 
 // Auto-advancing gallery. Each dot fills as a progress bar while its slide is
 // shown; playback pauses off-screen, in a hidden tab and for reduced motion.
 export default function Highlights() {
+  const slides = slideContent.map((slide) => ({
+    ...slide,
+    product: products.find((product) => product.id === (slide.model || slide.id)),
+  }));
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);

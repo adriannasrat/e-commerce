@@ -7,18 +7,16 @@ import BookmarkBorderRounded from "@mui/icons-material/BookmarkBorderRounded";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import PersonOutlineRounded from "@mui/icons-material/PersonOutlineRounded";
 import ModelCompare from "./shopping/ModelCompare";
+import SandSet from "./shopping/SandSet";
 import { collectionHref } from "./collections/collections";
 import HeadphoneImage from "./HeadphoneImage";
 import { products, formatPrice, newModels } from "./products";
 import { productHref } from "./usePreviewRoute";
 import ChapterNav from "./ui/ChapterNav";
+import Film from "./ui/Film";
+import { films } from "./ui/films";
 import ModelCard from "./ui/ModelCard";
 import Shelf from "./ui/Shelf";
-
-const latest = [
-  ...products.filter((product) => newModels.includes(product.id)),
-  ...products.filter((product) => !newModels.includes(product.id)),
-];
 
 const darkCards = ["silver", "black", "in-ear-black", "form-04", "pocket-05"];
 
@@ -51,6 +49,10 @@ const help = [
 
 export default function HeadphoneCollection({ onAddToBag }) {
   const [fit, setFit] = useState("All");
+  const latest = [
+    ...products.filter((product) => newModels.includes(product.id)),
+    ...products.filter((product) => !newModels.includes(product.id)),
+  ];
   const visible = products.filter(
     (model) => fit === "All" || model.image.category === fit,
   );
@@ -130,6 +132,10 @@ export default function HeadphoneCollection({ onAddToBag }) {
           );
         })}
       </Shelf>
+
+      <SandSet />
+
+      <Film film={films.details} />
 
       <section
         className="rx-section rx-section--gray store-all"

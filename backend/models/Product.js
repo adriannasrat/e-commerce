@@ -15,18 +15,23 @@ const Product = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  price: {
+  price_ore: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   stock_quantity: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     defaultValue: 0,
   },
   imageUrl: {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  slug: DataTypes.STRING(64),
+  tagline: DataTypes.STRING,
+  finish_name: DataTypes.STRING(64),
+  category: DataTypes.STRING(16),
 });
 
 

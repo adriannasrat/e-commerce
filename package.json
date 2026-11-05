@@ -11,7 +11,6 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mariadb": "^3.4.5",
@@ -22,6 +21,7 @@
     "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
     "sequelize": "^6.37.5",
+    "umzug": "^3.8.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -31,7 +31,8 @@
     "eject": "react-scripts eject",
     "migrate": "node backend/migrate.js",
     "start:api": "node backend/server.js",
-    "test:api": "node --test backend/tests/*.test.js"
+    "test:api": "node --test backend/tests/*.test.js",
+    "test:db": "node --test --test-concurrency=1 backend/tests/db/*.test.js"
   },
   "eslintConfig": {
     "extends": [
@@ -60,5 +61,6 @@
   },
   "resolutions": {
     "path": "path-browserify"
-  }
+  },
+  "proxy": "http://localhost:5001"
 }

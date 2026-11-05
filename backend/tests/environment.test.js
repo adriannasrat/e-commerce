@@ -4,7 +4,7 @@ const { readEnvironment } = require('../config/environment');
 
 test('configuration preserves development defaults and uses MariaDB consistently', () => {
   const config = readEnvironment({});
-  assert.equal(config.port, 5000);
+  assert.equal(config.port, 5001);
   assert.equal(config.database.port, 3306);
   assert.equal(config.database.dialect, 'mariadb');
   assert.equal(config.database.logging, false);

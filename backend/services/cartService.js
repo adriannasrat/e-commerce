@@ -1,202 +1,152 @@
-const Cart = require("../models/Cart");
-const CartRow = require("../models/CartRow");
-const Product = require("../models/Product");
+const { Transaction } = require('sequelize');
+const { HttpError } = require('../http');
+const sequelize = require('../config/database');
+const { Cart, CartRow, Product } = require('../models');
 
-const createCart = async (data) => {
-  return await Cart.create(data);
-};
+const findActiveCart = (userId) => Cart.findOne({ where: { user_id: userId, paid: false } });
 
-const getLatestCart = async (userId) => {
-  const cart = await Cart.findOne({
-    where: { user_id: userId },
-    order: [["createdAt", "DESC"]],
-    include: [
-      {
-        model: CartRow,
-        include: [Product],
-      },
-    ],
-  });
-  if (!cart) return [];
-
-  return cart.CartRows.map((cartRow) => ({
-    product_id: cartRow.product_id,
-    product_name: cartRow.Product.title,
-    product_description: cartRow.Product.description,
-    quantity: cartRow.amount,
-    price: cartRow.Product.price,
-    imageUrl: `http://localhost:3001${cartRow.Product.imageUrl}`,
-  }));
-};
-
-const addProductToCart = async (userId, productId, amount) => {
+async function getOrCreateActiveCart(userId) {
+  const existing = await findActiveCart(userId);
+  if (existing) return existing;
   try {
-    if (!userId) {
-      return { product_id: productId, amount };
-    }
-
-    let cart = await Cart.findOne({
-      where: { user_id: userId, payed: false },
-    });
-
-    if (!cart) {
-      console.log(`Creating new cart for user ${userId}`);
-      cart = await Cart.create({ user_id: userId, payed: false });
-    }
-
-    let cartRow = await CartRow.findOne({
-      where: { cart_id: cart.id, product_id: productId },
-    });
-
-    if (cartRow) {
-      const product = await Product.findByPk(productId);
-      const newAmount = cartRow.amount + amount;
-
-      if (newAmount > product.stock_quantity) {
-        throw new Error(
-          `Not enough stock. Available: ${stock_quantity}, requested ${newAmount}`
-        );
-      }
-      cartRow.amount = newAmount;
-      await cartRow.save();
-      console.log(`Updated amount in cart row:`, cartRow.amount);
-    } else {
-      cartRow = await CartRow.create({
-        cart_id: cart.id,
-        product_id: productId,
-        amount: amount,
-      });
-      console.log(`Added new product to cart:`, cartRow);
-    }
-
-    return cartRow;
+    return await Cart.create({ user_id: userId });
   } catch (error) {
-    console.error("Error in addProductToCart:", error);
-    throw new Error("Could not add product to cart");
-  }
-};
-
-const updateCartQuantity = async (userId, productId, amount) => {
-  try {
-    const cart = await Cart.findOne({
-      where: { user_id: userId, payed: false },
-    });
-
-    if (!cart) {
-      console.error("No active cart found for user:", userId);
-      return null;
-    }
-
-    let cartRow = await CartRow.findOne({
-      where: { cart_id: cart.id, product_id: productId },
-      include: [Product],
-    });
-
-    if (!cartRow) {
-      console.error("Product not found in cart:", { userId, productId });
-      return null;
-    }
-
-    if (amount < 1) {
-      console.log("Removing product from cart:", { userId, productId });
-      await cartRow.destroy();
-
-      // Check if cart is empty and remove it
-      const remainingItems = await CartRow.findAll({
-        where: { cart_id: cart.id },
-      });
-
-      if (remainingItems.length === 0) {
-        await cart.destroy();
-        console.log("Cart fully removed for user:", userId);
-      }
-
-      return { product_id: productId, removed: true }; // Indicate removal
-    } else {
-      cartRow.amount = amount;
-      await cartRow.save();
-      console.log("Updated product :", {
-        userId,
-        productId,
-        amount,
-      });
-
-      return {
-        product_id: cartRow.product_id,
-        product_name: cartRow.Product.title,
-        quantity: cartRow.amount,
-        price: cartRow.Product.price,
-        imageUrl: `http://localhost:3001${cartRow.Product.imageUrl}`,
-      };
-    }
-  } catch (error) {
-    console.error("Error updating cart quantity: ", error);
-    throw new Error("Failed to update quantity");
-  }
-};
-
-const checkoutCart = async (userId, cartItems) => {
-  console.log("Starting checkout for user:", userId);
-  console.log("Cart Items:", cartItems);
-
-  if (!userId || !cartItems.length) {
-    throw new Error("Invalid checkout request");
-  }
-
-  try {
-    for (const item of cartItems) {
-      console.log(`Checking stock for product ID ${item.product_id}`);
-
-      const product = await Product.findByPk(item.product_id);
-
-      if (!product) {
-        console.error(`Product ID ${item.product_id} not found`);
-        throw new Error(`Product ID ${item.product_id} not found`);
-      }
-
-      console.log(
-        `Product found: ${product.title}, Stock: ${product.stock_quantity}`
-      );
-
-      if (product.stock_quantity < item.quantity) {
-        console.error(`Not enough stock for ${product.title}`);
-        throw new Error(`Not enough stock for ${product.title}`);
-      }
-
-      console.log(`Reducing stock for ${product.title} by ${item.quantity}`);
-      await product.decrement("stock_quantity", { by: item.quantity });
-      // await product.reload();
-
-      // if (product.stock_quantity <= 0) {
-      //   console.log(
-      //     `${product.title} is not anymore in stock, deleting product`
-      //   );
-      // }
-      // await deleteProduct(product.id);
-    }
-
-    const cart = await Cart.findOne({
-      where: { user_id: userId, payed: false },
-    });
-
-    if (cart) {
-      console.log(`Clearing cart for user ${userId} (Cart ID: ${cart.id})`);
-      await CartRow.destroy({ where: { cart_id: cart.id } });
-      await cart.update({ payed: true });
-    }
-
-    console.log("Checkout successful!");
-    return { message: "Checkout successfull!" };
-  } catch (error) {
-    console.error("Error during checkout: ", error);
+    // A parallel request created it first; the unique index kept it to one.
+    if (error.name === 'SequelizeUniqueConstraintError') return findActiveCart(userId);
     throw error;
   }
+}
+
+// Row locks do the protecting here. A waiting lock must then see the latest
+// committed row, which MariaDB's REPEATABLE READ refuses with error 1020.
+const inTransaction = (work) =>
+  sequelize.transaction({ isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED }, work);
+
+// Changes lock the cart row, so they cannot land in a cart that is being paid.
+async function withActiveCart(userId, change) {
+  const { id } = await getOrCreateActiveCart(userId);
+  return inTransaction(async (transaction) => {
+    const cart = await Cart.findOne({
+      where: { id, paid: false },
+      lock: transaction.LOCK.UPDATE,
+      transaction,
+    });
+    if (!cart) throw new HttpError(409, 'This cart was just checked out');
+    return change(cart, transaction);
+  });
+}
+
+const toItem = ({ amount, Product: product }) => ({
+  product_id: product.id,
+  title: product.title,
+  amount,
+  price_ore: product.price_ore,
+  imageUrl: product.imageUrl,
+});
+
+async function getCart(userId) {
+  const cart = await findActiveCart(userId);
+  if (!cart) return { id: null, items: [] };
+  const rows = await CartRow.findAll({ where: { cart_id: cart.id }, include: [Product], order: [['id', 'ASC']] });
+  return { id: cart.id, items: rows.map(toItem) };
+}
+
+async function setItemAmount(userId, productId, amount) {
+  if (!Number.isInteger(amount) || amount < 0) {
+    throw new HttpError(400, 'Amount must be a whole number, zero or more');
+  }
+  const product = await Product.findByPk(productId);
+  if (!product) throw new HttpError(404, 'Product not found');
+  if (amount > product.stock_quantity) {
+    throw new HttpError(409, `Only ${product.stock_quantity} left in stock`);
+  }
+  await withActiveCart(userId, async (cart, transaction) => {
+    if (amount === 0) {
+      await CartRow.destroy({ where: { cart_id: cart.id, product_id: productId }, transaction });
+    } else {
+      await CartRow.upsert({ cart_id: cart.id, product_id: productId, amount }, { transaction });
+    }
+  });
+  return getCart(userId);
+}
+
+// Takes the larger of the two amounts rather than their sum, so a repeated
+// request after a lost response cannot double the cart. Stock caps the result.
+async function mergeGuestItems(userId, items) {
+  const valid = Array.isArray(items) && items.every(
+    ({ product_id: id, amount }) => Number.isInteger(id) && Number.isInteger(amount) && amount > 0,
+  );
+  if (!valid) throw new HttpError(400, 'Items must list product_id and a positive amount');
+  await withActiveCart(userId, async (cart, transaction) => {
+    for (const { product_id: productId, amount } of items) {
+      const product = await Product.findByPk(productId, { transaction });
+      if (!product) continue;
+      const row = await CartRow.findOne({ where: { cart_id: cart.id, product_id: productId }, transaction });
+      const merged = Math.min(Math.max(amount, row ? row.amount : 0), product.stock_quantity);
+      if (merged > 0) await CartRow.upsert({ cart_id: cart.id, product_id: productId, amount: merged }, { transaction });
+      else if (row) await row.destroy({ transaction });
+    }
+  });
+  return getCart(userId);
+}
+
+const toOrder = (cart, rows) => {
+  const items = rows.map(({ amount, unit_price_ore: unitPriceOre, Product: product }) => ({
+    product_id: product.id,
+    title: product.title,
+    amount,
+    unit_price_ore: unitPriceOre,
+  }));
+  return {
+    id: cart.id,
+    paid: cart.paid,
+    paid_at: cart.paid_at,
+    total_ore: items.reduce((sum, item) => sum + item.amount * item.unit_price_ore, 0),
+    items,
+  };
 };
 
-module.exports = {
-  createCart,
-  getLatestCart,
-  addProductToCart,
-  updateCartQuantity,
-  checkoutCart,
-};
+const rowsWithProducts = (cartId, options) =>
+  CartRow.findAll({ where: { cart_id: cartId }, include: [Product], order: [['id', 'ASC']], ...options });
+
+// Stock, prices and the paid flag change together or not at all. Paying a paid
+// cart returns the same order, so a repeated request cannot buy twice.
+async function checkout(userId, cartId) {
+  return inTransaction(async (transaction) => {
+    const cart = await Cart.findOne({
+      where: { id: cartId, user_id: userId },
+      lock: transaction.LOCK.UPDATE,
+      transaction,
+    });
+    if (!cart) throw new HttpError(404, 'Cart not found');
+    if (cart.paid) return toOrder(cart, await rowsWithProducts(cart.id, { transaction }));
+
+    const rows = await CartRow.findAll({ where: { cart_id: cart.id }, transaction });
+    if (!rows.length) throw new HttpError(409, 'Your cart is empty');
+
+    // Locking in id order keeps parallel checkouts from deadlocking.
+    const products = await Product.findAll({
+      where: { id: rows.map((row) => row.product_id) },
+      order: [['id', 'ASC']],
+      lock: transaction.LOCK.UPDATE,
+      transaction,
+    });
+    for (const product of products) {
+      const row = rows.find(({ product_id: id }) => id === product.id);
+      if (row.amount > product.stock_quantity) {
+        throw new HttpError(409, `Only ${product.stock_quantity} of ${product.title} left in stock`);
+      }
+      await product.update({ stock_quantity: product.stock_quantity - row.amount }, { transaction });
+      await row.update({ unit_price_ore: product.price_ore }, { transaction });
+    }
+    await cart.update({ paid: true, paid_at: new Date() }, { transaction });
+    return toOrder(cart, await rowsWithProducts(cart.id, { transaction }));
+  });
+}
+
+async function getOrders(userId) {
+  const carts = await Cart.findAll({ where: { user_id: userId, paid: true }, order: [['paid_at', 'DESC']] });
+  return Promise.all(carts.map(async (cart) => toOrder(cart, await rowsWithProducts(cart.id))));
+}
+
+module.exports = { checkout, getCart, getOrders, mergeGuestItems, setItemAmount };

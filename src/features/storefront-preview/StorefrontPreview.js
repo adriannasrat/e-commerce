@@ -5,7 +5,7 @@ import Campaign from "./collections/Campaign";
 import { collections, collectionRoute } from "./collections/collections";
 import StorefrontStyles from "./StorefrontStyles";
 import StorefrontFooter from "./footer/StorefrontFooter";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import useReveal from "./ui/useReveal";
 import { ScopedCssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -22,6 +22,8 @@ import usePreviewBag from "./bag/usePreviewBag";
 import BagPage from "./bag/BagPage";
 import AddedToBag from "./recommendations/AddedToBag";
 import SignInPage from "./auth/SignInPage";
+import { AuthProvider } from "./auth/AuthContext";
+import CatalogueGate from "./CatalogueGate";
 
 function NotFound({ title, detail, href, action }) {
   return (
@@ -37,8 +39,7 @@ function NotFound({ title, detail, href, action }) {
   );
 }
 
-export default function StorefrontPreview() {
-  const [selected, setSelected] = useState("black");
+function Storefront() {
   const { hash, productId, addedId } = usePreviewRoute();
   const bag = usePreviewBag();
   const main = useRef(null);
@@ -131,6 +132,11 @@ export default function StorefrontPreview() {
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
           <main id="preview-main" tabIndex={-1} ref={main}>
+            {bag.error && (
+              <p className="bag-error" role="alert">
+                {bag.error}
+              </p>
+            )}
             {productId !== null ? (
               product ? (
                 <ProductDetail
@@ -175,7 +181,7 @@ export default function StorefrontPreview() {
                 addedId !== null
               }
             >
-              <PreviewHero selected={selected} onSelect={setSelected} />
+              <PreviewHero />
               <Campaign category="over-ear" />
               <Campaign category="in-ear" />
               <ProductShowcase />
@@ -187,5 +193,15 @@ export default function StorefrontPreview() {
         </div>
       </ScopedCssBaseline>
     </ThemeProvider>
+  );
+}
+
+export default function StorefrontPreview() {
+  return (
+    <CatalogueGate>
+      <AuthProvider>
+        <Storefront />
+      </AuthProvider>
+    </CatalogueGate>
   );
 }

@@ -101,7 +101,7 @@ export const interactionStyles = [
   },
   {
     // Wide surfaces read a 3% squash as a jump; keep theirs barely visible.
-    [`${scope} :where(.disclosure-heading button, .product-detail-photo, .listening-card, .product-related-gallery button, .preview-gallery-option)`]:
+    [`${scope} :where(.disclosure-heading button, .product-detail-photo, .listening-card, .product-related-gallery button)`]:
       {
         "--press-scale": "0.985",
       },

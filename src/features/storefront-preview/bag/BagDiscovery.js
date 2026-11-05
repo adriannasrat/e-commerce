@@ -22,7 +22,6 @@ const questions = [
     "Both checkout options demonstrate the shopping flow. No payment details are collected or orders placed.",
   ],
 ];
-const featured = products.find((product) => product.id === "silver");
 
 function Suggestions({ models, onAdd }) {
   return (
@@ -51,6 +50,7 @@ function Suggestions({ models, onAdd }) {
 }
 
 export default function BagDiscovery({ bag }) {
+  const featured = products.find((product) => product.id === "silver");
   const [expanded, setExpanded] = useState(false);
   const [questionsOpen, setQuestionsOpen] = useState(false);
   const faqHeading = useRef(null);

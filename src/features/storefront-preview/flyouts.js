@@ -8,7 +8,7 @@ const models = (category) =>
     .map((product) => [product.name, productHref(product.id)]);
 
 // Global navigation flyouts: one large primary column, then two quieter ones.
-export const flyouts = {
+export const getFlyouts = () => ({
   store: [
     [
       "Shop",
@@ -76,4 +76,4 @@ export const flyouts = {
       ],
     ],
   ],
-};
+});

@@ -5,7 +5,7 @@ export const collections = {
     name: "Over-ear",
     series: "Form series",
     line: "Room for every note.",
-    description: "Three silhouettes. A listening space of your own.",
+    description: "A finish for every mood. A listening space of your own.",
     feature: "silver",
     art: "Brushed light.",
   },

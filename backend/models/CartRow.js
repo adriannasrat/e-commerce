@@ -13,6 +13,7 @@ const CartRow = sequelize.define("CartRow", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  unit_price_ore: DataTypes.INTEGER,
   cart_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

@@ -1,48 +1,48 @@
 import React from "react";
-import HeroProductInfo from "./HeroProductInfo";
-import { products } from "./products";
-import HeadphonePicker from "./HeadphonePicker";
-import ProductVisual from "./ProductVisual";
-import HeroCategoryPicker from "./HeroCategoryPicker";
-import { headphoneImages } from "./headphoneImages";
+import { collectionHref, collectionModels } from "./collections/collections";
+import { formatPrice } from "./products";
+import FilmToggle from "./ui/FilmToggle";
+import { films } from "./ui/films";
+import useFilm from "./ui/useFilm";
 
-export default function PreviewHero({ selected, onSelect }) {
-  const product = products.find(({ id }) => id === selected);
-  const category = product.image.category;
-  const images = headphoneImages.filter((image) => image.category === category);
-  const index = images.findIndex((image) => image.id === selected);
-  function step(direction) {
-    onSelect(images[(index + direction + images.length) % images.length].id);
-  }
-  const selectCategory = (nextCategory) => {
-    if (nextCategory !== category) {
-      onSelect(
-        headphoneImages.find((image) => image.category === nextCategory).id,
-      );
-    }
-  };
+const film = films.home;
 
+// The first thing on the site: one line, two actions, and a film that plays
+// once and rests on its last frame.
+export default function PreviewHero() {
+  const { failed, ended, playing, toggle, videoProps } = useFilm();
+  const fromPrice = Math.min(
+    ...collectionModels("over-ear").map((model) => model.price),
+  );
   return (
-    <section
-      className="preview-hero"
-      aria-labelledby="preview-headline"
-    >
-      <HeroCategoryPicker selected={category} onSelect={selectCategory} />
-      <h1 id="preview-headline" className="preview-headline">
-        Less noise. More feeling.
-      </h1>
-      <HeroProductInfo product={product} />
-      <ProductVisual selected={selected} onStep={step} />
-      <div className="preview-hero-footer">
-        <HeadphonePicker
-          images={images}
-          selected={selected}
-          onSelect={onSelect}
-        />
-        <span className="hero-swipe-tip">
-          {index + 1} of {images.length} · Swipe or tap to explore
-        </span>
+    <section className="preview-hero" aria-labelledby="preview-headline">
+      <div className="preview-hero-copy">
+        <h1 id="preview-headline" className="rx-hero-title">
+          Less noise. More feeling.
+        </h1>
+        <p className="rx-hero-sub">Over-ear headphones, made for the long listen.</p>
+        <p className="preview-hero-price">From {formatPrice(fromPrice)}</p>
+        <div className="rx-actions">
+          <a className="rx-btn" href={collectionHref("over-ear")}>
+            Learn more
+          </a>
+          <a className="rx-btn rx-btn--ghost" href="#preview-direction">
+            Shop all
+          </a>
+        </div>
       </div>
+      {!failed && (
+        <div className="preview-hero-film">
+          <video
+            {...videoProps}
+            src={film.src}
+            poster={film.poster}
+            aria-label={film.description}
+            preload="metadata"
+          />
+          <FilmToggle playing={playing} ended={ended} onClick={toggle} />
+        </div>
+      )}
     </section>
   );
 }
