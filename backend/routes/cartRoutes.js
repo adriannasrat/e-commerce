@@ -19,4 +19,12 @@ router.post('/merge', wrap(async (req, res) => {
   res.json(await cartService.mergeGuestItems(req.user.id, req.body.items));
 }));
 
+router.post('/checkout', wrap(async (req, res) => {
+  res.json(await cartService.checkout(req.user.id, req.body.cartId));
+}));
+
+router.get('/orders', wrap(async (req, res) => {
+  res.json(await cartService.getOrders(req.user.id));
+}));
+
 module.exports = router;

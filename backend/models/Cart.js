@@ -21,6 +21,7 @@ const Cart = sequelize.define("Cart", {
     allowNull: false,
     defaultValue: false,
   },
+  paid_at: DataTypes.DATE,
 });
 
 
