@@ -27,11 +27,11 @@ export const featureCards = {
     {
       id: "finishes",
       eyebrow: "Finishes",
-      title: "Three moods. One silhouette.",
+      title: "A finish for every mood.",
       model: "black",
       tone: "dark",
       detail:
-        "Graphite for evenings, Chalk for bright mornings and Silver for everything in between. Each model in the Form series has its own finish, so choosing a colour is choosing a model.",
+        "Graphite for evenings, Chalk for bright mornings, Ocean and Sage when you want colour. Each model in the Form series has its own finish, so choosing a colour is choosing a model.",
     },
   ],
   "in-ear": [

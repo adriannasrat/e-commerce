@@ -21,7 +21,7 @@ test("a horizontal swipe wraps within the selected series and consumes its click
     name: "View selected headphone details",
   });
   swipe(link, 70, 4);
-  expect(link).toHaveAttribute("href", "#product/form-04");
+  expect(link).toHaveAttribute("href", "#product/form-07");
   expect(fireEvent.click(link, { detail: 1 })).toBe(false);
   fireEvent.click(screen.getByRole("button", { name: "In-ear" }));
   swipe(link, -75, 6);

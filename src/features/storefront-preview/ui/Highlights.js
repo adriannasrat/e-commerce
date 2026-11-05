@@ -17,7 +17,7 @@ const slides = [
   },
   {
     id: "pocket-05",
-    eyebrow: "New · Pocket 05",
+    eyebrow: "Pocket 05",
     title: "Matte, minimal, made to disappear.",
     photo: lifestyle.pocket05Slate,
   },
@@ -29,7 +29,7 @@ const slides = [
   },
   {
     id: "form-04",
-    eyebrow: "New · Form 04",
+    eyebrow: "Form 04",
     title: "Deep focus, all day long.",
     photo: lifestyle.form04Studio,
     theme: "light",

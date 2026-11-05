@@ -145,7 +145,7 @@ const styles = [
   { ".product-detail-finishes h2 span": { color: "var(--rx-muted)" } },
   { ".product-detail-finishes > p": { margin: "0 0 16px", fontSize: "14px" } },
   { ".product-detail-finishes > p span": { color: "var(--rx-muted)" } },
-  { '.product-detail-finishes [role="group"]': { display: "flex", gap: "18px" } },
+  { '.product-detail-finishes [role="group"]': { display: "flex", flexWrap: "wrap", gap: "14px 18px" } },
   {
     ".product-detail-finishes button": {
       display: "flex",

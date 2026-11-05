@@ -91,6 +91,16 @@ export const budsOutImage = {
   bounds: [846, 226, 1736, 1300],
 };
 
+// Form 07 together with the case in the same finish.
+export const sandSetImage = {
+  id: "sand-set",
+  label: "Form 07 headphones in Sand beside a matching case",
+  src: "/local-preview/sand-set.webp",
+  width: 1366,
+  height: 759,
+  bounds: [240, 177, 1067, 596],
+};
+
 // Extra product-page views, in addition to the studio shot and close-up.
 export const productViews = {
   silver: [{ id: "context", label: "Form 03 in context", photo: lifestyle.silverStandClose }],
@@ -106,6 +116,7 @@ export const productViews = {
   "pocket-05": [
     { id: "context", label: "Pocket 05 in context", photo: lifestyle.pocket05Slate },
   ],
+  "form-07": [{ id: "case", label: "With the matching case", cutout: sandSetImage }],
   "in-ear-white": [
     { id: "buds", label: "Buds out of the case", cutout: budsOutImage },
     { id: "context", label: "Pocket 02 in context", photo: lifestyle.pocketChalkNight },

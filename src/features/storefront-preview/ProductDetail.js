@@ -15,8 +15,8 @@ import ProductInformation from "./ProductInformation";
 import RelatedProducts from "./RelatedProducts";
 
 const finishesByCategory = {
-  "over-ear": ["Graphite", "Chalk", "Silver", "Onyx"],
-  "in-ear": ["Graphite", "Chalk", "Crimson", "Espresso", "Onyx"],
+  "over-ear": ["Graphite", "Chalk", "Silver", "Onyx", "Ocean", "Sage", "Sand"],
+  "in-ear": ["Graphite", "Chalk", "Crimson", "Espresso", "Onyx", "Carbon", "Slate"],
 };
 
 export default function ProductDetail({ product, onAddToBag }) {
