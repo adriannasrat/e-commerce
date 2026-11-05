@@ -10,6 +10,8 @@ import { finishColors, formatPrice, newModels } from "./products";
 import LocalNav from "./ui/LocalNav";
 import Photo from "./ui/Photo";
 import { productViews } from "./lifestyleImages";
+import Film from "./ui/Film";
+import { productFilms } from "./ui/films";
 import ProductPurchaseOptions from "./ProductPurchaseOptions";
 import ProductInformation from "./ProductInformation";
 import RelatedProducts from "./RelatedProducts";
@@ -183,6 +185,7 @@ export default function ProductDetail({ product, onAddToBag }) {
           </p>
         </ScrollReveal>
       </div>
+      {productFilms[product.id] && <Film film={productFilms[product.id]} />}
       <ProductInformation product={product} category={category} />
       <RelatedProducts key={product.id} product={product} />
       <StorefrontDialog

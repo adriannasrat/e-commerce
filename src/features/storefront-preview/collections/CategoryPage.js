@@ -11,6 +11,8 @@ import { formatPrice, newModels } from "../products";
 import { productHref } from "../usePreviewRoute";
 import ChapterNav from "../ui/ChapterNav";
 import FeatureCards from "../ui/FeatureCards";
+import Film from "../ui/Film";
+import { films } from "../ui/films";
 import LinkDirectory from "../ui/LinkDirectory";
 import LocalNav from "../ui/LocalNav";
 import ModelCard from "../ui/ModelCard";
@@ -179,6 +181,8 @@ export default function CategoryPage({ id, section }) {
         ]}
       />
       <HeroGallery models={models} collection={collection} />
+
+      <Film film={films[id]} />
 
       <section
         className="rx-section rx-section--gray sound-models"

@@ -12,6 +12,8 @@ import HeadphoneImage from "./HeadphoneImage";
 import { products, formatPrice, newModels } from "./products";
 import { productHref } from "./usePreviewRoute";
 import ChapterNav from "./ui/ChapterNav";
+import Film from "./ui/Film";
+import { films } from "./ui/films";
 import ModelCard from "./ui/ModelCard";
 import Shelf from "./ui/Shelf";
 
@@ -130,6 +132,8 @@ export default function HeadphoneCollection({ onAddToBag }) {
           );
         })}
       </Shelf>
+
+      <Film film={films.details} />
 
       <section
         className="rx-section rx-section--gray store-all"
