@@ -103,22 +103,50 @@ export const sandSetImage = {
 
 // Extra product-page views, in addition to the studio shot and close-up.
 export const productViews = {
-  silver: [{ id: "context", label: "Form 03 in context", photo: lifestyle.silverStandClose }],
+  silver: [
+    {
+      id: "context",
+      label: "Form 03 in context",
+      photo: lifestyle.silverStandClose,
+    },
+  ],
   "in-ear-black": [
-    { id: "context", label: "Pocket 01 in context", photo: lifestyle.pocketGraphiteWood },
+    {
+      id: "context",
+      label: "Pocket 01 in context",
+      photo: lifestyle.pocketGraphiteWood,
+    },
   ],
   "form-04": [
-    { id: "context", label: "Form 04 in the studio", photo: lifestyle.form04Studio },
+    {
+      id: "context",
+      label: "Form 04 in the studio",
+      photo: lifestyle.form04Studio,
+    },
   ],
   "pocket-04": [
-    { id: "context", label: "Pocket 04 in context", photo: lifestyle.pocket04Wood },
+    {
+      id: "context",
+      label: "Pocket 04 in context",
+      photo: lifestyle.pocket04Wood,
+    },
   ],
   "pocket-05": [
-    { id: "context", label: "Pocket 05 in context", photo: lifestyle.pocket05Slate },
+    {
+      id: "context",
+      label: "Pocket 05 in context",
+      photo: lifestyle.pocket05Slate,
+    },
   ],
-  "form-07": [{ id: "case", label: "With the matching case", cutout: sandSetImage }],
+  "form-07": [
+    { id: "case", label: "With the matching case", cutout: sandSetImage },
+  ],
   "in-ear-white": [
     { id: "buds", label: "Buds out of the case", cutout: budsOutImage },
-    { id: "context", label: "Pocket 02 in context", photo: lifestyle.pocketChalkNight },
+    {
+      id: "context",
+      label: "Pocket 02 in context",
+      photo: lifestyle.pocketChalkNight,
+    },
   ],
 };
