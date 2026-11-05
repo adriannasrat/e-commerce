@@ -16,8 +16,9 @@ const Cart = sequelize.define("Cart", {
       key: "id",
     },
   },
-  payed: {
+  paid: {
     type: DataTypes.BOOLEAN,
+    allowNull: false,
     defaultValue: false,
   },
 });

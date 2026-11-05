@@ -1,8 +1,18 @@
 const { HttpError } = require('../http');
 const { Cart, CartRow, Product } = require('../models');
 
-async function findActiveCart(userId) {
-  return Cart.findOne({ where: { user_id: userId, payed: false } });
+const findActiveCart = (userId) => Cart.findOne({ where: { user_id: userId, paid: false } });
+
+async function getOrCreateActiveCart(userId) {
+  const existing = await findActiveCart(userId);
+  if (existing) return existing;
+  try {
+    return await Cart.create({ user_id: userId });
+  } catch (error) {
+    // A parallel request created it first; the unique index kept it to one.
+    if (error.name === 'SequelizeUniqueConstraintError') return findActiveCart(userId);
+    throw error;
+  }
 }
 
 const toItem = ({ amount, Product: product }) => ({
@@ -29,7 +39,7 @@ async function setItemAmount(userId, productId, amount) {
   if (amount > product.stock_quantity) {
     throw new HttpError(409, `Only ${product.stock_quantity} left in stock`);
   }
-  const cart = (await findActiveCart(userId)) || (await Cart.create({ user_id: userId, payed: false }));
+  const cart = await getOrCreateActiveCart(userId);
   if (amount === 0) {
     await CartRow.destroy({ where: { cart_id: cart.id, product_id: productId } });
   } else {

@@ -88,3 +88,27 @@ test('plain-text passwords become hashes that still verify', async () => {
   assert.equal(await verifyPassword('wrong', password), false);
   await sequelize.close();
 });
+
+test('several unpaid carts merge into one, and paid carts are left alone', async () => {
+  const sequelize = await migrateLegacyDatabase(async (db) => {
+    await seedUserAndProduct(db);
+    await db.query(`INSERT INTO Products (id, title, description, price, stock_quantity, imageUrl, createdAt, updatedAt)
+      VALUES (2, 'Tulip', 'A tulip', 30, 5, 'tulip.jpg', ${now}, ${now})`);
+    await db.query(`INSERT INTO Carts (id, user_id, payed, createdAt, updatedAt)
+      VALUES (1, 1, 1, ${now}, ${now}), (2, 1, 0, ${now}, ${now}), (3, 1, 0, ${now}, ${now})`);
+    await db.query(`INSERT INTO CartRows (amount, cart_id, product_id, createdAt, updatedAt)
+      VALUES (9, 1, 1, ${now}, ${now}), (1, 2, 1, ${now}, ${now}), (2, 2, 2, ${now}, ${now}), (3, 3, 1, ${now}, ${now})`);
+  });
+  const select = (sql) => sequelize.query(sql, { type: QueryTypes.SELECT });
+  assert.deepEqual(await select('SELECT id, paid FROM Carts ORDER BY id'), [{ id: 1, paid: 1 }, { id: 3, paid: 0 }]);
+  assert.deepEqual(await select('SELECT cart_id, product_id, amount FROM CartRows ORDER BY cart_id, product_id'), [
+    { cart_id: 1, product_id: 1, amount: 9 },
+    { cart_id: 3, product_id: 1, amount: 4 },
+    { cart_id: 3, product_id: 2, amount: 2 },
+  ]);
+  await assert.rejects(
+    sequelize.query(`INSERT INTO Carts (user_id, paid, createdAt, updatedAt) VALUES (1, 0, ${now}, ${now})`),
+    { name: 'SequelizeUniqueConstraintError' },
+  );
+  await sequelize.close();
+});
