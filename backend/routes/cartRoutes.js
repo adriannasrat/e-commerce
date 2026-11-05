@@ -15,4 +15,8 @@ router.put('/items/:productId', wrap(async (req, res) => {
   res.json(await cartService.setItemAmount(req.user.id, Number(req.params.productId), req.body.amount));
 }));
 
+router.post('/merge', wrap(async (req, res) => {
+  res.json(await cartService.mergeGuestItems(req.user.id, req.body.items));
+}));
+
 module.exports = router;

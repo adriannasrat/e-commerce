@@ -48,4 +48,23 @@ async function setItemAmount(userId, productId, amount) {
   return getCart(userId);
 }
 
-module.exports = { getCart, setItemAmount };
+// Takes the larger of the two amounts rather than their sum, so a repeated
+// request after a lost response cannot double the cart. Stock caps the result.
+async function mergeGuestItems(userId, items) {
+  const valid = Array.isArray(items) && items.every(
+    ({ product_id: id, amount }) => Number.isInteger(id) && Number.isInteger(amount) && amount > 0,
+  );
+  if (!valid) throw new HttpError(400, 'Items must list product_id and a positive amount');
+  const cart = await getOrCreateActiveCart(userId);
+  for (const { product_id: productId, amount } of items) {
+    const product = await Product.findByPk(productId);
+    if (!product) continue;
+    const row = await CartRow.findOne({ where: { cart_id: cart.id, product_id: productId } });
+    const merged = Math.min(Math.max(amount, row ? row.amount : 0), product.stock_quantity);
+    if (merged > 0) await CartRow.upsert({ cart_id: cart.id, product_id: productId, amount: merged });
+    else if (row) await row.destroy();
+  }
+  return getCart(userId);
+}
+
+module.exports = { getCart, mergeGuestItems, setItemAmount };
