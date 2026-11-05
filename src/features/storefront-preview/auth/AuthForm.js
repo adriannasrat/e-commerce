@@ -4,16 +4,19 @@ import VisibilityOutlined from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlined from "@mui/icons-material/VisibilityOffOutlined";
 import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
+import { useAuth } from "./AuthContext";
 
 export default function AuthForm({ signingUp }) {
   const heading = useRef(null);
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+  const { user, signIn, signOut, signUp } = useAuth();
   useLayoutEffect(() => {
     heading.current?.focus({ preventScroll: true });
   }, []);
 
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault();
     const form = event.currentTarget;
     if (
@@ -24,10 +27,41 @@ export default function AuthForm({ signingUp }) {
       form.elements.confirmPassword.reportValidity();
       return;
     }
-    form.reset();
-    setVisible(false);
-    setMessage(
-      `This is a design preview. ${signingUp ? "Registration" : "Sign-in"} is not connected yet. Your details have not been sent or saved.`,
+    const credentials = {
+      email: form.elements.email.value,
+      password: form.elements.password.value,
+    };
+    setBusy(true);
+    setMessage("");
+    try {
+      await (signingUp ? signUp(credentials) : signIn(credentials));
+      window.location.hash = "preview-home";
+    } catch (error) {
+      setMessage(error.message);
+      form.elements.password.value = "";
+      setBusy(false);
+    }
+  }
+
+  if (user) {
+    return (
+      <div className="sign-in-form-area">
+        <p className="sign-in-kicker">Your own frequency</p>
+        <h1 id="sign-in-title" ref={heading} tabIndex={-1}>
+          Welcome.
+        </h1>
+        <p className="sign-in-intro">Signed in as {user.email}</p>
+        <button
+          type="button"
+          className="sign-in-submit"
+          onClick={() => signOut().catch((error) => setMessage(error.message))}
+        >
+          Sign out
+        </button>
+        <p className="sign-in-feedback" role="status">
+          {message}
+        </p>
+      </div>
     );
   }
 
@@ -45,22 +79,10 @@ export default function AuthForm({ signingUp }) {
       <form
         onSubmit={submit}
         aria-label={signingUp ? "Sign up" : "Sign in"}
-        aria-describedby="sign-in-demo"
         onInput={(event) =>
           event.currentTarget.elements.confirmPassword?.setCustomValidity("")
         }
       >
-        {signingUp && (
-          <label className="sign-in-field">
-            Full name
-            <input
-              name="name"
-              autoComplete="name"
-              placeholder="Your name"
-              required
-            />
-          </label>
-        )}
         <label className="sign-in-field">
           Email address
           <input
@@ -112,20 +134,17 @@ export default function AuthForm({ signingUp }) {
             className="sign-in-forgot sign-in-text-button"
             onClick={() =>
               setMessage(
-                "Password recovery will be available when accounts are connected. No reset email has been sent.",
+                "Password recovery is not available yet. No reset email has been sent.",
               )
             }
           >
             Forgot password?
           </button>
         )}
-        <button type="submit" className="sign-in-submit">
+        <button type="submit" className="sign-in-submit" disabled={busy}>
           {signingUp ? <PersonAddAltOutlined /> : <LoginOutlined />}
           {signingUp ? "Create account" : "Sign in"}
         </button>
-        <p id="sign-in-demo" className="sign-in-demo">
-          Design preview — account access is coming soon.
-        </p>
       </form>
       <p className="sign-in-feedback" role="status">
         {message}

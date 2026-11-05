@@ -22,6 +22,7 @@ import usePreviewBag from "./bag/usePreviewBag";
 import BagPage from "./bag/BagPage";
 import AddedToBag from "./recommendations/AddedToBag";
 import SignInPage from "./auth/SignInPage";
+import { AuthProvider } from "./auth/AuthContext";
 
 function NotFound({ title, detail, href, action }) {
   return (
@@ -37,7 +38,7 @@ function NotFound({ title, detail, href, action }) {
   );
 }
 
-export default function StorefrontPreview() {
+function Storefront() {
   const { hash, productId, addedId } = usePreviewRoute();
   const bag = usePreviewBag();
   const main = useRef(null);
@@ -186,5 +187,13 @@ export default function StorefrontPreview() {
         </div>
       </ScopedCssBaseline>
     </ThemeProvider>
+  );
+}
+
+export default function StorefrontPreview() {
+  return (
+    <AuthProvider>
+      <Storefront />
+    </AuthProvider>
   );
 }
