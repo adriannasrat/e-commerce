@@ -16,6 +16,7 @@ function readPort(value, fallback, name) {
 function readEnvironment(env = process.env) {
   return {
     port: readPort(env.PORT, 5000, 'PORT'),
+    secureCookies: env.NODE_ENV === 'production',
     database: {
       database: env.DB_NAME || 'shop_db',
       username: env.DB_USER || 'root',

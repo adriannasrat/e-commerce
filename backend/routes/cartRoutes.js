@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const cartService = require("../services/cartService");
-const userService = require("../services/userService");
 
 router.post("/", async (req, res) => {
   try {
@@ -63,11 +62,6 @@ router.put("/:userId/cart/updateQuantity", async (req, res) => {
         amount,
       });
       return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    const user = await userService.getUserById(userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
     }
 
     const updatedCartRow = await cartService.updateCartQuantity(
