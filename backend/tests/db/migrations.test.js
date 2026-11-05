@@ -38,3 +38,26 @@ test('existing products keep their data with prices converted to öre', async ()
   ]);
   await sequelize.close();
 });
+
+const seedUserAndProduct = async (db) => {
+  await db.query(`INSERT INTO Users (id, email, password, createdAt, updatedAt) VALUES (1, 'a@example.test', 'secret', ${now}, ${now})`);
+  await db.query(`INSERT INTO Products (id, title, description, price, stock_quantity, imageUrl, createdAt, updatedAt)
+    VALUES (1, 'Rose', 'A rose', 40, 5, 'rose.jpg', ${now}, ${now})`);
+};
+
+test('duplicate cart rows merge, and the database then rejects invalid rows', async () => {
+  const sequelize = await migrateLegacyDatabase(async (db) => {
+    await seedUserAndProduct(db);
+    await db.query(`INSERT INTO Carts (id, user_id, payed, createdAt, updatedAt) VALUES (1, 1, 0, ${now}, ${now})`);
+    await db.query(`INSERT INTO CartRows (amount, cart_id, product_id, createdAt, updatedAt)
+      VALUES (2, 1, 1, ${now}, ${now}), (3, 1, 1, ${now}, ${now}), (0, 1, 1, ${now}, ${now})`);
+  });
+  const rows = await sequelize.query('SELECT amount FROM CartRows', { type: QueryTypes.SELECT });
+  assert.deepEqual(rows, [{ amount: 5 }]);
+  const insert = (amount) => sequelize.query(`INSERT INTO CartRows (amount, cart_id, product_id, createdAt, updatedAt)
+    VALUES (${amount}, 1, 1, ${now}, ${now})`);
+  await assert.rejects(insert(1), { name: "SequelizeUniqueConstraintError" });
+  await sequelize.query('DELETE FROM CartRows');
+  await assert.rejects(insert(0), /CONSTRAINT/);
+  await sequelize.close();
+});
