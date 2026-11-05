@@ -24,7 +24,7 @@ const getLatestCart = async (userId) => {
     product_name: cartRow.Product.title,
     product_description: cartRow.Product.description,
     quantity: cartRow.amount,
-    price: cartRow.Product.price,
+    price_ore: cartRow.Product.price_ore,
     imageUrl: `http://localhost:3001${cartRow.Product.imageUrl}`,
   }));
 };
@@ -125,7 +125,7 @@ const updateCartQuantity = async (userId, productId, amount) => {
         product_id: cartRow.product_id,
         product_name: cartRow.Product.title,
         quantity: cartRow.amount,
-        price: cartRow.Product.price,
+        price_ore: cartRow.Product.price_ore,
         imageUrl: `http://localhost:3001${cartRow.Product.imageUrl}`,
       };
     }

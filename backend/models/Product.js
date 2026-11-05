@@ -15,12 +15,13 @@ const Product = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  price: {
+  price_ore: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   stock_quantity: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     defaultValue: 0,
   },
   imageUrl: {

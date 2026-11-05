@@ -8,7 +8,7 @@ const getAllProducts = async () => {
         "id",
         "title",
         "description",
-        "price",
+        "price_ore",
         "imageUrl",
         "stock_quantity",
         [
