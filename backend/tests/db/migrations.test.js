@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const { QueryTypes, Sequelize } = require('sequelize');
 const { config, resetDatabase } = require('./helper');
 const { createMigrator } = require('../../migrator');
+const { verifyPassword } = require('../../auth/password');
 
 test('an empty database migrates, and running again changes nothing', async () => {
   await resetDatabase();
@@ -76,5 +77,14 @@ test('ratings without an owner survive adding user_id', async () => {
     sequelize.query(`INSERT INTO Ratings (rating, product_id, user_id, createdAt, updatedAt) VALUES (3, 1, 1, ${now}, ${now})`),
     { name: "SequelizeUniqueConstraintError" },
   );
+  await sequelize.close();
+});
+
+test('plain-text passwords become hashes that still verify', async () => {
+  const sequelize = await migrateLegacyDatabase(seedUserAndProduct);
+  const [{ password }] = await sequelize.query('SELECT password FROM Users', { type: QueryTypes.SELECT });
+  assert.notEqual(password, 'secret');
+  assert.equal(await verifyPassword('secret', password), true);
+  assert.equal(await verifyPassword('wrong', password), false);
   await sequelize.close();
 });
