@@ -1,4 +1,4 @@
-// Product films.
+// Product films and the Sand set feature on the store page.
 const styles = [
   {
     ".rx-film": {
@@ -67,6 +67,42 @@ const styles = [
       outline: "2px solid var(--rx-accent)",
       outlineOffset: "2px",
     },
+  },
+  {
+    ".store-set": {
+      display: "grid",
+      gridTemplateColumns: "minmax(0, 5fr) minmax(0, 7fr)",
+      alignItems: "center",
+      gap: "clamp(24px, 4vw, 64px)",
+      paddingBlock: "clamp(64px, 9vw, 120px)",
+    },
+  },
+  {
+    ".store-set-copy h2": { margin: "8px 0 12px" },
+  },
+  {
+    ".store-set-copy p:not(.rx-new)": {
+      margin: "0 0 20px",
+      color: "var(--rx-muted)",
+      fontSize: "clamp(17px, 1.6vw, 21px)",
+      lineHeight: 1.35,
+    },
+  },
+  {
+    ".store-set-image": {
+      display: "block",
+      width: "100%",
+      height: "auto",
+      borderRadius: "clamp(16px, 2.4vw, 28px)",
+      background: "#f4f1ea",
+    },
+  },
+  {
+    "@media (max-width: 734px)": [
+      {
+        ".store-set": { gridTemplateColumns: "minmax(0, 1fr)" },
+      },
+    ],
   },
 ];
 

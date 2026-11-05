@@ -7,6 +7,7 @@ import BookmarkBorderRounded from "@mui/icons-material/BookmarkBorderRounded";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import PersonOutlineRounded from "@mui/icons-material/PersonOutlineRounded";
 import ModelCompare from "./shopping/ModelCompare";
+import SandSet from "./shopping/SandSet";
 import { collectionHref } from "./collections/collections";
 import HeadphoneImage from "./HeadphoneImage";
 import { products, formatPrice, newModels } from "./products";
@@ -132,6 +133,8 @@ export default function HeadphoneCollection({ onAddToBag }) {
           );
         })}
       </Shelf>
+
+      <SandSet />
 
       <Film film={films.details} />
 
