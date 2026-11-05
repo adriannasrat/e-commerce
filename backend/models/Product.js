@@ -28,6 +28,10 @@ const Product = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  slug: DataTypes.STRING(64),
+  tagline: DataTypes.STRING,
+  finish_name: DataTypes.STRING(64),
+  category: DataTypes.STRING(16),
 });
 
 

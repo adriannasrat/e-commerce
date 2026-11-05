@@ -1,9 +1,13 @@
-const { Sequelize } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { Product, Rating } = require('../models');
 
 const attributes = [
   'id',
+  'slug',
   'title',
+  'tagline',
+  'finish_name',
+  'category',
   'description',
   'price_ore',
   'imageUrl',
@@ -13,7 +17,8 @@ const attributes = [
 
 const summary = { attributes, include: [{ model: Rating, attributes: [] }], group: ['Product.id'] };
 
-const getAllProducts = () => Product.findAll(summary);
+const getAllProducts = () =>
+  Product.findAll({ ...summary, where: { category: { [Op.ne]: null } }, order: [['id', 'ASC']] });
 const getProductById = (id) => Product.findOne({ ...summary, where: { id } });
 
 module.exports = { getAllProducts, getProductById };

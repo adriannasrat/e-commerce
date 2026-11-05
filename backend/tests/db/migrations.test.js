@@ -32,7 +32,7 @@ test('existing products keep their data with prices converted to öre', async ()
     await db.query(`INSERT INTO Products (title, description, price, stock_quantity, imageUrl, createdAt, updatedAt)
       VALUES ('Rose', 'A rose', 40, 5, 'rose.jpg', ${now}, ${now}), ('Tulip', 'A tulip', 30.5, 5, 'tulip.jpg', ${now}, ${now})`);
   });
-  const rows = await sequelize.query('SELECT title, price_ore, stock_quantity FROM Products ORDER BY id', { type: QueryTypes.SELECT });
+  const rows = await sequelize.query('SELECT title, price_ore, stock_quantity FROM Products WHERE slug IS NULL ORDER BY id', { type: QueryTypes.SELECT });
   assert.deepEqual(rows, [
     { title: 'Rose', price_ore: 4000, stock_quantity: 5 },
     { title: 'Tulip', price_ore: 3050, stock_quantity: 5 },
