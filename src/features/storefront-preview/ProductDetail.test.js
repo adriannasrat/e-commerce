@@ -106,11 +106,24 @@ test("delivery and payment actions explain the demo without starting checkout", 
 
 test("recommendation navigation exposes other products", () => {
   render(<ProductDetail product={products[0]} />);
-  fireEvent.click(screen.getByRole("button", { name: "Next recommendations" }));
+  const next = screen.getByRole("button", { name: "Next recommendations" });
+  const pages = screen.getAllByRole("button", { name: /Recommendation page/ });
+  pages.slice(1).forEach(() => fireEvent.click(next));
+  expect(next).toBeDisabled();
+  expect(pages[pages.length - 1]).toHaveAttribute("aria-current", "page");
+});
+
+test("models with lifestyle photography offer extra gallery views", () => {
+  const pocket = products.find((item) => item.id === "in-ear-white");
+  render(<ProductDetail product={pocket} />);
+  const views = screen.getByRole("group", { name: "Product image view" });
+  expect(within(views).getAllByRole("button")).toHaveLength(4);
+  fireEvent.click(within(views).getByRole("button", { name: "Pocket 02 in context" }));
   expect(
-    screen.getByRole("button", { name: "Next recommendations" }),
-  ).toBeDisabled();
+    screen.getByRole("img", { name: "Pocket 02 earbuds and case on black" }),
+  ).toBeInTheDocument();
+  fireEvent.click(within(views).getByRole("button", { name: "Buds out of the case" }));
   expect(
-    screen.getByRole("button", { name: "Recommendation page 2" }),
-  ).toHaveAttribute("aria-current", "page");
+    screen.getByRole("img", { name: "Pocket 02 earbuds beside their open case" }),
+  ).toBeInTheDocument();
 });

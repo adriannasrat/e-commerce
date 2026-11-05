@@ -1,10 +1,12 @@
 import JournalFeature from "./shopping/JournalFeature";
+import Highlights from "./ui/Highlights";
 import CategoryPage from "./collections/CategoryPage";
 import Campaign from "./collections/Campaign";
 import { collections, collectionRoute } from "./collections/collections";
 import StorefrontStyles from "./StorefrontStyles";
 import StorefrontFooter from "./footer/StorefrontFooter";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import useReveal from "./ui/useReveal";
 import { ScopedCssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import PreviewHeader from "./PreviewHeader";
@@ -21,10 +23,26 @@ import BagPage from "./bag/BagPage";
 import AddedToBag from "./recommendations/AddedToBag";
 import SignInPage from "./auth/SignInPage";
 
+function NotFound({ title, detail, href, action }) {
+  return (
+    <section className="bag-page" aria-labelledby="not-found-title">
+      <header className="bag-page-heading">
+        <h1 id="not-found-title">{title}</h1>
+        <p>{detail}</p>
+        <a className="bag-button" href={href}>
+          {action}
+        </a>
+      </header>
+    </section>
+  );
+}
+
 export default function StorefrontPreview() {
   const [selected, setSelected] = useState("black");
   const { hash, productId, addedId } = usePreviewRoute();
   const bag = usePreviewBag();
+  const main = useRef(null);
+  useReveal(main, hash);
   const category = collectionRoute(hash);
   const categoryId = category?.id;
   const isCatalog = [
@@ -112,15 +130,21 @@ export default function StorefrontPreview() {
         </a>
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
-          <main id="preview-main" tabIndex={-1}>
+          <main id="preview-main" tabIndex={-1} ref={main}>
             {productId !== null ? (
               product ? (
-                <ProductDetail product={product} onAddToBag={addToBag} />
+                <ProductDetail
+                  key={product.id}
+                  product={product}
+                  onAddToBag={addToBag}
+                />
               ) : (
-                <section className="product-detail">
-                  <h1>Product not found</h1>
-                  <a href="#preview-direction">Back to the collection</a>
-                </section>
+                <NotFound
+                  title="Product not found."
+                  detail="This model may have moved. The rest of the collection is still here."
+                  href="#preview-direction"
+                  action="Back to the collection"
+                />
               )
             ) : null}
             {category && <CategoryPage key={category.id} {...category} />}
@@ -130,14 +154,17 @@ export default function StorefrontPreview() {
               (addedProduct ? (
                 <AddedToBag product={addedProduct} bag={bag} />
               ) : (
-                <section className="product-detail">
-                  <h1>Selection not found</h1>
-                  <a href="#bag">Review bag</a>
-                </section>
+                <NotFound
+                  title="Selection not found."
+                  detail="Everything you added is still waiting in your bag."
+                  href="#bag"
+                  action="Review bag"
+                />
               ))}
             {isCatalog && <HeadphoneCollection onAddToBag={addToBag} />}
             {isJournal && <ListeningStories />}
             <div
+              className="rx-home"
               hidden={
                 isCatalog ||
                 isJournal ||
@@ -150,7 +177,9 @@ export default function StorefrontPreview() {
             >
               <PreviewHero selected={selected} onSelect={setSelected} />
               <Campaign category="over-ear" />
+              <Campaign category="in-ear" />
               <ProductShowcase />
+              <Highlights />
               <JournalFeature />
             </div>
           </main>

@@ -18,6 +18,39 @@ For new isolated components, prefer MUI `sx` or `styled` when that simplifies lo
 styling. Use the feature modules for rules shared across a feature, responsive
 layouts and portal content. Keep the theme as the source for new shared design tokens.
 
+## Design system
+
+The storefront follows a product-marketing design language: system UI type
+(SF Pro on Apple devices), ink `#1d1d1f` on white and `#f5f5f7`, ember `#b8461b`
+for primary actions and the same ember for text links (`#f0894a` on dark backgrounds).
+
+- `foundation.styles.js` holds motion tokens (`--ease-out`, `--ease-in-out`,
+  `--ease-drawer`), press feedback and mobile platform fixes.
+- `ui/system.styles.js` holds the shared classes: `rx-btn` (filled, `--ghost`,
+  `--small`), `rx-link` (blue link with chevron), type scale (`rx-hero-title`,
+  `rx-page-title`, `rx-section-title`), `rx-card`, shelves, chapter navigation,
+  segmented controls, the sticky local navigation, ribbon and end-of-page
+  directory.
+- Reusable components live in `ui/`: `Shelf` (horizontal scroller with paddles
+  and snap points), `ChapterNav`, `LocalNav`, `ModelCard`, `FeatureCards`,
+  `Highlights` (auto-advancing gallery with progress dots) and `LinkDirectory`.
+- `ui/pages.styles.js` brings the older bag, sign-in and journal modules onto the
+  same type and button styles. It is mounted after them on purpose.
+- `gateHover.js` moves every `:hover` rule behind
+  `(hover: hover) and (pointer: fine)` when the styles are composed.
+
+## Scroll choreography
+
+`ui/useReveal.js` runs once per route on `<main>`. Mark elements with
+`data-reveal="up" | "item" | "fade" | "zoom"` (or wrap them in `ScrollReveal`).
+Headings and copy rise 30px while fading in (about 900ms), cards follow 300ms
+after the heading and then every 150ms, icon rows fade in 50ms apart, and large
+imagery settles from a slight zoom. A `data-reveal-group` container (shelves,
+icon rows) reveals all its children together when it enters the viewport.
+Content added after a page's first render appears immediately, focus reveals
+pending content at once, and reduced motion skips the choreography entirely.
+The home page deliberately has no entrances: it loads fully in place.
+
 ## Remaining CSS entry point
 
 `src/index.css` contains only the three Tailwind directives used by the legacy

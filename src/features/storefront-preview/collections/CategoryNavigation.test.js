@@ -8,6 +8,7 @@ import {
   within,
 } from "@testing-library/react";
 import StorefrontPreview from "../StorefrontPreview";
+import { collectionModels } from "./collections";
 
 beforeEach(() => {
   window.scrollTo = jest.fn();
@@ -40,7 +41,9 @@ test.each([
     );
     expect(window.location.hash).toBe("#collection/" + id + "/compare");
     const table = screen.getByRole("table", { name: /Compare the/ });
-    expect(within(table).getAllByRole("columnheader")).toHaveLength(4);
+    expect(within(table).getAllByRole("columnheader")).toHaveLength(
+      collectionModels(id).length + 1,
+    );
     fireEvent.click(within(table).getByRole("link", { name: model }));
     expect(
       await screen.findByRole("heading", { level: 1, name: model }),

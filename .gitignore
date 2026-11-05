@@ -33,3 +33,8 @@ yarn-error.log*
 
 # Local-only prototype photography
 /public/local-preview/
+
+# Local agent skills and Claude workspace settings
+/.agents/skills/
+/.claude/
+/skills-lock.json

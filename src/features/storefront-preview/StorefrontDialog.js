@@ -36,9 +36,21 @@ export default function StorefrontDialog({
     TransitionProps.onExited?.(...args);
   }
 
+  // Plain centered dialogs share one settle-in motion; dialogs with their own
+  // paper class (menu, bag, zoom, stories) keep their bespoke choreography.
+  const PaperProps =
+    props.PaperProps?.className || props.fullScreen
+      ? props.PaperProps
+      : {
+          ...props.PaperProps,
+          className: "storefront-dialog-paper",
+          "data-open": open,
+        };
+
   return (
     <Dialog
       {...props}
+      PaperProps={PaperProps}
       ref={modal}
       open={visible}
       disableRestoreFocus

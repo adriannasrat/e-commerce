@@ -1,4 +1,3 @@
-import ScrollReveal from "./ScrollReveal";
 import React from "react";
 import HeroProductInfo from "./HeroProductInfo";
 import { products } from "./products";
@@ -24,30 +23,26 @@ export default function PreviewHero({ selected, onSelect }) {
   };
 
   return (
-    <ScrollReveal
-      as="section"
+    <section
       className="preview-hero"
       aria-labelledby="preview-headline"
     >
-      <div className="preview-hero-topline">
-        <span>PERSONAL AUDIO / A NEW PERSPECTIVE</span>
-        <span>
-          {index + 1} / {images.length}
-        </span>
-      </div>
       <HeroCategoryPicker selected={category} onSelect={selectCategory} />
       <h1 id="preview-headline" className="preview-headline">
-        <span>Less noise</span>
-        <span>More feeling</span>
+        Less noise. More feeling.
       </h1>
-      <ProductVisual selected={selected} onStep={step} />
-      <span className="hero-swipe-tip">Swipe to explore · Tap for details</span>
-      <HeadphonePicker
-        images={images}
-        selected={selected}
-        onSelect={onSelect}
-      />
       <HeroProductInfo product={product} />
-    </ScrollReveal>
+      <ProductVisual selected={selected} onStep={step} />
+      <div className="preview-hero-footer">
+        <HeadphonePicker
+          images={images}
+          selected={selected}
+          onSelect={onSelect}
+        />
+        <span className="hero-swipe-tip">
+          {index + 1} of {images.length} · Swipe or tap to explore
+        </span>
+      </div>
+    </section>
   );
 }

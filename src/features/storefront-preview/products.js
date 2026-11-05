@@ -56,6 +56,33 @@ export const products = [
     description:
       "A vivid red finish that brings a playful accent to your listening ritual.",
   },
+  {
+    id: "form-04",
+    name: "Form 04",
+    finishName: "Onyx",
+    price: 2790,
+    tagline: "Deep focus, all day long.",
+    description:
+      "A softly rounded silhouette in matte onyx, shaped for long, unhurried listening sessions.",
+  },
+  {
+    id: "pocket-04",
+    name: "Pocket 04",
+    finishName: "Espresso",
+    price: 1590,
+    tagline: "Polished, pocketable, personal.",
+    description:
+      "A glossy, deep-toned case with a sculpted oval form that feels good in the hand.",
+  },
+  {
+    id: "pocket-05",
+    name: "Pocket 05",
+    finishName: "Onyx",
+    price: 1090,
+    tagline: "The essentials, beautifully simple.",
+    description:
+      "A matte, minimal everyday pair. Light, compact and easy to live with.",
+  },
 ].map((product) => ({
   ...product,
   image: headphoneImages.find(({ id }) => id === product.id),
@@ -63,3 +90,15 @@ export const products = [
 
 export const formatPrice = (price) =>
   `${new Intl.NumberFormat("en-SE").format(price)} SEK`;
+
+export const finishColors = {
+  Graphite: "#363735",
+  Chalk: "#eeede7",
+  Silver: "#b6b8ba",
+  Crimson: "#a92c38",
+  Onyx: "#1f1f21",
+  Espresso: "#3b2621",
+};
+
+// Models currently highlighted with a "New" label across the storefront.
+export const newModels = ["form-04", "pocket-04", "pocket-05"];

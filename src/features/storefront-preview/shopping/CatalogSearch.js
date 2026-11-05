@@ -11,7 +11,7 @@ export default function CatalogSearch({ onSelect }) {
     return words.every(word => text.includes(word));
   });
   return <div className="shop-search">
-    <label>Search headphones<input type="search" value={query} placeholder="Try Form, in-ear or silver" onChange={e => setQuery(e.target.value)} /></label>
+    <label>Search headphones<input type="search" autoFocus value={query} placeholder="Try Form, in-ear or silver" onChange={e => setQuery(e.target.value)} /></label>
     <p role="status">{matches.length ? `${matches.length} matching models` : 'No matching models. Try a different name, finish or fit.'}</p>
     <ul>{matches.map(model => <li key={model.id}><a href={productHref(model.id)} onClick={onSelect}>
       <HeadphoneImage image={model.image} decorative /><span><strong>{model.name}</strong><small>{model.finishName} · {model.image.category}</small></span>

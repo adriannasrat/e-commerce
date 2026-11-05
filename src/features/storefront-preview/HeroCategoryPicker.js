@@ -3,7 +3,7 @@ import React from "react";
 export default function HeroCategoryPicker({ selected, onSelect }) {
   return (
     <div
-      className="preview-category-picker"
+      className="preview-category-picker rx-segmented"
       role="group"
       aria-label="Headphone category"
     >

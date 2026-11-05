@@ -1,32 +1,65 @@
-// Feature styles consumed by StorefrontStyles through MUI GlobalStyles.
+// Scroll choreography (driven by ui/useReveal). Uses the individual
+// `translate` and `scale` properties so it never fights an element's own
+// `transform` (hover lifts, press feedback).
+const pending = '[data-reveal][data-reveal-state="pending"]';
+const entering = '[data-reveal][data-reveal-state="in"]';
+
 const styles = [
   {
+    ":root": {
+      // Slow start, long soft landing: the reveal curve measured on the
+      // reference product pages (about 900ms of fade, 700ms of travel).
+      "--ease-reveal": "cubic-bezier(0.42, 0, 0.18, 1)",
+    },
+  },
+  {
     "@media (prefers-reduced-motion: no-preference)": [
+      { [pending]: { opacity: "0", translate: "0 30px" } },
+      { [`${pending}[data-reveal="fade"]`]: { translate: "none" } },
       {
-        '.scroll-reveal[data-phase="pending"]': {
-          opacity: "0",
-          translate: "0 24px",
+        [`${pending}[data-reveal="zoom"]`]: {
+          translate: "0 40px",
+          scale: "1.06",
         },
       },
       {
-        '.scroll-reveal[data-phase="entering"]': {
-          animation:
-            "storefront-enter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1)\n      var(--reveal-delay, 0ms) both",
+        [entering]: {
+          transition:
+            "opacity 900ms var(--ease-reveal) var(--reveal-delay, 0ms),\n    translate 700ms var(--ease-reveal) var(--reveal-delay, 0ms),\n    scale 1200ms var(--ease-out) var(--reveal-delay, 0ms)",
         },
       },
       {
-        "@keyframes storefront-enter": [
+        [`${entering}[data-reveal="fade"]`]: {
+          transition: "opacity 600ms ease var(--reveal-delay, 0ms)",
+        },
+      },
+      {
+        [`${entering}[data-reveal="zoom"]`]: {
+          transition:
+            "opacity 900ms var(--ease-reveal) var(--reveal-delay, 0ms),\n    translate 1000ms var(--ease-reveal) var(--reveal-delay, 0ms),\n    scale 1400ms var(--ease-out) var(--reveal-delay, 0ms)",
+        },
+      },
+    ],
+  },
+  {
+    // Scroll-linked depth for large imagery, where the browser supports it:
+    // the image settles from a gentle zoom as it travels up the screen.
+    "@supports (animation-timeline: view())": [
+      {
+        "@media (prefers-reduced-motion: no-preference)": [
           {
-            from: {
-              opacity: "0",
-              translate: "0 24px",
-            },
+            ".sound-gallery-art, .sound-study svg, .rx-feature-photo, .product-related-card > svg":
+              {
+                animation: "rx-settle linear both",
+                animationTimeline: "view()",
+                animationRange: "entry 0% cover 45%",
+              },
           },
           {
-            to: {
-              opacity: "1",
-              translate: "none",
-            },
+            "@keyframes rx-settle": [
+              { from: { scale: "1.1" } },
+              { to: { scale: "1" } },
+            ],
           },
         ],
       },
@@ -34,13 +67,7 @@ const styles = [
   },
   {
     "@media (prefers-reduced-motion: reduce)": [
-      {
-        ".scroll-reveal": {
-          opacity: "1",
-          translate: "none",
-          animation: "none !important",
-        },
-      },
+      { "[data-reveal]": { opacity: "1 !important", translate: "none !important", scale: "none !important" } },
     ],
   },
 ];

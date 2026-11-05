@@ -1,259 +1,146 @@
-// Feature styles consumed by StorefrontStyles through MUI GlobalStyles.
+// Store page: oversized title, model chapter row, "The latest" shelf,
+// the filterable model grid and the help shelf.
 const styles = [
   {
-    ".preview-hero .preview-hero-bottom": {
-      position: "absolute",
-      left: "40px",
-      bottom: "32px",
-      width: "24%",
-      margin: "0",
-      display: "block",
-    },
-  },
-  {
-    ".preview-product-info .preview-eyebrow": {
-      fontSize: "9px",
-      margin: "0 0 12px",
-      textTransform: "uppercase",
-    },
-  },
-  {
-    ".preview-product-info h2": {
-      margin: "0",
-      fontSize: "32px",
-      lineHeight: "1",
-      letterSpacing: "-0.05em",
-    },
-  },
-  {
-    ".preview-product-info > p:not(.preview-eyebrow)": {
-      fontSize: "12px",
-      lineHeight: "1.5",
-      margin: "10px 0",
-    },
-  },
-  {
-    ".preview-demo-price": {
-      fontWeight: "700",
-    },
-  },
-  {
-    ".preview-demo-price span": {
-      fontSize: "9px",
-      color: "#62625c",
-      marginLeft: "6px",
-      fontWeight: "400",
-    },
-  },
-  {
-    ".preview-collection": {
-      padding: "70px 40px 38px",
-      scrollMarginTop: "24px",
-    },
-  },
-  {
-    ".preview-collection-heading": {
+    ".store-head": {
       display: "flex",
+      flexWrap: "wrap",
+      alignItems: "flex-end",
       justifyContent: "space-between",
-      alignItems: "end",
-      gap: "24px",
-      marginBottom: "48px",
+      gap: "18px 40px",
+      paddingBlock: "clamp(44px, 6vw, 80px) 28px",
     },
   },
   {
-    ".preview-collection-heading h1": {
-      margin: "0",
-      fontSize: "clamp(40px, 5.5vw, 80px)",
-      fontWeight: "400",
-      letterSpacing: "-0.065em",
-      lineHeight: "1",
+    ".store-head-aside": {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-end",
+      maxWidth: "320px",
+      textAlign: "right",
     },
   },
   {
-    ".preview-collection-heading p": {
-      fontSize: "13px",
-      lineHeight: "1.6",
+    ".store-head-aside p": {
+      margin: "0 0 6px",
+      fontSize: "clamp(21px, 2.2vw, 24px)",
+      lineHeight: "1.17",
+      fontWeight: "600",
+      letterSpacing: "0.009em",
     },
   },
+  { ".store-head-aside .rx-link": { minHeight: "32px", fontSize: "14px" } },
+  { ".preview-collection .rx-chapternav": { marginBottom: "clamp(40px, 5vw, 64px)" } },
+  // The latest
+  { ".store-latest": { marginBottom: "clamp(32px, 4vw, 48px)" } },
+  {
+    ".store-card": {
+      width: "clamp(300px, 32vw, 400px)",
+      height: "clamp(440px, 42vw, 500px)",
+      padding: "30px",
+      gap: "6px",
+    },
+  },
+  {
+    ".store-card .rx-new, .store-card-series": {
+      fontSize: "12px",
+      fontWeight: "600",
+      letterSpacing: "-0.01em",
+    },
+  },
+  { ".store-card-series": { color: "var(--rx-muted)" } },
+  { ".rx-card--dark .store-card-series": { color: "#86868b" } },
+  { ".rx-card--dark .rx-new": { color: "#f0894a" } },
+  {
+    ".store-card strong": {
+      fontSize: "clamp(24px, 2.4vw, 28px)",
+      lineHeight: "1.14",
+      fontWeight: "600",
+      letterSpacing: "0.007em",
+    },
+  },
+  { ".store-card-tagline": { fontSize: "17px", lineHeight: "1.3" } },
+  {
+    ".store-card-price": {
+      fontSize: "14px",
+      color: "var(--rx-muted)",
+      fontVariantNumeric: "tabular-nums",
+    },
+  },
+  { ".rx-card--dark .store-card-price": { color: "#a1a1a6" } },
+  {
+    ".store-card svg": {
+      flex: "1",
+      width: "100%",
+      minHeight: "0",
+      marginTop: "18px",
+      transition: "transform 600ms var(--ease-out)",
+    },
+  },
+  { ".store-card:hover svg": { transform: "scale(1.04)" } },
+  // All models
   {
     ".preview-product-grid": {
       display: "grid",
       gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-      gap: "1px",
-      background: "#d9d9d6",
-      border: "1px solid #d9d9d6",
+      gap: "clamp(28px, 4vw, 56px) clamp(16px, 2vw, 24px)",
+      justifyItems: "center",
     },
   },
+  { ".preview-product-grid .rx-model": { width: "100%" } },
+  { ".preview-product-card": { width: "100%", scrollMarginTop: "100px" } },
   {
-    ".preview-product-card": {
+    ".store-series-links": {
       display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      textAlign: "center",
-      background: "#fff",
-      padding: "28px 24px",
-      minWidth: "0",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      gap: "8px 28px",
+      margin: "48px 0 0",
+    },
+  },
+  // Help shelf
+  { ".store-help": { paddingBlock: "clamp(56px, 7vw, 88px) 0" } },
+  {
+    ".store-help-card": {
+      width: "clamp(260px, 26vw, 313px)",
+      height: "300px",
+      padding: "30px",
+      gap: "6px",
+    },
+  },
+  { ".store-help-card .rx-eyebrow": { margin: "0", fontSize: "12px" } },
+  {
+    ".store-help-card strong": {
+      fontSize: "24px",
+      lineHeight: "1.17",
+      fontWeight: "600",
+      letterSpacing: "0.009em",
     },
   },
   {
-    ".preview-card-image": {
-      display: "grid",
-      placeItems: "center",
-      width: "100%",
-      aspectRatio: "1",
-      padding: "26px",
-    },
-  },
-  {
-    ".preview-card-image svg": {
-      width: "100%",
-      height: "100%",
-      minHeight: "0",
-      filter: "drop-shadow(0 12px 10px #00000010)",
-      transition: "transform 0.4s ease",
-    },
-  },
-  {
-    ".preview-card-image:hover svg": {
-      transform: "translateY(-3px)",
-    },
-  },
-  {
-    ".preview-product-card .preview-card-finish": {
-      margin: "8px 0 12px",
-      fontSize: "10px",
-      color: "#666660",
-    },
-  },
-  {
-    ".preview-product-card h3": {
-      margin: "0",
-      fontSize: "20px",
-      fontWeight: "500",
-      letterSpacing: "-0.03em",
-    },
-  },
-  {
-    ".preview-card-description": {
-      fontSize: "12px",
-      lineHeight: "1.6",
-      color: "#62625c",
-      maxWidth: "260px",
-      margin: "16px 0 24px",
-    },
-  },
-  {
-    ".preview-product-card .preview-card-price": {
-      margin: "auto 0 0",
-      paddingTop: "24px",
-      fontSize: "13px",
+    ".store-help-card svg": {
+      marginTop: "auto",
+      alignSelf: "flex-end",
+      fontSize: "56px",
+      color: "var(--rx-accent)",
     },
   },
   {
     ".preview-collection-note": {
-      margin: "42px 0 0",
-      paddingTop: "20px",
-      borderTop: "1px solid #d6d6cf",
-      fontSize: "10px",
-      lineHeight: "1.6",
-      color: "#62625c",
+      margin: "16px auto 64px",
+      fontSize: "12px",
+      color: "var(--rx-muted)",
     },
   },
   {
-    "@media (prefers-reduced-motion: no-preference)": [
-      {
-        ".preview-product-info": {
-          animation: "preview-reveal 0.4s ease-out",
-        },
-      },
-      {
-        ".storefront-preview": {
-          scrollBehavior: "smooth",
-        },
-      },
+    "@media (max-width: 833px)": [
+      { ".preview-product-grid": { gridTemplateColumns: "repeat(2, minmax(0, 1fr))" } },
+      { ".store-head-aside": { alignItems: "flex-start", textAlign: "left" } },
     ],
   },
   {
-    "@media (max-width: 900px)": [
-      {
-        ".preview-hero .preview-hero-bottom": {
-          left: "24px",
-          bottom: "24px",
-        },
-      },
-      {
-        ".preview-product-card": {
-          padding: "20px 12px",
-        },
-      },
-      {
-        ".preview-card-image": {
-          padding: "18px",
-        },
-      },
-    ],
-  },
-  {
-    "@media (max-width: 600px)": [
-      {
-        ".preview-hero .preview-hero-bottom": {
-          position: "static",
-          width: "100%",
-          marginTop: "28px",
-        },
-      },
-      {
-        ".preview-collection": {
-          padding: "44px 20px 28px",
-        },
-      },
-      {
-        ".preview-collection-heading": {
-          alignItems: "start",
-          flexDirection: "column",
-          gap: "12px",
-          marginBottom: "30px",
-        },
-      },
-      {
-        ".preview-product-grid": {
-          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-          margin: "0 -20px",
-          borderLeft: "0",
-          borderRight: "0",
-        },
-      },
-      {
-        ".preview-card-image": {
-          aspectRatio: "1",
-        },
-      },
-      {
-        ".preview-product-card": {
-          padding: "22px 10px 26px",
-        },
-      },
-      {
-        ".preview-product-card h3": {
-          fontSize: "15px",
-        },
-      },
-      {
-        ".preview-card-description": {
-          display: "none",
-        },
-      },
-      {
-        ".preview-card-image": {
-          padding: "15px",
-        },
-      },
-      {
-        ".preview-product-card .preview-card-price": {
-          paddingTop: "28px",
-          fontSize: "12px",
-        },
-      },
+    "@media (max-width: 560px)": [
+      { ".preview-product-grid": { gridTemplateColumns: "1fr" } },
     ],
   },
 ];

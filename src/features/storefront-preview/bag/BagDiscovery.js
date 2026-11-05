@@ -26,7 +26,7 @@ const featured = products.find((product) => product.id === "silver");
 
 function Suggestions({ models, onAdd }) {
   return (
-    <div className="bag-suggestions">
+    <div className="bag-suggestions" data-reveal="up">
       {models.map((model) => (
         <article key={model.id}>
           <a href={productHref(model.id)}>
@@ -65,7 +65,7 @@ export default function BagDiscovery({ bag }) {
 
   return (
     <>
-      <aside className="bag-help">
+      <aside className="bag-help" data-reveal="fade">
         Need a hand?{" "}
         <button type="button" onClick={openQuestions}>
           Shopping questions
@@ -85,7 +85,7 @@ export default function BagDiscovery({ bag }) {
           )}
         </section>
       )}
-      <a className="bag-collection-banner" href="#preview-direction">
+      <a className="bag-collection-banner" href="#preview-direction" data-reveal="up">
         <div>
           <small>THE HEADPHONE COLLECTION</small>
           <h2>Find your frequency.</h2>

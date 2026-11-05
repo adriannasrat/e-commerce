@@ -6,21 +6,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import HeadphoneImage from "./HeadphoneImage";
 import ProductPlaceholder from "./ProductPlaceholder";
 import ScrollReveal from "./ScrollReveal";
-import { formatPrice } from "./products";
+import { finishColors, formatPrice, newModels } from "./products";
+import LocalNav from "./ui/LocalNav";
+import Photo from "./ui/Photo";
+import { productViews } from "./lifestyleImages";
 import ProductPurchaseOptions from "./ProductPurchaseOptions";
 import ProductInformation from "./ProductInformation";
 import RelatedProducts from "./RelatedProducts";
 
-const finishColors = {
-  Graphite: "#363735",
-  Chalk: "#eeede7",
-  Silver: "#b6b8ba",
-  Crimson: "#a92c38",
-};
-
 const finishesByCategory = {
-  "over-ear": ["Graphite", "Chalk", "Silver"],
-  "in-ear": ["Graphite", "Chalk", "Crimson"],
+  "over-ear": ["Graphite", "Chalk", "Silver", "Onyx"],
+  "in-ear": ["Graphite", "Chalk", "Crimson", "Espresso", "Onyx"],
 };
 
 export default function ProductDetail({ product, onAddToBag }) {
@@ -51,8 +47,36 @@ export default function ProductDetail({ product, onAddToBag }) {
     />
   );
 
+  const extraViews = productViews[product.id] || [];
+  const views = [
+    { id: "full", label: "Full product view" },
+    { id: "detail", label: "Close-up view" },
+    ...extraViews,
+  ];
+  const extra = extraViews.find((view) => view.id === imageView);
+  const stage = extra?.photo ? (
+    <Photo photo={extra.photo} eager />
+  ) : extra?.cutout ? (
+    <HeadphoneImage image={extra.cutout} />
+  ) : (
+    photo
+  );
+
   return (
     <div className="product-detail">
+      <LocalNav
+        title={product.name}
+        href={collectionHref(product.image.category)}
+        links={[
+          [`All ${category}`, collectionHref(product.image.category)],
+          ["Compare", collectionHref(product.image.category, "compare")],
+        ]}
+        buy={{
+          text: "Buy",
+          label: `Buy ${product.name}`,
+          onClick: () => onAddToBag?.(product.id),
+        }}
+      />
       <nav className="product-detail-breadcrumb" aria-label="Breadcrumb">
         <a href={collectionHref(product.image.category)}>
           {category} collection
@@ -61,19 +85,30 @@ export default function ProductDetail({ product, onAddToBag }) {
         <span>{product.name}</span>
       </nav>
       <div className="product-detail-layout">
-        <ScrollReveal className="product-detail-summary" delay={80}>
-          <p className="product-detail-eyebrow">
-            RESONANCE / {category.toUpperCase()}
+        <div className="product-detail-summary">
+          <p
+            data-reveal="up"
+            className={
+              newModels.includes(product.id)
+                ? "product-detail-eyebrow rx-new"
+                : "product-detail-eyebrow"
+            }
+          >
+            {newModels.includes(product.id)
+              ? "New"
+              : `${category} · ${product.image.category === "over-ear" ? "Form" : "Pocket"} series`}
           </p>
-          <h1 ref={title} tabIndex={-1}>
+          <h1 ref={title} tabIndex={-1} data-reveal="up">
             {product.name}
           </h1>
-          <p className="product-detail-tagline">{product.tagline}</p>
-          <p className="product-detail-price">
+          <p className="product-detail-tagline" data-reveal="up">{product.tagline}</p>
+          <p className="product-detail-price" data-reveal="up">
             {formatPrice(product.price)} <span>Demo price</span>
           </p>
-          <div className="product-detail-finishes">
-            <h2>Find your finish.</h2>
+          <div className="product-detail-finishes" data-reveal="up">
+            <h2>
+              Finish. <span>Pick your favourite.</span>
+            </h2>
             <p>
               {product.finishName} <span>— {product.name}</span>
             </p>
@@ -99,16 +134,19 @@ export default function ProductDetail({ product, onAddToBag }) {
             </small>
           </div>
           <ProductPurchaseOptions product={product} onAddToBag={onAddToBag} />
-        </ScrollReveal>
-        <ScrollReveal className="product-detail-gallery">
+        </div>
+        <ScrollReveal className="product-detail-gallery" variant="zoom">
           <button
             className="product-detail-photo"
             data-view={imageView}
+            data-kind={extra?.photo ? "photo" : "cutout"}
             onClick={() => setZoom(true)}
             aria-label={`Enlarge ${product.name} image`}
             aria-haspopup="dialog"
           >
-            {photo}
+            <span className="product-detail-stage" key={imageView}>
+              {stage}
+            </span>
             <span className="product-detail-enlarge">
               Take a closer look <span aria-hidden="true">+</span>
             </span>
@@ -118,17 +156,24 @@ export default function ProductDetail({ product, onAddToBag }) {
             role="group"
             aria-label="Product image view"
           >
-            {["full", "detail"].map((view) => (
+            {views.map((view) => (
               <button
-                key={view}
-                aria-label={
-                  view === "full" ? "Full product view" : "Close-up view"
-                }
-                aria-pressed={imageView === view}
-                onClick={() => setImageView(view)}
+                key={view.id}
+                aria-label={view.label}
+                aria-pressed={imageView === view.id}
+                onClick={() => setImageView(view.id)}
               >
-                <span className={`product-detail-thumbnail-${view}`}>
-                  <HeadphoneImage image={product.image} decorative />
+                <span
+                  className={`product-detail-thumbnail-${view.id}${view.photo ? " product-detail-thumbnail-photo" : ""}`}
+                >
+                  {view.photo ? (
+                    <Photo photo={view.photo} decorative />
+                  ) : (
+                    <HeadphoneImage
+                      image={view.cutout || product.image}
+                      decorative
+                    />
+                  )}
                 </span>
               </button>
             ))}
@@ -156,7 +201,12 @@ export default function ProductDetail({ product, onAddToBag }) {
           <CloseIcon />
         </IconButton>
         <h2 id="product-zoom-title">{product.name} enlarged image</h2>
-        {photo}
+        <div
+          className="product-detail-zoom-stage"
+          data-kind={extra?.photo ? "photo" : "cutout"}
+        >
+          {stage}
+        </div>
       </StorefrontDialog>
     </div>
   );

@@ -11,11 +11,11 @@ export default function ModelCompare() {
     setSelection(current => current.map((value, slot) => slot === index ? id : value));
   }
 
-  return <section className="shop-compare" aria-labelledby="compare-all-title">
-    <small>THE FIT GUIDE</small><h2 id="compare-all-title" tabIndex={-1}>Which pair is yours?</h2>
-    <p>Pick two models from either series to see how they compare.</p>
+  return <section className="shop-compare" aria-labelledby="compare-all-title" data-reveal-group="">
+    <small data-reveal="up">The fit guide</small><h2 id="compare-all-title" tabIndex={-1} data-reveal="up">Which pair is yours?</h2>
+    <p data-reveal="up">Pick two models from either series to see how they compare.</p>
     <div className="shop-compare-grid">
-      {models.map((model, index) => <article key={index}>
+      {models.map((model, index) => <article key={index} data-reveal="item">
         <label>Headphone {index + 1}
           <select value={model.id} onChange={event => choose(index, event.target.value)}>
             {products.map(option => <option key={option.id} value={option.id} disabled={option.id === selection[1-index]}>{option.name}</option>)}

@@ -10,7 +10,7 @@ const styles = [
       "gap": "24px",
       "padding": "24px max(24px, 6%)",
       "background": "#f8f8f5",
-      "borderBottom": "1px solid #deded9"
+      "borderBottom": "1px solid #d2d2d7"
     }
   },
   {
@@ -51,7 +51,7 @@ const styles = [
   {
     ".added-summary p": {
       "fontSize": "12px",
-      "color": "#686862",
+      "color": "#6e6e73",
       "margin": "8px 0 0"
     }
   },
@@ -63,7 +63,7 @@ const styles = [
   },
   {
     ".recommendation-section": {
-      "background": "#eeedeb",
+      "background": "#f5f5f7",
       "padding": "72px max(24px, 6%)"
     }
   },
@@ -93,7 +93,7 @@ const styles = [
       "maxWidth": "620px",
       "fontSize": "14px",
       "lineHeight": "1.7",
-      "color": "#62625c"
+      "color": "#6e6e73"
     }
   },
   {
@@ -134,7 +134,7 @@ const styles = [
       "fontSize": "9px",
       "textTransform": "uppercase",
       "letterSpacing": "0.05em",
-      "color": "#757570"
+      "color": "#6e6e73"
     }
   },
   {
@@ -197,7 +197,7 @@ const styles = [
   {
     ".recommendation-purchase > span,\n.recommendation-purchase small": {
       "fontSize": "10px",
-      "color": "#757570"
+      "color": "#6e6e73"
     }
   },
   {
@@ -208,8 +208,8 @@ const styles = [
   },
   {
     ".recommendation-purchase .bag-button:disabled": {
-      "background": "#777771",
-      "borderColor": "#777771",
+      "background": "#6e6e73",
+      "borderColor": "#6e6e73",
       "cursor": "default"
     }
   },
