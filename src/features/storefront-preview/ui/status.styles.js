@@ -11,6 +11,16 @@ const styles = [
     },
   },
   { ".storefront-status p": { margin: "0 0 16px" } },
+  {
+    ".bag-error": {
+      margin: 0,
+      padding: "12px 22px",
+      textAlign: "center",
+      fontSize: "14px",
+      color: "#fff",
+      background: "var(--rx-accent)",
+    },
+  },
 ];
 
 export default styles;

@@ -132,6 +132,11 @@ function Storefront() {
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
           <main id="preview-main" tabIndex={-1} ref={main}>
+            {bag.error && (
+              <p className="bag-error" role="alert">
+                {bag.error}
+              </p>
+            )}
             {productId !== null ? (
               product ? (
                 <ProductDetail
