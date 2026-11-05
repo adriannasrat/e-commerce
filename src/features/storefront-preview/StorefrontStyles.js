@@ -18,6 +18,7 @@ import previewStyles from "./preview.styles";
 import navigationStyles from "./navigation.styles";
 import pageStyles from "./ui/pages.styles";
 import filmStyles from "./ui/film.styles";
+import statusStyles from "./ui/status.styles";
 
 // Keep the established cascade order, including styles for portalled dialogs.
 // Foundation tokens come first; shared press and dialog feedback come last.
@@ -39,6 +40,7 @@ const styles = gateHover([
   navigationStyles,
   pageStyles,
   filmStyles,
+  statusStyles,
   interactionStyles,
 ]);
 

@@ -8,7 +8,7 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import MenuGlyph from "./MenuGlyph";
 import { navigationLinks } from "./navigationLinks";
-import { flyouts } from "./flyouts";
+import { getFlyouts } from "./flyouts";
 import PreviewMenu from "./PreviewMenu";
 import PreviewActionDialog from "./PreviewActionDialog";
 
@@ -19,7 +19,7 @@ const actions = [
 ];
 
 function Flyout({ id, open, onNavigate }) {
-  const columns = flyouts[id] || [];
+  const columns = getFlyouts()[id] || [];
   return (
     <div
       className="rx-flyout"
@@ -70,7 +70,7 @@ export default function PreviewHeader({ bag }) {
 
   function showFlyout(id, immediate = false) {
     clearTimeout(timer.current);
-    if (!flyouts[id]) {
+    if (!getFlyouts()[id]) {
       setFlyout(null);
       return;
     }
@@ -138,7 +138,7 @@ export default function PreviewHeader({ bag }) {
                   >
                     {title}
                   </a>
-                  {flyouts[id] && (
+                  {getFlyouts()[id] && (
                     <button
                       type="button"
                       className="rx-globalnav-submenu"

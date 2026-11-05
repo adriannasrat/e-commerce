@@ -11,7 +11,7 @@ const series = (category) => products
   .filter((product) => product.image.category === category)
   .map((product) => [product.name, productHref(product.id)]);
 
-const groups = [
+const getGroups = () => [
   ['Shop and learn', [
     ['All headphones', '#preview-direction'],
     ['Over-ear headphones', collectionHref('over-ear')],
@@ -47,7 +47,7 @@ export default function StorefrontFooter({ currentPage }) {
         <ChevronRightRounded aria-hidden="true" /><span>{currentPage}</span>
       </div>
       <nav aria-label="Footer navigation" className="res-footer-directory">
-        {groups.map(([label, links]) => {
+        {getGroups().map(([label, links]) => {
           const list = <ul>{links.map(([text, href]) => <li key={href}><a href={href}>{text}</a></li>)}</ul>;
           return compact
             ? <Disclosure key={label} label={label} heading="h2">{list}</Disclosure>

@@ -18,11 +18,6 @@ import { films } from "./ui/films";
 import ModelCard from "./ui/ModelCard";
 import Shelf from "./ui/Shelf";
 
-const latest = [
-  ...products.filter((product) => newModels.includes(product.id)),
-  ...products.filter((product) => !newModels.includes(product.id)),
-];
-
 const darkCards = ["silver", "black", "in-ear-black", "form-04", "pocket-05"];
 
 const help = [
@@ -54,6 +49,10 @@ const help = [
 
 export default function HeadphoneCollection({ onAddToBag }) {
   const [fit, setFit] = useState("All");
+  const latest = [
+    ...products.filter((product) => newModels.includes(product.id)),
+    ...products.filter((product) => !newModels.includes(product.id)),
+  ];
   const visible = products.filter(
     (model) => fit === "All" || model.image.category === fit,
   );

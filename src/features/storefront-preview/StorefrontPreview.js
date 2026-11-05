@@ -23,6 +23,7 @@ import BagPage from "./bag/BagPage";
 import AddedToBag from "./recommendations/AddedToBag";
 import SignInPage from "./auth/SignInPage";
 import { AuthProvider } from "./auth/AuthContext";
+import CatalogueGate from "./CatalogueGate";
 
 function NotFound({ title, detail, href, action }) {
   return (
@@ -192,8 +193,10 @@ function Storefront() {
 
 export default function StorefrontPreview() {
   return (
-    <AuthProvider>
-      <Storefront />
-    </AuthProvider>
+    <CatalogueGate>
+      <AuthProvider>
+        <Storefront />
+      </AuthProvider>
+    </CatalogueGate>
   );
 }

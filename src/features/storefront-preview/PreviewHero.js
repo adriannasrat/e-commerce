@@ -6,14 +6,14 @@ import { films } from "./ui/films";
 import useFilm from "./ui/useFilm";
 
 const film = films.home;
-const fromPrice = Math.min(
-  ...collectionModels("over-ear").map((model) => model.price),
-);
 
 // The first thing on the site: one line, two actions, and a film that plays
 // once and rests on its last frame.
 export default function PreviewHero() {
   const { failed, ended, playing, toggle, videoProps } = useFilm();
+  const fromPrice = Math.min(
+    ...collectionModels("over-ear").map((model) => model.price),
+  );
   return (
     <section className="preview-hero" aria-labelledby="preview-headline">
       <div className="preview-hero-copy">
