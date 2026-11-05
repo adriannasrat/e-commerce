@@ -47,6 +47,26 @@ const tiles = [
     buy: productHref("in-ear-red"),
     label: "Pocket 03",
   },
+  {
+    id: "form-05",
+    name: "Form 05",
+    kicker: "New in Ocean",
+    tone: "light",
+    caption: "Deep blue. Deeper listening.",
+    learn: productHref("form-05"),
+    buy: productHref("form-05"),
+    label: "Form 05",
+  },
+  {
+    id: "form-06",
+    name: "Form 06",
+    kicker: "New in Sage",
+    tone: "light",
+    caption: "A breath of green.",
+    learn: productHref("form-06"),
+    buy: productHref("form-06"),
+    label: "Form 06",
+  },
 ];
 
 export default function ProductShowcase() {
