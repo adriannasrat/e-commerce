@@ -8,6 +8,10 @@ const film = (name, content) => ({
 });
 
 export const films = {
+  home: film("home-hero", {
+    description:
+      "Dark over-ear headphones floating against a pale backdrop, turning slowly from front to side.",
+  }),
   "over-ear": film("form-film", {
     title: "See it move.",
     lead: "Every curve of the Form silhouette, up close.",

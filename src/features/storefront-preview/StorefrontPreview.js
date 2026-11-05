@@ -5,7 +5,7 @@ import Campaign from "./collections/Campaign";
 import { collections, collectionRoute } from "./collections/collections";
 import StorefrontStyles from "./StorefrontStyles";
 import StorefrontFooter from "./footer/StorefrontFooter";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import useReveal from "./ui/useReveal";
 import { ScopedCssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -38,7 +38,6 @@ function NotFound({ title, detail, href, action }) {
 }
 
 export default function StorefrontPreview() {
-  const [selected, setSelected] = useState("black");
   const { hash, productId, addedId } = usePreviewRoute();
   const bag = usePreviewBag();
   const main = useRef(null);
@@ -175,7 +174,7 @@ export default function StorefrontPreview() {
                 addedId !== null
               }
             >
-              <PreviewHero selected={selected} onSelect={setSelected} />
+              <PreviewHero />
               <Campaign category="over-ear" />
               <Campaign category="in-ear" />
               <ProductShowcase />

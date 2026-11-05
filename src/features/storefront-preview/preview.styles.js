@@ -50,143 +50,72 @@ const styles = [
     },
   },
   { "#preview-main": { outline: "none" } },
-  // Product hero
+  // Home hero: copy on the film's own backdrop tone, then the film full-bleed.
   {
     ".preview-hero": {
+      background: "#e3e1d3",
+      color: "var(--rx-ink)",
+      textAlign: "center",
+    },
+  },
+  {
+    ".preview-hero-copy": {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      padding: "36px 22px 40px",
-      textAlign: "center",
-      background: "linear-gradient(#fff 55%, var(--rx-gray))",
+      padding: "clamp(44px, 5vw, 64px) 22px 12px",
     },
   },
   {
-    ".preview-headline": {
-      margin: "22px 0 4px",
-      fontSize: "17px",
-      fontWeight: "600",
-      letterSpacing: "-0.022em",
-      color: "var(--rx-muted)",
-    },
-  },
-  { ".preview-product-info .rx-new": { fontSize: "17px", marginBottom: "2px" } },
-  {
-    ".preview-demo-price": {
+    ".preview-hero-price": {
       margin: "12px 0 0",
       fontSize: "17px",
-      color: "var(--rx-muted)",
+      color: "#5f5e55",
       fontVariantNumeric: "tabular-nums",
     },
   },
+  { ".preview-hero-copy .rx-actions": { justifyContent: "center" } },
   {
-    "@media (prefers-reduced-motion: no-preference)": [
-      {
-        ".preview-product-info": {
-          animation: "preview-info-in 420ms var(--ease-out) both",
-        },
-      },
-      {
-        "@keyframes preview-info-in": [
-          { from: { opacity: "0", filter: "blur(4px)", translate: "0 6px" } },
-          { to: { opacity: "1", filter: "blur(0)", translate: "0 0" } },
-        ],
-      },
-    ],
-  },
-  {
-    ".preview-gallery": {
+    // Sized from the window height so the whole product shows without scrolling.
+    ".preview-hero-film": {
       position: "relative",
-      display: "block",
-      width: "min(820px, 100%)",
-      height: "clamp(320px, 40vw, 560px)",
-      marginTop: "28px",
-      touchAction: "pan-y",
-      WebkitUserSelect: "none",
-      userSelect: "none",
+      width: "min(100%, max(720px, calc((100svh - 340px) * 16 / 9)))",
+      aspectRatio: "16 / 9",
+      marginInline: "auto",
+      overflow: "hidden",
     },
   },
   {
-    ".preview-gallery-slide": {
-      position: "absolute",
-      inset: "0",
-      opacity: "0",
-      transform: "translateY(16px) scale(0.96)",
-      filter: "blur(6px)",
-      transition:
-        "opacity 400ms ease,\n    filter 400ms ease,\n    transform 520ms var(--ease-out)",
-      pointerEvents: "none",
-    },
-  },
-  {
-    '.preview-gallery-slide[data-active="true"]': {
-      opacity: "1",
-      transform: "none",
-      filter: "blur(0)",
-    },
-  },
-  {
-    ".preview-product-photo": {
+    // The light in the footage moves, so every edge melts into the backdrop.
+    ".preview-hero-film video": {
       display: "block",
       width: "100%",
       height: "100%",
-      filter: "drop-shadow(0 30px 30px rgba(0, 0, 0, 0.14))",
-      transition: "transform 500ms var(--ease-out)",
+      objectFit: "cover",
+      maskImage:
+        "linear-gradient(to bottom, transparent, #000 14%, #000 92%, transparent), linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)",
+      WebkitMaskImage:
+        "linear-gradient(to bottom, transparent, #000 14%, #000 92%, transparent), linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)",
+      maskComposite: "intersect",
+      WebkitMaskComposite: "source-in",
     },
   },
   {
-    ".preview-gallery:hover .preview-product-photo": {
-      transform: "translateY(-6px) scale(1.015)",
-    },
-  },
-  {
-    ".preview-hero-footer": {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: "12px",
-      marginTop: "18px",
-    },
-  },
-  {
-    ".preview-gallery-picker": {
-      display: "flex",
-      gap: "10px",
-    },
-  },
-  {
-    ".preview-gallery-option": {
-      display: "grid",
-      placeItems: "center",
-      width: "56px",
-      height: "56px",
-      padding: "8px",
-      border: "1px solid transparent",
-      borderRadius: "14px",
-      background: "#fff",
-      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.08)",
-      cursor: "pointer",
-      transition:
-        "border-color 200ms ease,\n    box-shadow 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
-    },
-  },
-  { ".preview-gallery-option svg": { width: "100%", height: "100%" } },
-  { ".preview-gallery-option:hover": { boxShadow: "0 2px 10px rgba(0, 0, 0, 0.14)" } },
-  {
-    '.preview-gallery-option[aria-pressed="true"]': {
-      borderColor: "var(--rx-accent)",
-      boxShadow: "0 0 0 1px var(--rx-accent)",
-    },
-  },
-  {
-    ".hero-swipe-tip": {
-      fontSize: "12px",
-      color: "var(--rx-muted)",
-    },
+    "@media (max-width: 734px)": [
+      { ".preview-hero-film": { width: "100%", aspectRatio: "1 / 1" } },
+      {
+        ".preview-hero-film video": {
+          maskImage: "linear-gradient(to bottom, transparent, #000 14%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 14%)",
+          maskComposite: "add",
+          WebkitMaskComposite: "source-over",
+        },
+      },
+    ],
   },
   // Placeholder headphones (shown when a product photo fails to load)
   {
-    ".preview-product:not(.preview-gallery)": {
+    ".preview-product": {
       "--cup": "#41413f",
       "--cup-edge": "#222220",
       "--band": "#292927",
