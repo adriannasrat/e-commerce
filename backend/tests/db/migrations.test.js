@@ -61,3 +61,20 @@ test('duplicate cart rows merge, and the database then rejects invalid rows', as
   await assert.rejects(insert(0), /CONSTRAINT/);
   await sequelize.close();
 });
+
+test('ratings without an owner survive adding user_id', async () => {
+  const sequelize = await migrateLegacyDatabase(async (db) => {
+    await seedUserAndProduct(db);
+    await db.query('ALTER TABLE Ratings DROP FOREIGN KEY ratings_ibfk_1');
+    await db.query('ALTER TABLE Ratings DROP COLUMN user_id');
+    await db.query(`INSERT INTO Ratings (rating, product_id, createdAt, updatedAt) VALUES (4, 1, ${now}, ${now})`);
+  });
+  const rows = await sequelize.query('SELECT rating, user_id FROM Ratings', { type: QueryTypes.SELECT });
+  assert.deepEqual(rows, [{ rating: 4, user_id: null }]);
+  await sequelize.query(`INSERT INTO Ratings (rating, product_id, user_id, createdAt, updatedAt) VALUES (5, 1, 1, ${now}, ${now})`);
+  await assert.rejects(
+    sequelize.query(`INSERT INTO Ratings (rating, product_id, user_id, createdAt, updatedAt) VALUES (3, 1, 1, ${now}, ${now})`),
+    { name: "SequelizeUniqueConstraintError" },
+  );
+  await sequelize.close();
+});
