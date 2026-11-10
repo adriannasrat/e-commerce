@@ -26,15 +26,14 @@ File paths are resolved relative to the module, not the working directory.
 | DB_USER | root | Local development database user |
 | DB_PASS | unset | Database password; never logged |
 
-Ports must be integers between 1 and 65535. The database configuration adapter
-uses the same MariaDB settings as the running API. Use a dedicated database user
+Ports must be integers between 1 and 65535. Use a dedicated database user
 when configuring a deployed environment; local defaults are not deployment policy.
 
 ## Commands and checks
 
 - `npm run migrate` applies migrations not yet recorded in `SequelizeMeta`. They keep
-  existing data, but MariaDB cannot roll back schema changes: back up first with
-  `mariadb-dump shop_db > backup.sql`.
+  existing data, but MariaDB cannot roll back schema changes. Back up first, outside
+  the repository, with `mariadb-dump -u webshop_user -p shop_db > ~/shop_db-backup.sql`.
 - `npm run start:api` starts the API after MariaDB authentication succeeds.
 - `npm run test:api` needs no database.
 - `npm run test:db` covers migrations, accounts, carts and checkout. It empties its
