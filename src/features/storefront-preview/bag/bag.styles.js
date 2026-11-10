@@ -514,4 +514,6 @@ const styles = [
   },
 ];
 
-export default [...styles, bagReviewStyles];
+const bagStyles = [...styles, bagReviewStyles];
+
+export default bagStyles;
