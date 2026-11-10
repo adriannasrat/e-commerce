@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react";
+import { useId, useState } from "react";
 import { styled } from "@mui/material/styles";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 

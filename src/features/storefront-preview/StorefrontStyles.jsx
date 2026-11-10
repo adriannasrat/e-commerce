@@ -1,7 +1,6 @@
 import shoppingStyles from "./shopping/shopping.styles";
 import footerStyles from "./footer/footer.styles";
 import collectionPageStyles from "./collections/collection-pages.styles";
-import React from "react";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { foundationStyles, interactionStyles } from "./foundation.styles";
 import gateHover from "./gateHover";

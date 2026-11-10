@@ -1,4 +1,3 @@
-import React from "react";
 
 // End-of-page directory: the family name, its models in large type, then
 // shopping and related links in smaller columns.

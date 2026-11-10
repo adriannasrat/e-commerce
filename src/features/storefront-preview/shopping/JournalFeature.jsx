@@ -1,4 +1,3 @@
-import React from 'react';
 import GraphicEqRounded from '@mui/icons-material/GraphicEqRounded';
 import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import Photo from '../ui/Photo';

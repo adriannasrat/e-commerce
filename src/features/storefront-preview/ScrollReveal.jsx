@@ -1,4 +1,3 @@
-import React from "react";
 
 // Marks an element for the page's scroll choreography (see ui/useReveal).
 // variant: "up" (default) | "item" | "fade" | "zoom"; delay adds extra ms.

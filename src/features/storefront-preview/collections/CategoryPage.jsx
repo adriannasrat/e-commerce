@@ -1,5 +1,5 @@
 import BuyingGuide from "../shopping/BuyingGuide";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import ViewColumnOutlined from "@mui/icons-material/ViewColumnOutlined";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import CompareArrowsRounded from "@mui/icons-material/CompareArrowsRounded";

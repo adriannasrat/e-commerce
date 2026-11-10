@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import ScrollReveal from "./ScrollReveal";
 import useReveal, { revealDelays } from "./ui/useReveal";

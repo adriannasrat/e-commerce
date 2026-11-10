@@ -1,5 +1,5 @@
 import BagPanel from "./bag/BagPanel";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge, IconButton, useMediaQuery } from "@mui/material";
 import GraphicEqRounded from "@mui/icons-material/GraphicEqRounded";
 import SearchIcon from "@mui/icons-material/Search";

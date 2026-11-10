@@ -1,4 +1,3 @@
-import React from "react";
 import { collectionHref } from "./collections/collections";
 import HeadphoneImage from "./HeadphoneImage";
 import { products } from "./products";

@@ -1,5 +1,5 @@
 import StorefrontDialog from "../StorefrontDialog";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { DialogContent, DialogTitle, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import HeadphoneImage from "../HeadphoneImage";

@@ -1,4 +1,3 @@
-import React from "react";
 import HeadphoneImage from "../HeadphoneImage";
 import { finishColors, formatPrice, newModels } from "../products";
 import { productHref } from "../usePreviewRoute";

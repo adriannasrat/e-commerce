@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 // A lifestyle photograph that fills its box, cropped around its focal point.
 // It loads lazily and fades in once decoded, like the product cut-outs.

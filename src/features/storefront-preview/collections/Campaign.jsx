@@ -1,4 +1,3 @@
-import React from "react";
 import HeadphoneImage from "../HeadphoneImage";
 import { productHref } from "../usePreviewRoute";
 import { products, formatPrice } from "../products";

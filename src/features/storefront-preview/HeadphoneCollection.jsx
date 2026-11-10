@@ -1,5 +1,5 @@
 import ScrollReveal from "./ScrollReveal";
-import React, { useState } from "react";
+import { useState } from "react";
 import ViewColumnOutlined from "@mui/icons-material/ViewColumnOutlined";
 import GraphicEqRounded from "@mui/icons-material/GraphicEqRounded";
 import CompareArrowsRounded from "@mui/icons-material/CompareArrowsRounded";

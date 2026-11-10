@@ -1,4 +1,3 @@
-import React from "react";
 import { collectionHref, collectionModels } from "./collections/collections";
 import { formatPrice } from "./products";
 import FilmToggle from "./ui/FilmToggle";

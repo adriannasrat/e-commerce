@@ -1,4 +1,3 @@
-import React from "react";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";

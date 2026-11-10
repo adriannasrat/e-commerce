@@ -1,5 +1,4 @@
 import StorefrontDialog from "../StorefrontDialog";
-import React from "react";
 import { IconButton, useMediaQuery } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import HeadphoneImage from "../HeadphoneImage";

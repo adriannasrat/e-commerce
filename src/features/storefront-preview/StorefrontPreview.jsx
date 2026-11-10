@@ -5,7 +5,7 @@ import Campaign from "./collections/Campaign";
 import { collections, collectionRoute } from "./collections/collections";
 import StorefrontStyles from "./StorefrontStyles";
 import StorefrontFooter from "./footer/StorefrontFooter";
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import useReveal from "./ui/useReveal";
 import { ScopedCssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";

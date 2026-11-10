@@ -1,6 +1,5 @@
 import CatalogSearch from "./shopping/CatalogSearch";
 import StorefrontDialog from "./StorefrontDialog";
-import React from "react";
 import {
   DialogContent,
   DialogTitle,

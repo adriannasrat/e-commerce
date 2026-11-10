@@ -1,4 +1,3 @@
-import React from "react";
 
 // Sticky product-family bar: title on the left, section links and a Buy
 // button on the right. It stays pinned under the global navigation.

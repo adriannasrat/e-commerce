@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { sandSetImage } from "../lifestyleImages";
 import { productHref } from "../usePreviewRoute";
 

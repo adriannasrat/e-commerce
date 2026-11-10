@@ -1,4 +1,3 @@
-import React from "react";
 import HeadphoneImage from "../HeadphoneImage";
 
 // The row of product icons under a page title, as on product-family pages.

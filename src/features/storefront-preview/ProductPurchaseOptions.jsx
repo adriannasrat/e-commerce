@@ -1,5 +1,5 @@
 import StorefrontDialog from "./StorefrontDialog";
-import React, { useState } from "react";
+import { useState } from "react";
 import { DialogContent, DialogTitle, IconButton } from "@mui/material";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";

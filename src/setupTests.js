@@ -14,5 +14,5 @@ setCatalogue(testCatalogue);
 // Component tests never reach a server. Each test starts signed out.
 beforeEach(() => {
   mockApi.reset();
-  global.fetch = mockApi.fetch;
+  globalThis.fetch = mockApi.fetch;
 });

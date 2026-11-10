@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Disclosure from "../Disclosure";
 import HeadphoneImage from "../HeadphoneImage";
 import { products, formatPrice } from "../products";

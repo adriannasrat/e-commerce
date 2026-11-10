@@ -1,4 +1,3 @@
-import React from 'react';
 import { useMediaQuery } from '@mui/material';
 import Disclosure from '../Disclosure';
 import GraphicEqRounded from '@mui/icons-material/GraphicEqRounded';

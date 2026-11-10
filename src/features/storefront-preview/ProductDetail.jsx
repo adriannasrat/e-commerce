@@ -1,6 +1,6 @@
 import StorefrontDialog from "./StorefrontDialog";
 import { collectionHref } from "./collections/collections";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { IconButton, useMediaQuery } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import HeadphoneImage from "./HeadphoneImage";

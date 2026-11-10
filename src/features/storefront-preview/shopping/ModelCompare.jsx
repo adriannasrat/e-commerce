@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { products, formatPrice } from '../products';
 import HeadphoneImage from '../HeadphoneImage';
 import { productHref } from '../usePreviewRoute';

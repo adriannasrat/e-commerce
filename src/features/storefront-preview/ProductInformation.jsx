@@ -1,4 +1,3 @@
-import React from "react";
 import Disclosure from "./Disclosure";
 import ScrollReveal from "./ScrollReveal";
 

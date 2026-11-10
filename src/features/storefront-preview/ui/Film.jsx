@@ -1,4 +1,3 @@
-import React from "react";
 import FilmToggle from "./FilmToggle";
 import useFilm from "./useFilm";
 

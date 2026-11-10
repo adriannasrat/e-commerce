@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 // Optical size per category: earbuds framed as tightly as headphones read
 // far too large next to them, so they get extra breathing room.

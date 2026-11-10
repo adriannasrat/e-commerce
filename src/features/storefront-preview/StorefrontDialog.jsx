@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Dialog } from "@mui/material";
 
 // Move focus before MUI hides the background, and restore it after the exit.

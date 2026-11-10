@@ -1,5 +1,4 @@
 import StorefrontDialog from "./StorefrontDialog";
-import React from "react";
 import { IconButton, Fade, useMediaQuery } from "@mui/material";
 import MenuGlyph from "./MenuGlyph";
 import { navigationLinks } from "./navigationLinks";
