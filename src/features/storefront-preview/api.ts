@@ -1,6 +1,12 @@
+type Method = "GET" | "POST" | "PUT" | "DELETE";
+
 // Same-origin JSON calls: the session lives in an httpOnly cookie.
-export async function api(method, path, body) {
-  let response;
+export async function api<T = unknown>(
+  method: Method,
+  path: string,
+  body?: unknown,
+): Promise<T> {
+  let response: Response;
   try {
     response = await fetch(path, {
       method,
@@ -16,11 +22,13 @@ export async function api(method, path, body) {
   if (!response.ok) {
     throw new ApiError(response.status, data?.error || "Something went wrong. Please try again.");
   }
-  return data;
+  return data as T;
 }
 
 export class ApiError extends Error {
-  constructor(status, message) {
+  readonly status: number;
+
+  constructor(status: number, message: string) {
     super(message);
     this.status = status;
   }

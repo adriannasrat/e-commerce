@@ -1,0 +1,20 @@
+{
+  // TypeScript is adopted gradually: new files are written in TypeScript and
+  // existing JavaScript is converted when it changes. Only .ts and .tsx files
+  // are type-checked.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "types": ["vite/client", "vitest/globals"]
+  },
+  "include": ["src"]
+}
