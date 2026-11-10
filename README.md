@@ -44,7 +44,7 @@ carry most of the weight:
 
 ## Run it locally
 
-You need Node.js 24, as pinned in `.nvmrc`, and MariaDB 11.
+You need Node.js 26, as pinned in `.nvmrc`, and MariaDB 11.
 
 1. Install dependencies.
 
