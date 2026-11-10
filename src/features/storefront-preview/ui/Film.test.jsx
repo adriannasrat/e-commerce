@@ -8,9 +8,9 @@ import { products } from "../products";
 const film = films["over-ear"];
 
 function mockObserver() {
-  const instance = { observe: jest.fn(), disconnect: jest.fn(), unobserve: jest.fn() };
+  const instance = { observe: vi.fn(), disconnect: vi.fn(), unobserve: vi.fn() };
   let callback;
-  window.IntersectionObserver = jest.fn((handler) => {
+  window.IntersectionObserver = vi.fn(function (handler) {
     callback = handler;
     return instance;
   });
@@ -20,11 +20,11 @@ function mockObserver() {
 let play;
 let pause;
 beforeEach(() => {
-  play = jest.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
-  pause = jest.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+  play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+  pause = vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
 });
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
   delete window.IntersectionObserver;
   delete window.matchMedia;
 });
@@ -46,7 +46,7 @@ test("pausing a film holds it when it scrolls back into view", () => {
   const setInView = mockObserver();
   render(<Film film={film} />);
   const video = screen.getByLabelText(film.description);
-  jest.spyOn(video, "paused", "get").mockReturnValue(false);
+  vi.spyOn(video, "paused", "get").mockReturnValue(false);
   fireEvent.play(video);
   fireEvent.click(screen.getByRole("button", { name: "Pause film" }));
   expect(pause).toHaveBeenCalledTimes(1);
@@ -58,7 +58,7 @@ test("pausing a film holds it when it scrolls back into view", () => {
 
 test("reduced motion keeps the poster until the visitor presses play", () => {
   const setInView = mockObserver();
-  window.matchMedia = jest.fn(() => ({ matches: true }));
+  window.matchMedia = vi.fn(() => ({ matches: true }));
   render(<Film film={film} />);
   setInView(true);
   expect(play).not.toHaveBeenCalled();

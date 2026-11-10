@@ -6,7 +6,7 @@ import { products, formatPrice } from "./products";
 import { productHref, productIdFromHash } from "./usePreviewRoute";
 
 beforeEach(() => {
-  window.scrollTo = jest.fn();
+  window.scrollTo = vi.fn();
 });
 
 test.each(products)(
@@ -78,7 +78,7 @@ test("changing products resets the gallery, scroll and heading focus", () => {
 
 test("purchase controls add the selected model and save it across visits", () => {
   localStorage.clear();
-  const onAddToBag = jest.fn();
+  const onAddToBag = vi.fn();
   const { unmount } = render(
     <ProductDetail product={products[0]} onAddToBag={onAddToBag} />,
   );

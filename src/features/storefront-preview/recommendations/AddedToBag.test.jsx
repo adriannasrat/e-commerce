@@ -6,8 +6,8 @@ import { BAG_STORAGE_KEY } from '../bag/bagState';
 
 beforeEach(() => {
   localStorage.clear();
-  window.scrollTo = jest.fn();
-  Element.prototype.scrollIntoView = jest.fn();
+  window.scrollTo = vi.fn();
+  Element.prototype.scrollIntoView = vi.fn();
 });
 
 test('adding opens recommendations, extra items stay on the page, and refresh does not add duplicates', async () => {

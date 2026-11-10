@@ -7,15 +7,15 @@ import { films } from "./ui/films";
 let play;
 let setInView;
 beforeEach(() => {
-  play = jest.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
-  jest.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
-  window.IntersectionObserver = jest.fn((handler) => {
+  play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+  vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+  window.IntersectionObserver = vi.fn(function (handler) {
     setInView = (isIntersecting) => handler([{ isIntersecting }]);
-    return { observe: jest.fn(), disconnect: jest.fn() };
+    return { observe: vi.fn(), disconnect: vi.fn() };
   });
 });
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
   delete window.IntersectionObserver;
 });
 
@@ -36,7 +36,7 @@ test("the hero film plays once, rests on its last frame and can be replayed", ()
   fireEvent.play(video);
   fireEvent.pause(video);
   fireEvent.ended(video);
-  jest.spyOn(video, "ended", "get").mockReturnValue(true);
+  vi.spyOn(video, "ended", "get").mockReturnValue(true);
   setInView(false);
   setInView(true);
   expect(play).toHaveBeenCalledTimes(1);

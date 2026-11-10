@@ -5,7 +5,7 @@ import BagPage from "./BagPage";
 import { products } from "../products";
 
 beforeEach(() => {
-  window.scrollTo = jest.fn();
+  window.scrollTo = vi.fn();
 });
 
 const bagWith = (overrides) => ({

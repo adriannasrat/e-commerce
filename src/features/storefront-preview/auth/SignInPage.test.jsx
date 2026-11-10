@@ -4,16 +4,18 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import StorefrontPreview from "../StorefrontPreview";
 import { mockApi } from "../testApi";
 
-jest.mock("../theme", () => {
-  const { createTheme } = require("@mui/material/styles");
-  return createTheme({
-    components: { MuiButtonBase: { defaultProps: { disableRipple: true } } },
-  });
+vi.mock("../theme", async () => {
+  const { createTheme } = await import("@mui/material/styles");
+  return {
+    default: createTheme({
+      components: { MuiButtonBase: { defaultProps: { disableRipple: true } } },
+    }),
+  };
 });
 
 beforeEach(() => {
-  window.scrollTo = jest.fn();
-  Element.prototype.scrollIntoView = jest.fn();
+  window.scrollTo = vi.fn();
+  Element.prototype.scrollIntoView = vi.fn();
   window.history.replaceState({}, "", "/preview");
 });
 

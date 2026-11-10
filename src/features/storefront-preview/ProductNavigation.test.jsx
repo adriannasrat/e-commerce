@@ -3,17 +3,19 @@ import "@testing-library/jest-dom";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import StorefrontPreview from "./StorefrontPreview";
 
-jest.mock("./theme", () => {
-  const { createTheme } = require("@mui/material/styles");
-  return createTheme({
-    components: { MuiButtonBase: { defaultProps: { disableRipple: true } } },
-  });
+vi.mock("./theme", async () => {
+  const { createTheme } = await import("@mui/material/styles");
+  return {
+    default: createTheme({
+      components: { MuiButtonBase: { defaultProps: { disableRipple: true } } },
+    }),
+  };
 });
 
 test("a recommendation opens its product details at the top", async () => {
   window.history.replaceState({}, "", "/#product/black");
-  window.scrollTo = jest.fn();
-  Element.prototype.scrollIntoView = jest.fn();
+  window.scrollTo = vi.fn();
+  Element.prototype.scrollIntoView = vi.fn();
   render(<StorefrontPreview />);
   const recommendations = screen.getByRole("region", {
     name: "You may also like",

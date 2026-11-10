@@ -5,8 +5,8 @@ import StorefrontPreview from '../StorefrontPreview';
 import { collectionModels } from '../collections/collections';
 
 beforeEach(() => {
-  window.scrollTo = jest.fn();
-  Element.prototype.scrollIntoView = jest.fn();
+  window.scrollTo = vi.fn();
+  Element.prototype.scrollIntoView = vi.fn();
   localStorage.clear();
 });
 

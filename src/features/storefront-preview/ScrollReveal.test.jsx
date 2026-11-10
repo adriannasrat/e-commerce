@@ -8,7 +8,7 @@ const originalMatchMedia = window.matchMedia;
 afterEach(() => {
   window.IntersectionObserver = originalObserver;
   window.matchMedia = originalMatchMedia;
-  jest.useRealTimers();
+  vi.useRealTimers();
 });
 
 function Page() {
@@ -26,8 +26,8 @@ function Page() {
 }
 
 function mockObserver() {
-  const observer = { notify: null, observe: jest.fn(), unobserve: jest.fn(), disconnect: jest.fn() };
-  window.IntersectionObserver = jest.fn((callback) => {
+  const observer = { notify: null, observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() };
+  window.IntersectionObserver = vi.fn(function (callback) {
     observer.notify = callback;
     return observer;
   });
@@ -35,7 +35,7 @@ function mockObserver() {
 }
 
 test("hides marked content until it scrolls into view, then staggers cards after the heading", () => {
-  jest.useFakeTimers();
+  vi.useFakeTimers();
   const observer = mockObserver();
   render(<Page />);
   const heading = screen.getByRole("heading");
@@ -49,13 +49,13 @@ test("hides marked content until it scrolls into view, then staggers cards after
   expect(heading.style.getPropertyValue("--reveal-delay")).toBe("0ms");
   expect(first.style.getPropertyValue("--reveal-delay")).toBe("300ms");
   expect(second.style.getPropertyValue("--reveal-delay")).toBe("450ms");
-  act(() => jest.advanceTimersByTime(2000));
+  act(() => vi.advanceTimersByTime(2000));
   expect(second.dataset.revealState).toBe("done");
 });
 
 test("shows everything immediately when reduced motion is requested", () => {
   window.matchMedia = () => ({ matches: true });
-  window.IntersectionObserver = jest.fn();
+  window.IntersectionObserver = vi.fn();
   render(<Page />);
   expect(screen.getByRole("heading").dataset.revealState).toBe("done");
   expect(window.IntersectionObserver).not.toHaveBeenCalled();

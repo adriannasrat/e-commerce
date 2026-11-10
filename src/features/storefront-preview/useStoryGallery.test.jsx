@@ -39,7 +39,7 @@ function setDimensions(element, scrollLeft) {
   Object.defineProperty(screen.getByTestId("second-card"), "offsetLeft", {
     value: 440,
   });
-  element.scrollBy = jest.fn();
+  element.scrollBy = vi.fn();
   fireEvent.scroll(element);
 }
 

@@ -25,7 +25,7 @@ function BagHarness() {
 
 beforeEach(() => {
   localStorage.clear();
-  window.scrollTo = jest.fn();
+  window.scrollTo = vi.fn();
 });
 
 test("adding, changing quantity and removing updates the page, badge and saved bag", () => {
