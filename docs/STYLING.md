@@ -2,10 +2,10 @@
 
 The RESONANCE preview uses JavaScript style objects rendered through MUI
 `GlobalStyles`, backed by the existing Emotion dependency. Feature styles live
-beside their components in `*.styles.js` modules. No new styling dependency or
-TypeScript is introduced.
+beside their components in `*.styles.js` modules. No other styling dependency
+is used.
 
-`StorefrontStyles.js` composes the modules in the original stylesheet import order.
+`StorefrontStyles.jsx` composes the modules in the original stylesheet import order.
 It is mounted once under the storefront theme. This also covers MUI dialogs rendered
 in portals outside the storefront DOM subtree. Keep selectors feature-specific;
 avoid introducing unscoped element rules that affect the legacy application.
@@ -51,12 +51,11 @@ Content added after a page's first render appears immediately, focus reveals
 pending content at once, and reduced motion skips the choreography entirely.
 The home page deliberately has no entrances: it loads fully in place.
 
-## Remaining CSS entry point
+## Base styles
 
-`src/index.css` contains only the three Tailwind directives used by the legacy
-application. It is framework setup, not storefront styling. Keep it until the old
-Tailwind-based screens have been retired. CSS is still generated for the browser;
-JavaScript styling does not remove CSS from the rendering platform.
+`src/index.css` holds the browser reset that Tailwind CSS v2 generated for this
+app, kept verbatim when Tailwind was removed so every page looks the same. It is
+the only stylesheet outside the storefront's style modules.
 
 ## Migration validation
 

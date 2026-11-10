@@ -7,7 +7,8 @@ Payments stay in test mode and no real money is ever taken.
 ## Standing decisions
 
 - React, Node.js with Express, Sequelize and MariaDB.
-- JavaScript. Whether to adopt TypeScript gradually is decided at the move to Vite.
+- TypeScript, adopted gradually: new files are TypeScript and existing JavaScript
+  is converted when it changes, never rewritten only for the conversion.
 - Documentation, code comments, UI copy and commit messages are in English.
 - Small, focused commits that each keep the tests passing.
 - Existing data is preserved: schema changes go through versioned migrations.
@@ -41,11 +42,12 @@ Checkout guarantees, which every change must keep:
 - [x] Keep build and test tooling in `devDependencies`.
 - [x] Run tests and the build in GitHub Actions on every pull request.
 - [x] Rewrite the README and replace the old project plan with this roadmap.
-- [ ] Require passing CI before merging into `main`.
+- [x] Require passing CI before merging into `main`.
 
 ### Phase 1: Live demo
 
-- [ ] Move from Create React App to Vite, with real URLs instead of hash routes.
+- [x] Move from Create React App to Vite and Vitest, with lint and type checks in CI.
+- [ ] Replace hash routes with real URLs.
 - [ ] Fetch server data through TanStack Query.
 - [ ] Move images and films to object storage behind a CDN, with a `product_media` table.
 - [ ] Prefix the API with `/api/v1`, validate configuration at startup, add security headers and structured logging.
