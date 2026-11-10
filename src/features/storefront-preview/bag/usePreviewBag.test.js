@@ -4,7 +4,7 @@ import { BAG_STORAGE_KEY } from "./bagState";
 import usePreviewBag from "./usePreviewBag";
 import { mockApi } from "../testApi";
 
-jest.mock("../auth/AuthContext", () => ({ useAuth: jest.fn() }));
+vi.mock("../auth/AuthContext", () => ({ useAuth: vi.fn() }));
 
 const cart = (items) => ({
   id: 1,

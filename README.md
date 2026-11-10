@@ -19,10 +19,11 @@ no money is ever taken.
 
 | Area | Technology |
 | --- | --- |
-| Frontend | React 19, MUI and Emotion, built with Create React App |
+| Frontend | React 19, MUI and Emotion, built with Vite |
+| Language | JavaScript, with TypeScript adopted gradually |
 | API | Node.js and Express |
 | Database | MariaDB with Sequelize and versioned Umzug migrations |
-| Tests | Jest and React Testing Library, Node's test runner, GitHub Actions |
+| Tests | Vitest and React Testing Library, Node's test runner, GitHub Actions |
 
 ## Architecture
 
@@ -43,7 +44,7 @@ carry most of the weight:
 
 ## Run it locally
 
-You need Node.js 22 or later and MariaDB 11.
+You need Node.js 26, as pinned in `.nvmrc`, and MariaDB 11.
 
 1. Install dependencies.
 
@@ -89,13 +90,15 @@ listed in `src/features/storefront-preview/headphoneImages.js`,
 
 | Command | Covers |
 | --- | --- |
-| `npx react-scripts test --watchAll=false` | Storefront components and flows |
+| `npm test` | Storefront components and flows, in watch mode |
+| `npm run lint` | ESLint on the storefront |
+| `npm run typecheck` | The TypeScript compiler on `.ts` and `.tsx` files |
 | `npm run test:api` | API configuration and startup, without a database |
 | `DB_NAME=shop_test npm run test:db` | Migrations, accounts, cart and checkout against MariaDB |
 
 The database tests empty their database, so they refuse any name that does not
 end in `_test`. The database user needs full privileges on that database.
-GitHub Actions runs all three suites and a production build on every pull request.
+GitHub Actions runs all of these and a production build on every pull request.
 
 ## Project layout
 
