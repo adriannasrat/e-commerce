@@ -1,6 +1,6 @@
 const divider = "1px solid #dcdcd7";
 
-export default {
+const bagReviewStyles = {
   ".bag-page .bag-checkout-actions": {
     display: "grid",
     gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
@@ -132,3 +132,5 @@ export default {
     ".bag-page .bag-checkout-actions": { gridTemplateColumns: "1fr" },
   },
 };
+
+export default bagReviewStyles;
