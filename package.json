@@ -21,6 +21,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "lint": "eslint src --max-warnings 0",
     "typecheck": "tsc",
     "migrate": "node backend/migrate.js",
     "start:api": "node backend/server.js",
@@ -28,6 +29,7 @@
     "test:db": "node --test --test-concurrency=1 backend/tests/db/*.test.js"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -35,8 +37,12 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
     "jsdom": "^31.0.0",
     "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.2",
     "vite": "^8.3.7",
     "vitest": "^5.1.0"
   }
