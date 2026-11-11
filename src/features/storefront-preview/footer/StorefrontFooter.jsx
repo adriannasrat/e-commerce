@@ -5,6 +5,7 @@ import ChevronRightRounded from '@mui/icons-material/ChevronRightRounded';
 import { collectionHref } from '../collections/collections';
 import { products } from '../products';
 import { productHref } from '../usePreviewRoute';
+import { paths } from "../routes";
 
 const series = (category) => products
   .filter((product) => product.image.category === category)
@@ -12,7 +13,7 @@ const series = (category) => products
 
 const getGroups = () => [
   ['Shop and learn', [
-    ['All headphones', '#preview-direction'],
+    ['All headphones', paths.store],
     ['Over-ear headphones', collectionHref('over-ear')],
     ['In-ear headphones', collectionHref('in-ear')],
     ['Shop the Form series', collectionHref('over-ear', 'models')],
@@ -21,15 +22,15 @@ const getGroups = () => [
   ['Form series', series('over-ear')],
   ['Pocket series', series('in-ear')],
   ['Discover', [
-    ['Listening journal', '#preview-stories'],
-    ['Compare any two headphones', '#compare-headphones'],
+    ['Listening journal', paths.journal],
+    ['Compare any two headphones', paths.compare],
     ['Compare Form models', collectionHref('over-ear', 'compare')],
     ['Compare Pocket models', collectionHref('in-ear', 'compare')],
   ]],
   ['Your space', [
-    ['Review your bag', '#bag'],
-    ['Account sign-in', '#sign-in'],
-    ['Create an account', '#sign-up'],
+    ['Review your bag', paths.bag],
+    ['Account sign-in', paths.signIn],
+    ['Create an account', paths.signUp],
   ]],
 ];
 
@@ -42,7 +43,7 @@ export default function StorefrontFooter({ currentPage }) {
         <p>The bag and saved models are stored only in this browser.</p>
       </div>
       <div className="res-footer-location">
-        <a href="#preview-home" aria-label="Resonance storefront"><GraphicEqRounded /></a>
+        <a href={paths.home} aria-label="Resonance storefront"><GraphicEqRounded /></a>
         <ChevronRightRounded aria-hidden="true" /><span>{currentPage}</span>
       </div>
       <nav aria-label="Footer navigation" className="res-footer-directory">
@@ -54,7 +55,7 @@ export default function StorefrontFooter({ currentPage }) {
         })}
       </nav>
       <p className="res-footer-more">
-        More ways to shop: <a href="#compare-headphones">compare any two models</a> or <a href="#preview-stories">read the listening journal</a>.
+        More ways to shop: <a href={paths.compare}>compare any two models</a> or <a href={paths.journal}>read the listening journal</a>.
       </p>
       <div className="res-footer-credit">
         <span>Copyright © 2026 RESONANCE concept. Designed and built by Adrian Nasrat.</span>

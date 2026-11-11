@@ -3,6 +3,7 @@ import { formatPrice } from "./products";
 import FilmToggle from "./ui/FilmToggle";
 import { films } from "./ui/films";
 import useFilm from "./ui/useFilm";
+import { paths } from "./routes";
 
 const film = films.home;
 
@@ -25,7 +26,7 @@ export default function PreviewHero() {
           <a className="rx-btn" href={collectionHref("over-ear")}>
             Learn more
           </a>
-          <a className="rx-btn rx-btn--ghost" href="#preview-direction">
+          <a className="rx-btn rx-btn--ghost" href={paths.store}>
             Shop all
           </a>
         </div>

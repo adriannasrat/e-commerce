@@ -38,7 +38,7 @@ test.each([
         screen.getByRole("heading", { name: "Find your model." }),
       ).toHaveFocus(),
     );
-    expect(window.location.hash).toBe("#collection/" + id + "/compare");
+    expect(window.location.pathname).toBe("/" + id + "/compare");
     const table = screen.getByRole("table", { name: /Compare the/ });
     expect(within(table).getAllByRole("columnheader")).toHaveLength(
       collectionModels(id).length + 1,
@@ -47,7 +47,7 @@ test.each([
     expect(
       await screen.findByRole("heading", { level: 1, name: model }),
     ).toHaveFocus();
-    expect(window.location.hash).toBe("#product/" + productId);
+    expect(window.location.pathname).toBe("/product/" + productId);
   },
 );
 
@@ -78,4 +78,18 @@ test("the footer opens the full catalog and journal as separate pages", async ()
   expect(
     screen.queryByRole("heading", { name: "The collection." }),
   ).not.toBeInTheDocument();
+});
+
+test("an unknown address shows a not-found page that leads back to the collection", async () => {
+  window.history.replaceState({}, "", "/no-such-page");
+  render(<StorefrontPreview />);
+  expect(
+    screen.getByRole("heading", { level: 1, name: "Page not found." }),
+  ).toBeInTheDocument();
+  expect(document.title).toBe("Page not found — RESONANCE");
+  fireEvent.click(screen.getByRole("link", { name: "Back to the collection" }));
+  expect(
+    await screen.findByRole("heading", { name: "The collection.", level: 1 }),
+  ).toHaveFocus();
+  expect(window.location.pathname).toBe("/store");
 });

@@ -47,7 +47,7 @@ Checkout guarantees, which every change must keep:
 ### Phase 1: Live demo
 
 - [x] Move from Create React App to Vite and Vitest, with lint and type checks in CI.
-- [ ] Replace hash routes with real URLs.
+- [x] Replace hash routes with real URLs.
 - [ ] Fetch server data through TanStack Query.
 - [ ] Move images and films to object storage behind a CDN, with a `product_media` table.
 - [ ] Prefix the API with `/api/v1`, validate configuration at startup, add security headers and structured logging.

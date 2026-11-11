@@ -19,6 +19,7 @@ import ModelCard from "../ui/ModelCard";
 import Shelf from "../ui/Shelf";
 import { benefits, featureCards } from "./categoryContent";
 import { collectionHref, collectionModels, collections } from "./collections";
+import { paths } from "../routes";
 
 const benefitIcons = {
   compare: CompareArrowsRounded,
@@ -213,7 +214,7 @@ export default function CategoryPage({ id, section }) {
           <h2 className="rx-section-title" id="sound-benefits">
             Why shop with RESONANCE.
           </h2>
-          <a className="rx-link" href="#preview-direction">
+          <a className="rx-link" href={paths.store}>
             Shop the collection
           </a>
         </div>
@@ -305,7 +306,7 @@ export default function CategoryPage({ id, section }) {
             </table>
           </div>
           <p className="sound-compare-more" data-reveal="fade">
-            <a className="rx-link" href="#compare-headphones">
+            <a className="rx-link" href={paths.compare}>
               Compare across both series
             </a>
           </p>
@@ -328,15 +329,15 @@ export default function CategoryPage({ id, section }) {
             [
               [`Shop ${collection.name}`, collectionHref(id, "models")],
               ["Compare models", collectionHref(id, "compare")],
-              ["Your bag", "#bag"],
+              ["Your bag", paths.bag],
             ],
           ],
           [
             "More from RESONANCE",
             [
               [`Discover ${other.name}`, collectionHref(otherId)],
-              ["Listening journal", "#preview-stories"],
-              ["Compare any two", "#compare-headphones"],
+              ["Listening journal", paths.journal],
+              ["Compare any two", paths.compare],
             ],
           ],
         ]}

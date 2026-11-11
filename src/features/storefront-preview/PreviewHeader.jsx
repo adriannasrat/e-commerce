@@ -1,5 +1,6 @@
 import BagPanel from "./bag/BagPanel";
 import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Badge, IconButton, useMediaQuery } from "@mui/material";
 import GraphicEqRounded from "@mui/icons-material/GraphicEqRounded";
 import SearchIcon from "@mui/icons-material/Search";
@@ -11,6 +12,7 @@ import { navigationLinks } from "./navigationLinks";
 import { getFlyouts } from "./flyouts";
 import PreviewMenu from "./PreviewMenu";
 import PreviewActionDialog from "./PreviewActionDialog";
+import { paths } from "./routes";
 
 const actions = [
   { id: "search", label: "Search products", Icon: SearchIcon },
@@ -58,6 +60,8 @@ export default function PreviewHeader({ bag }) {
   const [flyout, setFlyout] = useState(null);
   const [lastFlyout, setLastFlyout] = useState("store");
   const timer = useRef(null);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const compactNavigation = useMediaQuery("(max-width: 833px)");
   const [action, setAction] = useState(null);
 
@@ -89,13 +93,13 @@ export default function PreviewHeader({ bag }) {
     timer.current = setTimeout(() => setFlyout(null), delay);
   }
 
+  // Any navigation closes an open flyout.
+  useEffect(() => setFlyout(null), [pathname]);
+
   useEffect(() => {
-    const close = () => setFlyout(null);
-    const onKey = (event) => event.key === "Escape" && close();
-    window.addEventListener("hashchange", close);
+    const onKey = (event) => event.key === "Escape" && setFlyout(null);
     window.addEventListener("keydown", onKey);
     return () => {
-      window.removeEventListener("hashchange", close);
       window.removeEventListener("keydown", onKey);
       clearTimeout(timer.current);
     };
@@ -105,7 +109,7 @@ export default function PreviewHeader({ bag }) {
     setFlyout(null);
     if (id === "account" || id === "signin") {
       setAction(null);
-      window.location.hash = "sign-in";
+      navigate(paths.signIn);
       return;
     }
     setAction(id);
@@ -121,7 +125,7 @@ export default function PreviewHeader({ bag }) {
         <nav className="rx-globalnav-bar rx-wrap" aria-label="Main navigation">
           <a
             className="rx-globalnav-logo"
-            href="#preview-home"
+            href={paths.home}
             aria-label="Resonance home"
             onMouseEnter={() => hideFlyout(80)}
           >

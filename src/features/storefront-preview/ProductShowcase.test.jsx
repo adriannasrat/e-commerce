@@ -14,10 +14,10 @@ test("shows one promo tile per category with matching collection links", () => {
       name: `Buy ${name} headphones`,
     });
     expect(learnMore.getAttribute("href")).toBe(
-      `#collection/${name.toLowerCase()}`,
+      `/${name.toLowerCase()}`,
     );
     expect(buy.getAttribute("href")).toBe(
-      `#collection/${name.toLowerCase()}/models`,
+      `/${name.toLowerCase()}/models`,
     );
   });
 });
@@ -27,5 +27,5 @@ test("model tiles link straight to their product pages", () => {
   const tile = screen.getByRole("article", { name: "Pocket 03" });
   expect(
     within(tile).getByRole("link", { name: "Buy Pocket 03" }),
-  ).toHaveAttribute("href", "#product/in-ear-red");
+  ).toHaveAttribute("href", "/product/in-ear-red");
 });

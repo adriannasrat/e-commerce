@@ -1,6 +1,7 @@
 import { products } from "../products";
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import usePreviewBag from "./usePreviewBag";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import BagPage from "./BagPage";
@@ -14,11 +15,13 @@ const testTheme = createTheme({
 function BagHarness() {
   const bag = usePreviewBag();
   return (
-    <ThemeProvider theme={testTheme}>
-      <PreviewHeader bag={bag} />
-      <button onClick={() => bag.add("black")}>Add Form 01</button>
-      <BagPage bag={bag} />
-    </ThemeProvider>
+    <MemoryRouter>
+      <ThemeProvider theme={testTheme}>
+        <PreviewHeader bag={bag} />
+        <button onClick={() => bag.add("black")}>Add Form 01</button>
+        <BagPage bag={bag} />
+      </ThemeProvider>
+    </MemoryRouter>
   );
 }
 
@@ -63,7 +66,7 @@ test("bag icon opens the populated preview with a review-bag link", () => {
   expect(within(panel).getByText("Form 01")).toBeInTheDocument();
   expect(
     within(panel).getByRole("link", { name: "Review bag (1)" }),
-  ).toHaveAttribute("href", "#bag");
+  ).toHaveAttribute("href", "/bag");
 });
 
 test("corrupted saved data falls back to an empty bag", () => {

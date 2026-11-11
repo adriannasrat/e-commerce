@@ -2,7 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // The API runs separately. In development, Vite forwards its routes so the
-// browser sees one origin and the session cookie stays same-site.
+// browser sees one origin and the session cookie stays same-site. Page paths
+// in routes.ts must not start with these prefixes, or they reach the API.
 const api = "http://localhost:5001";
 
 export default defineConfig({

@@ -3,6 +3,7 @@ import Disclosure from "../Disclosure";
 import HeadphoneImage from "../HeadphoneImage";
 import { products, formatPrice } from "../products";
 import { productHref } from "../usePreviewRoute";
+import { paths } from "../routes";
 
 const questions = [
   [
@@ -85,7 +86,7 @@ export default function BagDiscovery({ bag }) {
           )}
         </section>
       )}
-      <a className="bag-collection-banner" href="#preview-direction" data-reveal="up">
+      <a className="bag-collection-banner" href={paths.store} data-reveal="up">
         <div>
           <small>THE HEADPHONE COLLECTION</small>
           <h2>Find your frequency.</h2>

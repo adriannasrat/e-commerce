@@ -1,4 +1,5 @@
 import { lifestyle } from "../lifestyleImages";
+import { paths } from "../routes";
 
 // Editorial copy for the product-family pages. Fictional concept content:
 // it describes design intent, not measured product specifications.
@@ -73,7 +74,7 @@ export const benefits = [
     eyebrow: "Compare",
     title: "Find your fit in seconds.",
     text: "Put any two models side by side, across both series.",
-    href: "#compare-headphones",
+    href: paths.compare,
     action: "Compare models",
   },
   {
@@ -81,7 +82,7 @@ export const benefits = [
     eyebrow: "Save for later",
     title: "Keep a shortlist.",
     text: "Save models on this device and come back when you are ready.",
-    href: "#bag",
+    href: paths.bag,
     action: "Open your bag",
   },
   {
@@ -89,7 +90,7 @@ export const benefits = [
     eyebrow: "Listening journal",
     title: "Stories for every mood.",
     text: "Slow mornings, the evening train and a moment to yourself.",
-    href: "#preview-stories",
+    href: paths.journal,
     action: "Read the journal",
   },
   {
@@ -97,7 +98,7 @@ export const benefits = [
     eyebrow: "Concept pricing",
     title: "Clear prices in SEK.",
     text: "Every model shows one illustrative price. Nothing is charged.",
-    href: "#preview-direction",
+    href: paths.store,
     action: "Shop the collection",
   },
 ];

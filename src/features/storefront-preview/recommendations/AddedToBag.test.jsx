@@ -10,14 +10,14 @@ beforeEach(() => {
 });
 
 test('adding opens recommendations, extra items stay on the page, and refresh does not add duplicates', async () => {
-  window.history.replaceState(null, '', '#product/black');
+  window.history.replaceState(null, '', '/product/black');
   const { unmount } = render(<StorefrontPreview />);
   fireEvent.click(screen.getByRole('button', { name: 'Add to bag' }));
   expect(await screen.findByRole('heading', { name: 'Added to your bag.' })).toBeInTheDocument();
-  expect(window.location.hash).toBe('#added/black');
+  expect(window.location.pathname).toBe('/bag/added/black');
   const white = screen.getByRole('article', { name: 'Form 02' });
   fireEvent.click(within(white).getByRole('button', { name: 'Add to bag' }));
-  expect(window.location.hash).toBe('#added/black');
+  expect(window.location.pathname).toBe('/bag/added/black');
   expect(screen.getByRole('button', { name: 'Shopping bag, 2 items' })).toBeInTheDocument();
   unmount();
   render(<StorefrontPreview />);

@@ -28,8 +28,9 @@ no money is ever taken.
 ## Architecture
 
 The frontend lives in `src/features/storefront-preview/`, grouped by feature with
-styles beside their components. In development the React server proxies API calls
-to Express, so the browser sees a single origin.
+styles beside their components. Every page has its own URL, such as `/store` or
+`/product/form-05`, and `routes.ts` both builds and reads those addresses. In
+development Vite proxies API calls to Express, so the browser sees a single origin.
 
 The API separates HTTP routes from services and Sequelize models. A few decisions
 carry most of the weight:

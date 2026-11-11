@@ -7,6 +7,7 @@ import { lifestyle } from "../lifestyleImages";
 import Photo from "./Photo";
 import { products } from "../products";
 import { productHref } from "../usePreviewRoute";
+import { paths } from "../routes";
 
 const slideContent = [
   {
@@ -116,7 +117,7 @@ export default function Highlights() {
         <h2 className="rx-section-title" id="highlights-title">
           Get the highlights.
         </h2>
-        <a className="rx-link" href="#preview-direction">
+        <a className="rx-link" href={paths.store}>
           Shop the collection
         </a>
       </div>

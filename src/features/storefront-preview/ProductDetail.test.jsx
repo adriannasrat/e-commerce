@@ -2,7 +2,6 @@ import "@testing-library/jest-dom";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import ProductDetail from "./ProductDetail";
 import { products, formatPrice } from "./products";
-import { productHref, productIdFromHash } from "./usePreviewRoute";
 
 beforeEach(() => {
   window.scrollTo = vi.fn();
@@ -50,14 +49,6 @@ test("opens the enlarged product image in a labelled dialog", () => {
   expect(
     within(dialog).getByRole("button", { name: "Close enlarged image" }),
   ).toBeTruthy();
-});
-
-test("product links round-trip and malformed links do not throw", () => {
-  products.forEach((product) =>
-    expect(productIdFromHash(productHref(product.id))).toBe(product.id),
-  );
-  expect(productIdFromHash("#preview-direction")).toBeNull();
-  expect(productIdFromHash("#product/%")).toBe("");
 });
 
 test("changing products resets the gallery, scroll and heading focus", () => {

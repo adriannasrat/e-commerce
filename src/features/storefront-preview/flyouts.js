@@ -1,6 +1,7 @@
 import { collectionHref } from "./collections/collections";
 import { products } from "./products";
 import { productHref } from "./usePreviewRoute";
+import { paths } from "./routes";
 
 const models = (category) =>
   products
@@ -13,24 +14,24 @@ export const getFlyouts = () => ({
     [
       "Shop",
       [
-        ["Shop the collection", "#preview-direction"],
+        ["Shop the collection", paths.store],
         ["Over-ear", collectionHref("over-ear")],
         ["In-ear", collectionHref("in-ear")],
-        ["Compare models", "#compare-headphones"],
+        ["Compare models", paths.compare],
       ],
     ],
     [
       "Quick links",
       [
-        ["Your bag", "#bag"],
-        ["Sign in", "#sign-in"],
-        ["Create an account", "#sign-up"],
+        ["Your bag", paths.bag],
+        ["Sign in", paths.signIn],
+        ["Create an account", paths.signUp],
       ],
     ],
     [
       "Discover",
       [
-        ["Listening journal", "#preview-stories"],
+        ["Listening journal", paths.journal],
         ["Form series", collectionHref("over-ear", "models")],
         ["Pocket series", collectionHref("in-ear", "models")],
       ],
@@ -51,7 +52,7 @@ export const getFlyouts = () => ({
     [
       "More from Over-ear",
       [
-        ["Listening journal", "#preview-stories"],
+        ["Listening journal", paths.journal],
         ["Discover In-ear", collectionHref("in-ear")],
       ],
     ],
@@ -71,7 +72,7 @@ export const getFlyouts = () => ({
     [
       "More from In-ear",
       [
-        ["Listening journal", "#preview-stories"],
+        ["Listening journal", paths.journal],
         ["Discover Over-ear", collectionHref("over-ear")],
       ],
     ],

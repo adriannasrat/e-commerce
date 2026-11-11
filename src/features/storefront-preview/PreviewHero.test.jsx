@@ -21,8 +21,8 @@ afterEach(() => {
 test("the hero leads to the over-ear page and the store", () => {
   render(<PreviewHero />);
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Less noise. More feeling.");
-  expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "#collection/over-ear");
-  expect(screen.getByRole("link", { name: "Shop all" })).toHaveAttribute("href", "#preview-direction");
+  expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "/over-ear");
+  expect(screen.getByRole("link", { name: "Shop all" })).toHaveAttribute("href", "/store");
 });
 
 test("the hero film plays once, rests on its last frame and can be replayed", () => {
