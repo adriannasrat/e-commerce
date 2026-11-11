@@ -1,10 +1,22 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { useAuth } from "../auth/AuthContext";
 import { BAG_STORAGE_KEY } from "./bagState";
 import usePreviewBag from "./usePreviewBag";
 import { mockApi } from "../testApi";
+import { createQueryClient } from "../queryClient";
 
 vi.mock("../auth/AuthContext", () => ({ useAuth: vi.fn() }));
+
+// Each test gets its own query cache.
+function renderBag() {
+  const client = createQueryClient();
+  return renderHook(() => usePreviewBag(), {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    ),
+  });
+}
 
 const cart = (items) => ({
   id: 1,
@@ -17,7 +29,7 @@ beforeEach(() => {
 });
 
 test("a guest's bag moves to the server on sign-in and then leaves the device", async () => {
-  const { result, rerender } = renderHook(() => usePreviewBag());
+  const { result, rerender } = renderBag();
   act(() => result.current.add("black"));
   expect(result.current.count).toBe(1);
 
@@ -41,7 +53,7 @@ test("signed-in changes follow the server, in order, and report refusals", async
     amounts.push(amount);
     return cart([[1, amount]]);
   });
-  const { result } = renderHook(() => usePreviewBag());
+  const { result } = renderBag();
   await act(async () => {
     result.current.add("black");
     result.current.add("black");
@@ -58,7 +70,7 @@ test("signed-in changes follow the server, in order, and report refusals", async
 });
 
 test("a failed merge keeps the guest bag for the next attempt", async () => {
-  const { result, rerender } = renderHook(() => usePreviewBag());
+  const { result, rerender } = renderBag();
   act(() => result.current.add("black"));
   mockApi.on("POST /cart/merge", 500, { error: "Something went wrong" });
   useAuth.mockReturnValue({ user: { id: 7 } });
@@ -70,7 +82,7 @@ test("a failed merge keeps the guest bag for the next attempt", async () => {
 test("checkout pays the current cart and leaves it empty", async () => {
   useAuth.mockReturnValue({ user: { id: 7 } });
   mockApi.on("GET /cart", 200, cart([[1, 2]]));
-  const { result } = renderHook(() => usePreviewBag());
+  const { result } = renderBag();
   await waitFor(() => expect(result.current.count).toBe(2));
 
   let paid;
@@ -85,5 +97,39 @@ test("checkout pays the current cart and leaves it empty", async () => {
   });
   expect(paid).toBe(1);
   expect(order.total_ore).toBe(358000);
-  expect(result.current.count).toBe(0);
+  await waitFor(() => expect(result.current.count).toBe(0));
+});
+
+test("checkout waits for a change that is still on its way to the server", async () => {
+  useAuth.mockReturnValue({ user: { id: 7 } });
+  mockApi.on("GET /cart", 200, cart([[1, 1]]));
+  const { result } = renderBag();
+  await waitFor(() => expect(result.current.count).toBe(1));
+
+  const calls = [];
+  let release;
+  const held = new Promise((resolve) => (release = resolve));
+  const reply = globalThis.fetch;
+  globalThis.fetch = async (path, init = {}) => {
+    calls.push(`${init.method} ${path}`);
+    if (init.method === "PUT") await held;
+    return reply(path, init);
+  };
+  mockApi.on("PUT /cart/items/1", 200, ({ amount }) => cart([[1, amount]]));
+  mockApi.on("POST /cart/checkout", 200, { id: 9, total_ore: 537000 });
+  mockApi.on("GET /cart", 200, { id: null, items: [] });
+
+  let paying;
+  act(() => {
+    result.current.setQuantity("black", 3);
+    paying = result.current.checkout();
+  });
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  expect(calls).toEqual(["PUT /cart/items/1"]);
+
+  release();
+  await act(async () => {
+    await paying;
+  });
+  expect(calls).toEqual(["PUT /cart/items/1", "POST /cart/checkout", "GET /cart"]);
 });
