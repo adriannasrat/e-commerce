@@ -1,10 +1,11 @@
 import { collectionHref } from "./collections/collections";
+import { paths } from "./routes";
 
 export const navigationLinks = [
   {
     id: "store",
     title: "Store",
-    href: "#preview-direction",
+    href: paths.store,
     detail: "Shop the whole collection",
   },
   {
@@ -22,13 +23,13 @@ export const navigationLinks = [
   {
     id: "compare",
     title: "Compare",
-    href: "#compare-headphones",
+    href: paths.compare,
     detail: "Find the pair that fits",
   },
   {
     id: "journal",
     title: "Journal",
-    href: "#preview-stories",
+    href: paths.journal,
     detail: "Stories for every mood",
   },
 ];

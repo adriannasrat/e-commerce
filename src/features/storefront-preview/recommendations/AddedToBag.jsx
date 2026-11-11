@@ -5,6 +5,7 @@ import ScrollReveal from '../ScrollReveal';
 import { products, formatPrice } from '../products';
 import { productHref } from '../usePreviewRoute';
 import RecommendationCard from './RecommendationCard';
+import { paths } from "../routes";
 
 export default function AddedToBag({ product, bag }) {
   const heading = useRef(null);
@@ -24,12 +25,12 @@ export default function AddedToBag({ product, bag }) {
       <HeadphoneImage image={product.image} decorative />
       <div><h1 ref={heading} tabIndex={-1}>{inBag && <CheckCircleOutlineIcon aria-hidden="true" />}{inBag ? 'Added to your bag.' : 'Explore your selection.'}</h1>
         <a href={productHref(product.id)}>{product.name} — {product.finishName}</a><p>{formatPrice(product.price)} · Demo price</p></div>
-      <a href="#bag" className="bag-button">Review bag ({bag.count})</a>
+      <a href={paths.bag} className="bag-button">Review bag ({bag.count})</a>
     </div>
     {sections.map((section, index) => <section className="recommendation-section" key={section.title} aria-labelledby={`recommendation-heading-${index}`}>
       <ScrollReveal className="recommendation-heading"><h2 id={`recommendation-heading-${index}`}>{section.title}</h2><p>{section.description}</p></ScrollReveal>
       <div className="recommendation-grid">{section.items.map(item => <RecommendationCard key={item.id} product={item} bag={bag} />)}</div>
     </section>)}
-    <div className="added-bottom" data-reveal="up"><p>Ready to take a closer look at your choices?</p><a href="#bag" className="bag-button">Review bag ({bag.count})</a></div>
+    <div className="added-bottom" data-reveal="up"><p>Ready to take a closer look at your choices?</p><a href={paths.bag} className="bag-button">Review bag ({bag.count})</a></div>
   </div>;
 }

@@ -5,6 +5,7 @@ import VisibilityOffOutlined from "@mui/icons-material/VisibilityOffOutlined";
 import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import { useAuth } from "./AuthContext";
+import { paths } from "../routes";
 
 export default function AuthForm({ signingUp }) {
   const heading = useRef(null);
@@ -35,7 +36,7 @@ export default function AuthForm({ signingUp }) {
     setMessage("");
     try {
       await (signingUp ? signUp(credentials) : signIn(credentials));
-      window.location.hash = "preview-home";
+      window.location.hash = paths.home;
     } catch (error) {
       setMessage(error.message);
       form.elements.password.value = "";

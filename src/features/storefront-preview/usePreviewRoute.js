@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { paths } from "./routes";
 
-export const productHref = (id) => `#product/${encodeURIComponent(id)}`;
+export const productHref = paths.product;
 
 export function productIdFromHash(hash) {
   if (!hash.startsWith("#product/")) return null;

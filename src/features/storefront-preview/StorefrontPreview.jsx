@@ -24,6 +24,7 @@ import AddedToBag from "./recommendations/AddedToBag";
 import SignInPage from "./auth/SignInPage";
 import { AuthProvider } from "./auth/AuthContext";
 import CatalogueGate from "./CatalogueGate";
+import { paths } from "./routes";
 
 function NotFound({ title, detail, href, action }) {
   return (
@@ -47,18 +48,18 @@ function Storefront() {
   const category = collectionRoute(hash);
   const categoryId = category?.id;
   const isCatalog = [
-    "#preview-direction",
+    paths.store,
     "#preview-over-ear",
     "#preview-in-ear",
-    "#compare-headphones",
+    paths.compare,
   ].includes(hash);
-  const isJournal = hash === "#preview-stories";
-  const isBag = hash === "#bag";
-  const isSignUp = hash === "#sign-up";
-  const isSignIn = hash === "#sign-in" || isSignUp;
+  const isJournal = hash === paths.journal;
+  const isBag = hash === paths.bag;
+  const isSignUp = hash === paths.signUp;
+  const isSignIn = hash === paths.signIn || isSignUp;
   function addToBag(id) {
     bag.add(id);
-    window.location.hash = `added/${encodeURIComponent(id)}`;
+    window.location.hash = paths.added(id);
   }
   const addedProduct = products.find((item) => item.id === addedId);
   const product = products.find((item) => item.id === productId);
@@ -89,14 +90,14 @@ function Storefront() {
     )
       return;
     if (isCatalog || isJournal) {
-      if (hash === "#compare-headphones") {
+      if (hash === paths.compare) {
         const heading = document.getElementById("compare-all-title");
         heading?.focus({ preventScroll: true });
         heading?.scrollIntoView({ block: "start", behavior: "instant" });
         return;
       }
       document.querySelector("main h1")?.focus({ preventScroll: true });
-      if (hash === "#preview-direction" || isJournal) {
+      if (hash === paths.store || isJournal) {
         window.scrollTo({ top: 0, behavior: "instant" });
         return;
       }
@@ -148,7 +149,7 @@ function Storefront() {
                 <NotFound
                   title="Product not found."
                   detail="This model may have moved. The rest of the collection is still here."
-                  href="#preview-direction"
+                  href={paths.store}
                   action="Back to the collection"
                 />
               )
@@ -163,7 +164,7 @@ function Storefront() {
                 <NotFound
                   title="Selection not found."
                   detail="Everything you added is still waiting in your bag."
-                  href="#bag"
+                  href={paths.bag}
                   action="Review bag"
                 />
               ))}

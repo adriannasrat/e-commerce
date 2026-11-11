@@ -10,6 +10,7 @@ import { MAX_QUANTITY } from "./bagState";
 import BagDiscovery from "./BagDiscovery";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
+import { paths } from "../routes";
 
 function CheckoutActions({ onSelect }) {
   return (
@@ -64,7 +65,7 @@ export default function BagPage({ bag }) {
         {bag.count ? (
           <CheckoutActions onSelect={setCheckout} />
         ) : (
-          <a className="bag-button" href="#preview-direction">
+          <a className="bag-button" href={paths.store}>
             Explore headphones
           </a>
         )}
@@ -150,7 +151,7 @@ export default function BagPage({ bag }) {
             <strong>{formatPrice(bag.total)}</strong>
           </div>
           <CheckoutActions onSelect={setCheckout} />
-          <a href="#preview-direction">Continue exploring</a>
+          <a href={paths.store}>Continue exploring</a>
         </div>
       )}
       {bag.count > 0 && <BagDiscovery bag={bag} />}
@@ -196,7 +197,7 @@ export default function BagPage({ bag }) {
           ) : (
             <>
               <p>Sign in to place your order. Your bag comes with you.</p>
-              <a className="bag-button" href="#sign-in">
+              <a className="bag-button" href={paths.signIn}>
                 Sign in
               </a>
             </>

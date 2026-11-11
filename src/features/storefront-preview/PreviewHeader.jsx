@@ -11,6 +11,7 @@ import { navigationLinks } from "./navigationLinks";
 import { getFlyouts } from "./flyouts";
 import PreviewMenu from "./PreviewMenu";
 import PreviewActionDialog from "./PreviewActionDialog";
+import { paths } from "./routes";
 
 const actions = [
   { id: "search", label: "Search products", Icon: SearchIcon },
@@ -105,7 +106,7 @@ export default function PreviewHeader({ bag }) {
     setFlyout(null);
     if (id === "account" || id === "signin") {
       setAction(null);
-      window.location.hash = "sign-in";
+      window.location.hash = paths.signIn;
       return;
     }
     setAction(id);
@@ -121,7 +122,7 @@ export default function PreviewHeader({ bag }) {
         <nav className="rx-globalnav-bar rx-wrap" aria-label="Main navigation">
           <a
             className="rx-globalnav-logo"
-            href="#preview-home"
+            href={paths.home}
             aria-label="Resonance home"
             onMouseEnter={() => hideFlyout(80)}
           >

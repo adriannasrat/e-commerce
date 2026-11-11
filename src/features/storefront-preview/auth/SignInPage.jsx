@@ -6,6 +6,7 @@ import HeadphoneImage from "../HeadphoneImage";
 import { headphoneImages } from "../headphoneImages";
 import ScrollReveal from "../ScrollReveal";
 import AuthForm from "./AuthForm";
+import { paths } from "../routes";
 
 const image = headphoneImages.find((item) => item.id === "silver");
 
@@ -35,7 +36,7 @@ export default function SignInPage({ mode = "sign-in" }) {
         <div className="sign-in-panel">
           <div className="sign-in-panel-top">
             <a
-              href="#preview-home"
+              href={paths.home}
               className="sign-in-brand"
               aria-label="Resonance home"
             >
@@ -43,7 +44,7 @@ export default function SignInPage({ mode = "sign-in" }) {
             </a>
             <a
               className="sign-in-text-button"
-              href={signingUp ? "#sign-in" : "#sign-up"}
+              href={signingUp ? paths.signIn : paths.signUp}
             >
               {signingUp ? <LoginOutlined /> : <PersonAddAltOutlined />}
               {signingUp ? "Sign in" : "Sign up"}
@@ -51,7 +52,7 @@ export default function SignInPage({ mode = "sign-in" }) {
           </div>
           <AuthForm key={mode} signingUp={signingUp} />
           <div className="sign-in-panel-bottom">
-            <a href="#preview-direction">
+            <a href={paths.store}>
               <ArrowBack /> Back to the collection
             </a>
             <span>Listen your way.</span>

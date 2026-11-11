@@ -5,6 +5,7 @@ import HeadphoneImage from "../HeadphoneImage";
 import { productHref } from "../usePreviewRoute";
 import { formatPrice } from "../products";
 import BagProfileLinks from "./BagProfileLinks";
+import { paths } from "../routes";
 
 export default function BagPanel({ open, onClose, bag, onProfile }) {
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
@@ -32,7 +33,7 @@ export default function BagPanel({ open, onClose, bag, onProfile }) {
             {bag.count ? "Bag" : "Your bag is empty."}
           </h2>
           {bag.count > 0 && (
-            <a href="#bag" className="bag-button" onClick={onClose}>
+            <a href={paths.bag} className="bag-button" onClick={onClose}>
               Review bag ({bag.count})
             </a>
           )}
@@ -62,7 +63,7 @@ export default function BagPanel({ open, onClose, bag, onProfile }) {
         ) : (
           <p>
             Find something that feels like you.{" "}
-            <a href="#preview-direction" onClick={onClose}>
+            <a href={paths.store} onClick={onClose}>
               Explore headphones
             </a>
           </p>

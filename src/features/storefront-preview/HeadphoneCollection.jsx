@@ -17,6 +17,7 @@ import Film from "./ui/Film";
 import { films } from "./ui/films";
 import ModelCard from "./ui/ModelCard";
 import Shelf from "./ui/Shelf";
+import { paths } from "./routes";
 
 const darkCards = ["silver", "black", "in-ear-black", "form-04", "pocket-05"];
 
@@ -25,25 +26,25 @@ const help = [
     Icon: CompareArrowsRounded,
     eyebrow: "Fit guide",
     title: "Over-ear or in-ear? Compare any two.",
-    href: "#compare-headphones",
+    href: paths.compare,
   },
   {
     Icon: GraphicEqRounded,
     eyebrow: "Listening journal",
     title: "Find a pair for the way you listen.",
-    href: "#preview-stories",
+    href: paths.journal,
   },
   {
     Icon: BookmarkBorderRounded,
     eyebrow: "Save for later",
     title: "Keep a shortlist on this device.",
-    href: "#bag",
+    href: paths.bag,
   },
   {
     Icon: PersonOutlineRounded,
     eyebrow: "Your account",
     title: "Sign in to see your space.",
-    href: "#sign-in",
+    href: paths.signIn,
   },
 ];
 
@@ -73,10 +74,10 @@ export default function HeadphoneCollection({ onAddToBag }) {
         </h1>
         <div className="store-head-aside" data-reveal="up">
           <p>The best way to find the pair that feels like you.</p>
-          <a className="rx-link" href="#compare-headphones">
+          <a className="rx-link" href={paths.compare}>
             Compare any two
           </a>
-          <a className="rx-link" href="#preview-stories">
+          <a className="rx-link" href={paths.journal}>
             Read the listening journal
           </a>
         </div>
@@ -92,11 +93,11 @@ export default function HeadphoneCollection({ onAddToBag }) {
             isNew: newModels.includes(product.id),
           })),
           {
-            href: "#compare-headphones",
+            href: paths.compare,
             label: "Compare",
             Icon: ViewColumnOutlined,
           },
-          { href: "#bag", label: "Bag", Icon: ShoppingBagOutlined },
+          { href: paths.bag, label: "Bag", Icon: ShoppingBagOutlined },
         ]}
       />
 

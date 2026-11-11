@@ -1,4 +1,5 @@
 import { products } from "../products";
+import { paths } from "../routes";
 
 export const collections = {
   "over-ear": {
@@ -19,8 +20,7 @@ export const collections = {
   },
 };
 
-export const collectionHref = (id, section) =>
-  `#collection/${id}${section ? "/" + section : ""}`;
+export const collectionHref = paths.collection;
 export const collectionModels = (id) =>
   products.filter((model) => model.image.category === id);
 
