@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import VisibilityOutlined from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlined from "@mui/icons-material/VisibilityOffOutlined";
@@ -13,6 +14,7 @@ export default function AuthForm({ signingUp }) {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const { user, signIn, signOut, signUp } = useAuth();
+  const navigate = useNavigate();
   useLayoutEffect(() => {
     heading.current?.focus({ preventScroll: true });
   }, []);
@@ -36,7 +38,7 @@ export default function AuthForm({ signingUp }) {
     setMessage("");
     try {
       await (signingUp ? signUp(credentials) : signIn(credentials));
-      window.location.hash = paths.home;
+      navigate(paths.home);
     } catch (error) {
       setMessage(error.message);
       form.elements.password.value = "";

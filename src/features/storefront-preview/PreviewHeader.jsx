@@ -1,5 +1,6 @@
 import BagPanel from "./bag/BagPanel";
 import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Badge, IconButton, useMediaQuery } from "@mui/material";
 import GraphicEqRounded from "@mui/icons-material/GraphicEqRounded";
 import SearchIcon from "@mui/icons-material/Search";
@@ -59,6 +60,8 @@ export default function PreviewHeader({ bag }) {
   const [flyout, setFlyout] = useState(null);
   const [lastFlyout, setLastFlyout] = useState("store");
   const timer = useRef(null);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const compactNavigation = useMediaQuery("(max-width: 833px)");
   const [action, setAction] = useState(null);
 
@@ -90,13 +93,13 @@ export default function PreviewHeader({ bag }) {
     timer.current = setTimeout(() => setFlyout(null), delay);
   }
 
+  // Any navigation closes an open flyout.
+  useEffect(() => setFlyout(null), [pathname]);
+
   useEffect(() => {
-    const close = () => setFlyout(null);
-    const onKey = (event) => event.key === "Escape" && close();
-    window.addEventListener("hashchange", close);
+    const onKey = (event) => event.key === "Escape" && setFlyout(null);
     window.addEventListener("keydown", onKey);
     return () => {
-      window.removeEventListener("hashchange", close);
       window.removeEventListener("keydown", onKey);
       clearTimeout(timer.current);
     };
@@ -106,7 +109,7 @@ export default function PreviewHeader({ bag }) {
     setFlyout(null);
     if (id === "account" || id === "signin") {
       setAction(null);
-      window.location.hash = paths.signIn;
+      navigate(paths.signIn);
       return;
     }
     setAction(id);

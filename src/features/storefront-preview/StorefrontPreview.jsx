@@ -2,10 +2,11 @@ import JournalFeature from "./shopping/JournalFeature";
 import Highlights from "./ui/Highlights";
 import CategoryPage from "./collections/CategoryPage";
 import Campaign from "./collections/Campaign";
-import { collections, collectionRoute } from "./collections/collections";
+import { collections } from "./collections/collections";
 import StorefrontStyles from "./StorefrontStyles";
 import StorefrontFooter from "./footer/StorefrontFooter";
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import useReveal from "./ui/useReveal";
 import { ScopedCssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -40,26 +41,57 @@ function NotFound({ title, detail, href, action }) {
   );
 }
 
+// Plain links stay plain <a href> elements. One handler at the root turns
+// clicks on same-site links into client-side navigation, including links in
+// dialogs and menus, and leaves new-tab clicks and in-page anchors alone.
+function useLinkNavigation() {
+  const navigate = useNavigate();
+  return (event) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    )
+      return;
+    const link = event.target.closest?.("a[href]");
+    if (!link || (link.target && link.target !== "_self")) return;
+    if (link.hasAttribute("download")) return;
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin) return;
+    if (url.pathname === window.location.pathname && url.hash) return;
+    event.preventDefault();
+    navigate(url.pathname + url.search + url.hash);
+  };
+}
+
 function Storefront() {
-  const { hash, productId, addedId } = usePreviewRoute();
+  const route = usePreviewRoute();
+  const { pathname } = route;
+  const navigate = useNavigate();
+  const followLink = useLinkNavigation();
   const bag = usePreviewBag();
   const main = useRef(null);
-  useReveal(main, hash);
-  const category = collectionRoute(hash);
+  useReveal(main, pathname);
+  const productId = route.name === "product" ? route.id : null;
+  const addedId = route.name === "added" ? route.id : null;
+  const category =
+    route.name === "collection"
+      ? { id: route.id, section: route.section }
+      : null;
   const categoryId = category?.id;
-  const isCatalog = [
-    paths.store,
-    "#preview-over-ear",
-    "#preview-in-ear",
-    paths.compare,
-  ].includes(hash);
-  const isJournal = hash === paths.journal;
-  const isBag = hash === paths.bag;
-  const isSignUp = hash === paths.signUp;
-  const isSignIn = hash === paths.signIn || isSignUp;
+  const isCatalog = route.name === "store" || route.name === "compare";
+  const isCompare = route.name === "compare";
+  const isJournal = route.name === "journal";
+  const isBag = route.name === "bag";
+  const isSignUp = route.name === "signUp";
+  const isSignIn = route.name === "signIn" || isSignUp;
+  const isNotFound = route.name === "notFound";
   function addToBag(id) {
     bag.add(id);
-    window.location.hash = paths.added(id);
+    navigate(paths.added(id));
   }
   const addedProduct = products.find((item) => item.id === addedId);
   const product = products.find((item) => item.id === productId);
@@ -71,6 +103,7 @@ function Storefront() {
     (isSignIn && (isSignUp ? "Sign up" : "Sign in")) ||
     (isCatalog && "The collection") ||
     (isJournal && "Listening journal") ||
+    (isNotFound && "Page not found") ||
     "Home";
   useEffect(() => {
     const previousTitle = document.title;
@@ -89,37 +122,41 @@ function Storefront() {
       categoryId
     )
       return;
-    if (isCatalog || isJournal) {
-      if (hash === paths.compare) {
-        const heading = document.getElementById("compare-all-title");
-        heading?.focus({ preventScroll: true });
-        heading?.scrollIntoView({ block: "start", behavior: "instant" });
-        return;
-      }
+    if (isCompare) {
+      const heading = document.getElementById("compare-all-title");
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView({ block: "start", behavior: "instant" });
+      return;
+    }
+    if (isCatalog || isJournal || isNotFound) {
       document.querySelector("main h1")?.focus({ preventScroll: true });
-      if (hash === paths.store || isJournal) {
-        window.scrollTo({ top: 0, behavior: "instant" });
-        return;
-      }
+      window.scrollTo({ top: 0, behavior: "instant" });
+      return;
     }
     document
-      .getElementById(hash.slice(1) || "preview-home")
+      .getElementById("preview-home")
       ?.scrollIntoView({ behavior: "instant" });
   }, [
-    hash,
+    pathname,
     productId,
     isBag,
     addedId,
     isSignIn,
     categoryId,
+    isCompare,
     isCatalog,
     isJournal,
+    isNotFound,
   ]);
 
   return (
     <ThemeProvider theme={theme}>
       <StorefrontStyles />
-      <ScopedCssBaseline className="storefront-preview" id="preview-home">
+      <ScopedCssBaseline
+        className="storefront-preview"
+        id="preview-home"
+        onClick={followLink}
+      >
         <a
           className="preview-skip"
           href="#preview-main"
@@ -170,18 +207,15 @@ function Storefront() {
               ))}
             {isCatalog && <HeadphoneCollection onAddToBag={addToBag} />}
             {isJournal && <ListeningStories />}
-            <div
-              className="rx-home"
-              hidden={
-                isCatalog ||
-                isJournal ||
-                Boolean(categoryId) ||
-                productId !== null ||
-                isBag ||
-                isSignIn ||
-                addedId !== null
-              }
-            >
+            {isNotFound && (
+              <NotFound
+                title="Page not found."
+                detail="This address does not lead anywhere. The collection is still here."
+                href={paths.store}
+                action="Back to the collection"
+              />
+            )}
+            <div className="rx-home" hidden={route.name !== "home"}>
               <PreviewHero />
               <Campaign category="over-ear" />
               <Campaign category="in-ear" />
@@ -199,10 +233,12 @@ function Storefront() {
 
 export default function StorefrontPreview() {
   return (
-    <CatalogueGate>
-      <AuthProvider>
-        <Storefront />
-      </AuthProvider>
-    </CatalogueGate>
+    <BrowserRouter>
+      <CatalogueGate>
+        <AuthProvider>
+          <Storefront />
+        </AuthProvider>
+      </CatalogueGate>
+    </BrowserRouter>
   );
 }

@@ -23,7 +23,7 @@ const openCheckout = () =>
 test("a guest is asked to sign in before paying", () => {
   render(<BagPage bag={bagWith({ signedIn: false })} />);
   openCheckout();
-  expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute("href", "#sign-in");
+  expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute("href", "/sign-in");
   expect(screen.queryByRole("button", { name: "Place order" })).toBeNull();
 });
 

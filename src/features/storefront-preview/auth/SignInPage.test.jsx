@@ -15,7 +15,7 @@ vi.mock("../theme", async () => {
 beforeEach(() => {
   window.scrollTo = vi.fn();
   Element.prototype.scrollIntoView = vi.fn();
-  window.history.replaceState({}, "", "/preview");
+  window.history.replaceState({}, "", "/");
 });
 
 test("a rejected sign-in explains why and clears the password; a valid one signs in", async () => {
@@ -24,7 +24,7 @@ test("a rejected sign-in explains why and clears the password; a valid one signs
   expect(
     await screen.findByRole("heading", { name: "Sign in." }),
   ).toBeInTheDocument();
-  expect(window.location.hash).toBe("#sign-in");
+  expect(window.location.pathname).toBe("/sign-in");
   const email = screen.getByRole("textbox", { name: "Email address" });
   const password = screen.getByLabelText("Password");
   fireEvent.change(email, { target: { value: "demo@example.com" } });
@@ -40,11 +40,11 @@ test("a rejected sign-in explains why and clears the password; a valid one signs
   mockApi.on("POST /users/signin", 200, (body) => ({ id: 1, email: body.email }));
   fireEvent.change(password, { target: { value: "demo-password" } });
   fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
-  await waitFor(() => expect(window.location.hash).toBe("#preview-home"));
+  await waitFor(() => expect(window.location.pathname).toBe("/"));
 });
 
 test("switching to registration preserves the artwork and validates matching passwords", async () => {
-  window.history.replaceState({}, "", "/preview#sign-in");
+  window.history.replaceState({}, "", "/sign-in");
   render(<StorefrontPreview />);
   fireEvent.click(screen.getByRole("button", { name: "Forgot password?" }));
   expect(screen.getByRole("status")).toHaveTextContent(
@@ -82,7 +82,7 @@ test("switching to registration preserves the artwork and validates matching pas
 });
 
 test("registration is reachable directly", () => {
-  window.history.replaceState({}, "", "/preview#sign-up");
+  window.history.replaceState({}, "", "/sign-up");
   render(<StorefrontPreview />);
   expect(screen.getByRole("heading", { name: "Sign up." })).toBeInTheDocument();
   expect(document.title).toBe("Sign up — RESONANCE");

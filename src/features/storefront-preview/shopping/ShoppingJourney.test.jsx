@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 test('catalog filters narrow the grid and adding a model opens its confirmation', async () => {
-  window.history.replaceState({}, '', '/#preview-direction');
+  window.history.replaceState({}, '', '/store');
   render(<StorefrontPreview />);
   const filters = screen.getByRole('group', { name: 'Filter by fit' });
   fireEvent.click(within(filters).getByRole('button', { name: 'In-ear' }));
@@ -18,15 +18,15 @@ test('catalog filters narrow the grid and adding a model opens its confirmation'
   expect(screen.queryByRole('button', { name: /Add Form .* to bag/ })).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Add Pocket 03 to bag' }));
   expect(await screen.findByRole('heading', { name: /Added to your bag/i })).toBeInTheDocument();
-  expect(window.location.hash).toBe('#added/in-ear-red');
+  expect(window.location.pathname).toBe('/bag/added/in-ear-red');
 });
 
 test('cross-series comparison links to the chosen model and prevents duplicate choices', () => {
-  window.history.replaceState({}, '', '/#compare-headphones');
+  window.history.replaceState({}, '', '/compare');
   render(<StorefrontPreview />);
   const compare = screen.getByRole('region', { name: 'Which pair is yours?' });
   fireEvent.change(within(compare).getByLabelText('Headphone 1'), { target: { value: 'silver' } });
-  expect(within(compare).getByRole('link', { name: 'Explore Form 03' })).toHaveAttribute('href', '#product/silver');
+  expect(within(compare).getByRole('link', { name: 'Explore Form 03' })).toHaveAttribute('href', '/product/silver');
   expect(within(within(compare).getByLabelText('Headphone 2')).getByRole('option', { name: 'Form 03' })).toBeDisabled();
 });
 
