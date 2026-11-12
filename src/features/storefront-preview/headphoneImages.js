@@ -2,12 +2,12 @@ export const headphoneImages = [
   {
     id: "black",
     category: "over-ear",
-    label: "Black headphones",
-    src: "/local-preview/black-headphones.webp",
+    label: "Graphite over-ear headphones with brushed metal cups",
+    src: "/local-preview/form-01.webp",
     finish: "graphite",
-    width: 1984,
-    height: 2156,
-    bounds: [72, 71, 1912, 2085],
+    width: 2400,
+    height: 1597,
+    bounds: [658, 159, 1738, 1437],
   },
   {
     id: "white",

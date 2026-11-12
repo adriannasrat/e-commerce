@@ -44,7 +44,9 @@ test("opens the enlarged product image in a labelled dialog", () => {
   );
   const dialog = screen.getByRole("dialog", { name: "Form 01 enlarged image" });
   expect(
-    within(dialog).getByRole("img", { name: "Black headphones" }),
+    within(dialog).getByRole("img", {
+      name: "Graphite over-ear headphones with brushed metal cups",
+    }),
   ).toBeTruthy();
   expect(
     within(dialog).getByRole("button", { name: "Close enlarged image" }),
