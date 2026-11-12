@@ -1,7 +1,7 @@
-import { headphoneImages } from "./headphoneImages";
+import { productMedia } from "./catalogueMedia";
 
 // Filled from the API before the storefront renders, so every module reads the
-// same list. Rows need imagery here to be shown: a slug without any is skipped.
+// same list. A product needs a main image to be shown, so one without is skipped.
 export const products = [];
 
 export function setCatalogue(rows) {
@@ -15,7 +15,7 @@ export function setCatalogue(rows) {
       stock: row.stock_quantity,
       tagline: row.tagline,
       description: row.description,
-      image: headphoneImages.find(({ id }) => id === row.slug),
+      ...productMedia(row.slug, row.category, row.media),
     }))
     .filter((product) => product.image);
   products.splice(0, products.length, ...loaded);

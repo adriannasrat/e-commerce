@@ -3,14 +3,14 @@ import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import HeadphoneImage from "../HeadphoneImage";
-import { headphoneImages } from "../headphoneImages";
+import { products } from "../products";
 import ScrollReveal from "../ScrollReveal";
 import AuthForm from "./AuthForm";
 import { paths } from "../routes";
 
-const image = headphoneImages.find((item) => item.id === "silver");
 
 export default function SignInPage({ mode = "sign-in" }) {
+  const image = products.find((product) => product.id === "silver")?.image;
   const signingUp = mode === "sign-up";
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -27,7 +27,7 @@ export default function SignInPage({ mode = "sign-in" }) {
             <br />
             Your space.
           </h2>
-          <HeadphoneImage image={image} className="sign-in-headphones" />
+          {image && <HeadphoneImage image={image} className="sign-in-headphones" />}
           <div className="sign-in-art-caption">
             <span>Halo · Silver</span>
             <span>Made for your moments.</span>

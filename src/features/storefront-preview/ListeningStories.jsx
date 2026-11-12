@@ -8,8 +8,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HeadphoneImage from "./HeadphoneImage";
 import Photo from "./ui/Photo";
-import { headphoneImages } from "./headphoneImages";
 import { listeningStories } from "./listening-story-data";
+import { products } from "./products";
 import useStoryGallery from "./useStoryGallery";
 import { productHref } from "./usePreviewRoute";
 
@@ -65,7 +65,7 @@ export default function ListeningStories() {
             <span className="listening-eyebrow">{item.label}</span>
             <span className="listening-card-title">{item.title}</span>
             <HeadphoneImage
-              image={headphoneImages.find((image) => image.id === item.id)}
+              image={products.find((product) => product.id === item.id)?.image}
               decorative
             />
             <span className="listening-card-footer">
@@ -121,7 +121,7 @@ export default function ListeningStories() {
                 <Photo photo={story.photo} eager />
               ) : (
                 <HeadphoneImage
-                  image={headphoneImages.find((image) => image.id === story.id)}
+                  image={products.find((product) => product.id === story.id)?.image}
                 />
               )}
             </div>

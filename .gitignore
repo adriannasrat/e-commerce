@@ -31,9 +31,6 @@ yarn-error.log*
 # Local design references
 /design-references/
 
-# Local-only prototype photography
-/public/local-preview/
-
 # Local agent skills and Claude workspace settings
 /.agents/skills/
 /.claude/

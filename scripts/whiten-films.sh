@@ -2,7 +2,7 @@
 # Turns the warm off-white backdrop of the product films pure white.
 #
 # Reads the untouched films from design-references/film-originals and writes
-# to public/local-preview/film, so it can be run again without losing quality.
+# to public/media/films, so it can be run again without losing quality.
 #
 # One filter pass, per pixel:
 # 1. Light tones lose their colour cast: between brightness 140 and 180 they
@@ -17,7 +17,7 @@ set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 
 source_dir=design-references/film-originals
-target_dir=public/local-preview/film
+target_dir=public/media/films
 
 # Sides fully white within $1 of the frame width, fading out by $2; corners
 # fully white beyond radius $4 of the centred ellipse, from $3. $5 limits the
