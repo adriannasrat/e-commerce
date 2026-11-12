@@ -21,6 +21,17 @@ test('the catalogue lists the headphones and leaves older products out', async (
   assert.equal(form.category, 'over-ear');
   assert.equal(form.stock_quantity, 25);
   assert.equal(form.imageUrl, '/media/products/atlas.webp');
+  const roles = (product) => product.media.map((item) => item.role + ':' + item.path);
+  assert.deepEqual(roles(form), [
+    'film:films/form-orbit.mp4',
+    'gallery:photos/atlas-cup.webp',
+    'gallery:photos/atlas-mesh.webp',
+    'main:products/atlas.webp',
+  ]);
+  const main = form.media.find((item) => item.role === 'main');
+  assert.deepEqual(main.crop, [658, 159, 1738, 1437]);
+  assert.equal(main.tone, 'dark');
+  assert.ok(body.every((product) => product.media.some((item) => item.role === 'main')));
   const pocket = body.find((product) => product.slug === 'pocket-05');
   assert.equal(pocket.finish_name, 'Chalk');
   assert.equal(pocket.imageUrl, '/media/products/pearl.webp');

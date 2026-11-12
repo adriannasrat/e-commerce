@@ -150,3 +150,19 @@ test('retired models leave open carts but stay in paid ones', async () => {
   assert.deepEqual(forSale.map(({ slug }) => slug), ['black', 'silver', 'pocket-05', 'form-05', 'form-06', 'pocket-06', 'pocket-07', 'pocket-08']);
   await sequelize.close();
 });
+
+test('product media allows one main image per product and only known roles', async () => {
+  await resetDatabase();
+  const sequelize = new Sequelize(config);
+  await createMigrator(sequelize).up();
+  const [{ id }] = await sequelize.query("SELECT id FROM Products WHERE slug = 'black'", { type: QueryTypes.SELECT });
+  const insert = (role, position) => sequelize.query(
+    `INSERT INTO ProductMedia (product_id, role, kind, position, path, alt, createdAt, updatedAt)
+     VALUES (${id}, '${role}', 'photo', ${position}, 'x.webp', 'x', ${now}, ${now})`,
+  );
+  await assert.rejects(insert('main', 0), { name: 'SequelizeUniqueConstraintError' });
+  await assert.rejects(insert('main', 1), /CONSTRAINT/);
+  await assert.rejects(insert('poster', 5), /CONSTRAINT/);
+  await insert('gallery', 9);
+  await sequelize.close();
+});
