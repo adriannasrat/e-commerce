@@ -1,5 +1,8 @@
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
+// The versioned API prefix. Callers pass paths such as "/products".
+export const API_PREFIX = "/api/v1";
+
 // Same-origin JSON calls: the session lives in an httpOnly cookie.
 export async function api<T = unknown>(
   method: Method,
@@ -8,7 +11,7 @@ export async function api<T = unknown>(
 ): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(path, {
+    response = await fetch(API_PREFIX + path, {
       method,
       credentials: "same-origin",
       headers: body === undefined ? undefined : { "Content-Type": "application/json" },

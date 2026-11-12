@@ -21,10 +21,10 @@ async function startApi(t) {
   await resetDatabase();
   const sequelize = require('../../config/database');
   await createMigrator(sequelize).up();
-  const { createApp } = require('../../app');
+  const { API_PREFIX, createApp } = require('../../app');
   const server = createApp().listen(0, '127.0.0.1');
   await once(server, 'listening');
-  const base = `http://127.0.0.1:${server.address().port}`;
+  const base = `http://127.0.0.1:${server.address().port}${API_PREFIX}`;
   t.after(async () => {
     await new Promise((resolve) => server.close(resolve));
     await sequelize.close();

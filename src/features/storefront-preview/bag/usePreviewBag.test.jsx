@@ -125,11 +125,11 @@ test("checkout waits for a change that is still on its way to the server", async
     paying = result.current.checkout();
   });
   await new Promise((resolve) => setTimeout(resolve, 20));
-  expect(calls).toEqual(["PUT /cart/items/1"]);
+  expect(calls).toEqual(["PUT /api/v1/cart/items/1"]);
 
   release();
   await act(async () => {
     await paying;
   });
-  expect(calls).toEqual(["PUT /cart/items/1", "POST /cart/checkout", "GET /cart"]);
+  expect(calls).toEqual(["PUT /api/v1/cart/items/1", "POST /api/v1/cart/checkout", "GET /api/v1/cart"]);
 });

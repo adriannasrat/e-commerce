@@ -32,7 +32,7 @@ styles beside their components. Every page has its own URL, such as `/store` or
 `/product/form-05`, and `routes.ts` both builds and reads those addresses. The
 session, the catalogue and the signed-in cart live in one TanStack Query cache.
 Cart changes and checkout run one at a time, each on the latest server result. In
-development Vite proxies API calls to Express, so the browser sees a single origin.
+development Vite proxies `/api/v1` calls to Express, so the browser sees a single origin.
 
 The API separates HTTP routes from services and Sequelize models. A few decisions
 carry most of the weight:

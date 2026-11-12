@@ -9,7 +9,8 @@ Startup logs and error responses never print raw driver errors or credentials.
 
 Sessions are httpOnly cookies, with only a digest of the token stored. Routes act
 on the signed-in user and never take a user id, so a cart can only be its owner's.
-The React dev server proxies API calls to this port, so the browser sees one origin.
+Every API route lives under `/api/v1`. In development Vite proxies `/api` to this
+port, so the browser sees one origin.
 
 ## Configuration
 
