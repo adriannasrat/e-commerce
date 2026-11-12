@@ -37,7 +37,7 @@ export const testCatalogue = [
     id: 9,
     slug: "pocket-05",
     title: "Pocket 05",
-    finish_name: "Onyx",
+    finish_name: "Chalk",
     category: "in-ear",
     price_ore: 109000,
     stock_quantity: 25,

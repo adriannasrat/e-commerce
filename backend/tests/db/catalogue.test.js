@@ -21,4 +21,7 @@ test('the catalogue lists the headphones and leaves older products out', async (
   assert.equal(form.category, 'over-ear');
   assert.equal(form.stock_quantity, 25);
   assert.equal(form.imageUrl, '/local-preview/form-01.webp');
+  const pocket = body.find((product) => product.slug === 'pocket-05');
+  assert.equal(pocket.finish_name, 'Chalk');
+  assert.equal(pocket.imageUrl, '/local-preview/pocket-05.webp');
 });

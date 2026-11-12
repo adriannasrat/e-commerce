@@ -17,12 +17,6 @@ const slideContent = [
     photo: lifestyle.silverResting,
   },
   {
-    id: "pocket-05",
-    eyebrow: "Pocket 05",
-    title: "Matte, minimal, made to disappear.",
-    photo: lifestyle.pocket05Slate,
-  },
-  {
     id: "pocket-07",
     eyebrow: "Pocket 07",
     title: "Polished metal, pocket-sized.",

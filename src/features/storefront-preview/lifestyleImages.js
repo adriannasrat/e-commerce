@@ -35,12 +35,6 @@ export const lifestyle = {
     model: "silver",
     focus: "45% 55%",
   },
-  pocket05Slate: {
-    src: `${base}pocket-05-slate.jpg`,
-    alt: "An open Pocket 05 case on dark slate",
-    model: "pocket-05",
-    focus: "52% 55%",
-  },
   form01Cup: {
     src: `${base}form-01-cup.webp`,
     alt: "Close-up of a Form 01 ear cup, its brushed metal and woven cushion in low light",
@@ -107,13 +101,6 @@ export const productViews = {
       id: "context",
       label: "Form 03 in context",
       photo: lifestyle.silverStandClose,
-    },
-  ],
-  "pocket-05": [
-    {
-      id: "context",
-      label: "Pocket 05 in context",
-      photo: lifestyle.pocket05Slate,
     },
   ],
 };
