@@ -28,12 +28,12 @@ test("highlights expose one active slide and can be paused or jumped to", () => 
   const region = screen.getByRole("region", { name: "Get the highlights." });
   const slides = within(region).getAllByRole("group", { hidden: true });
   expect(slides.filter((slide) => slide.getAttribute("aria-hidden") === "false")).toHaveLength(1);
-  fireEvent.click(screen.getByRole("button", { name: "Show highlight 2: Pocket 07" }));
+  fireEvent.click(screen.getByRole("button", { name: "Show highlight 2: Prism" }));
   expect(
-    screen.getByRole("button", { name: "Show highlight 2: Pocket 07" }),
+    screen.getByRole("button", { name: "Show highlight 2: Prism" }),
   ).toHaveAttribute("aria-current", "true");
   expect(
-    within(region).getByRole("link", { name: "Learn more about Pocket 07" }),
+    within(region).getByRole("link", { name: "Learn more about Prism" }),
   ).toHaveAttribute("href", "/product/pocket-07");
   fireEvent.click(screen.getByRole("button", { name: "Pause highlights" }));
   expect(screen.getByRole("button", { name: "Play highlights" })).toBeInTheDocument();

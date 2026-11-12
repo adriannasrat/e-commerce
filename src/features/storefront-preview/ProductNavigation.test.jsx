@@ -21,10 +21,10 @@ test("a recommendation opens its product details at the top", async () => {
   });
   window.scrollTo.mockClear();
   fireEvent.click(
-    within(recommendations).getByRole("link", { name: /Form 03/ }),
+    within(recommendations).getByRole("link", { name: /Halo/ }),
   );
   expect(
-    await screen.findByRole("heading", { level: 1, name: "Form 03" }),
+    await screen.findByRole("heading", { level: 1, name: "Halo" }),
   ).toHaveFocus();
   expect(window.location.pathname).toBe("/product/silver");
   expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "instant" });

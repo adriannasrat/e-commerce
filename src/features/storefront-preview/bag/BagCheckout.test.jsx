@@ -29,12 +29,12 @@ test("a guest is asked to sign in before paying", () => {
 
 test("a refused order explains why, and a placed one confirms it", async () => {
   const checkout = async () => {
-    throw new Error("Only 0 of Form 01 left in stock");
+    throw new Error("Only 0 of Atlas left in stock");
   };
   const { rerender } = render(<BagPage bag={bagWith({ signedIn: true, checkout })} />);
   openCheckout();
   fireEvent.click(screen.getByRole("button", { name: "Place order" }));
-  expect(await screen.findByRole("alert")).toHaveTextContent("Only 0 of Form 01 left in stock");
+  expect(await screen.findByRole("alert")).toHaveTextContent("Only 0 of Atlas left in stock");
 
   rerender(<BagPage bag={bagWith({ signedIn: true, checkout: async () => ({ id: 42, total_ore: 179000 }) })} />);
   fireEvent.click(screen.getByRole("button", { name: "Place order" }));

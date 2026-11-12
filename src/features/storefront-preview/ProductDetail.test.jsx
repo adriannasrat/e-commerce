@@ -40,9 +40,9 @@ test.each(products)(
 test("opens the enlarged product image in a labelled dialog", () => {
   render(<ProductDetail product={products[0]} />);
   fireEvent.click(
-    screen.getByRole("button", { name: "Enlarge Form 01 image" }),
+    screen.getByRole("button", { name: "Enlarge Atlas image" }),
   );
-  const dialog = screen.getByRole("dialog", { name: "Form 01 enlarged image" });
+  const dialog = screen.getByRole("dialog", { name: "Atlas enlarged image" });
   expect(
     within(dialog).getByRole("img", {
       name: "Graphite over-ear headphones with brushed metal cups",
@@ -59,7 +59,7 @@ test("changing products resets the gallery, scroll and heading focus", () => {
   window.scrollTo.mockClear();
   rerender(<ProductDetail product={products[1]} />);
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-    "Form 03",
+    "Halo",
   );
   expect(screen.getByRole("heading", { level: 1 })).toHaveFocus();
   expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "instant" });
@@ -110,12 +110,12 @@ test("models with lifestyle photography offer extra gallery views", () => {
   render(<ProductDetail product={pocket} />);
   const views = screen.getByRole("group", { name: "Product image view" });
   expect(within(views).getAllByRole("button")).toHaveLength(4);
-  fireEvent.click(within(views).getByRole("button", { name: "Pocket 07 with its case" }));
+  fireEvent.click(within(views).getByRole("button", { name: "Prism with its case" }));
   expect(
-    screen.getByRole("img", { name: "Pocket 07 earbuds beside their slate case on black" }),
+    screen.getByRole("img", { name: "Prism earbuds beside their slate case on black" }),
   ).toBeInTheDocument();
-  fireEvent.click(within(views).getByRole("button", { name: "Pocket 07 earbud up close" }));
+  fireEvent.click(within(views).getByRole("button", { name: "Prism earbud up close" }));
   expect(
-    screen.getByRole("img", { name: "Close-up of a Pocket 07 earbud, its metal shell and soft tip" }),
+    screen.getByRole("img", { name: "Close-up of a Prism earbud, its metal shell and soft tip" }),
   ).toBeInTheDocument();
 });

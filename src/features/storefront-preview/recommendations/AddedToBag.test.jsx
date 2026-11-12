@@ -15,7 +15,7 @@ test('adding opens recommendations, extra items stay on the page, and refresh do
   fireEvent.click(screen.getByRole('button', { name: 'Add to bag' }));
   expect(await screen.findByRole('heading', { name: 'Added to your bag.' })).toBeInTheDocument();
   expect(window.location.pathname).toBe('/bag/added/black');
-  const white = screen.getByRole('article', { name: 'Form 03' });
+  const white = screen.getByRole('article', { name: 'Halo' });
   fireEvent.click(within(white).getByRole('button', { name: 'Add to bag' }));
   expect(window.location.pathname).toBe('/bag/added/black');
   expect(screen.getByRole('button', { name: 'Shopping bag, 2 items' })).toBeInTheDocument();

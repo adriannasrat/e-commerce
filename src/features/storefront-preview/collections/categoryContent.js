@@ -54,7 +54,7 @@ export const featureCards = {
       tone: "photo",
       photo: lifestyle.pocket07Bud,
       detail:
-        "Pocket 07 pairs polished metal buds with a satin Slate case. It is the most refined finish in the series, next to the clean Chalk of Pocket 05, the soft Carbon of Pocket 06 and the deep Ocean of Pocket 08.",
+        "Prism pairs polished metal buds with a satin Slate case. It is the most refined finish in the series, next to the clean Chalk of Pearl, the soft Carbon of Pebble and the deep Ocean of Drift.",
     },
     {
       id: "case",
