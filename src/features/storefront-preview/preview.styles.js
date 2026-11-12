@@ -514,9 +514,16 @@ const styles = [
   {
     ".shop-journal-art": {
       height: "clamp(240px, 28vw, 380px)",
-      overflow: "hidden",
-      borderRadius: "18px",
-      background: "#000",
+      background:
+        "radial-gradient(closest-side, rgba(245, 245, 247, 0.18), rgba(245, 245, 247, 0))",
+    },
+  },
+  {
+    ".shop-journal-art svg": {
+      display: "block",
+      width: "100%",
+      height: "100%",
+      filter: "drop-shadow(0 28px 36px rgba(0, 0, 0, 0.55))",
     },
   },
   // Responsive
