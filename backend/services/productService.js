@@ -18,7 +18,11 @@ const attributes = [
 const summary = { attributes, include: [{ model: Rating, attributes: [] }], group: ['Product.id'] };
 
 const getAllProducts = () =>
-  Product.findAll({ ...summary, where: { category: { [Op.ne]: null } }, order: [['id', 'ASC']] });
+  Product.findAll({
+    ...summary,
+    where: { category: { [Op.ne]: null }, retired_at: null },
+    order: [['id', 'ASC']],
+  });
 const getProductById = (id) => Product.findOne({ ...summary, where: { id } });
 
 module.exports = { getAllProducts, getProductById };

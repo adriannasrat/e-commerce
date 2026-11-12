@@ -32,6 +32,8 @@ const Product = sequelize.define("Product", {
   tagline: DataTypes.STRING,
   finish_name: DataTypes.STRING(64),
   category: DataTypes.STRING(16),
+  // Set when the product leaves the range. Retired products are not sold.
+  retired_at: DataTypes.DATE,
 });
 
 

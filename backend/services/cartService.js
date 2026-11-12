@@ -57,6 +57,10 @@ async function setItemAmount(userId, productId, amount) {
   }
   const product = await Product.findByPk(productId);
   if (!product) throw new HttpError(404, 'Product not found');
+  // A retired product can still be removed, but not added or increased.
+  if (amount > 0 && product.retired_at) {
+    throw new HttpError(409, `${product.title} is no longer sold`);
+  }
   if (amount > product.stock_quantity) {
     throw new HttpError(409, `Only ${product.stock_quantity} left in stock`);
   }
@@ -80,7 +84,7 @@ async function mergeGuestItems(userId, items) {
   await withActiveCart(userId, async (cart, transaction) => {
     for (const { product_id: productId, amount } of items) {
       const product = await Product.findByPk(productId, { transaction });
-      if (!product) continue;
+      if (!product || product.retired_at) continue;
       const row = await CartRow.findOne({ where: { cart_id: cart.id, product_id: productId }, transaction });
       const merged = Math.min(Math.max(amount, row ? row.amount : 0), product.stock_quantity);
       if (merged > 0) await CartRow.upsert({ cart_id: cart.id, product_id: productId, amount: merged }, { transaction });
@@ -133,6 +137,9 @@ async function checkout(userId, cartId) {
     });
     for (const product of products) {
       const row = rows.find(({ product_id: id }) => id === product.id);
+      if (product.retired_at) {
+        throw new HttpError(409, `${product.title} is no longer sold. Remove it to check out`);
+      }
       if (row.amount > product.stock_quantity) {
         throw new HttpError(409, `Only ${product.stock_quantity} of ${product.title} left in stock`);
       }

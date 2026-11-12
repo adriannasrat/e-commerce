@@ -112,3 +112,13 @@ test('several unpaid carts merge into one, and paid carts are left alone', async
   );
   await sequelize.close();
 });
+
+test('the original flowers are retired, while the headphones stay for sale', async () => {
+  const sequelize = await migrateLegacyDatabase(seedUserAndProduct);
+  const select = (sql) => sequelize.query(sql, { type: QueryTypes.SELECT });
+  const [rose] = await select("SELECT retired_at FROM Products WHERE title = 'Rose'");
+  assert.ok(rose.retired_at instanceof Date);
+  const [{ count }] = await select('SELECT COUNT(*) AS count FROM Products WHERE category IS NOT NULL AND retired_at IS NOT NULL');
+  assert.equal(Number(count), 0);
+  await sequelize.close();
+});
