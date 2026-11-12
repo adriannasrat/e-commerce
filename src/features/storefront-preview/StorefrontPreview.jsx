@@ -5,7 +5,8 @@ import Campaign from "./collections/Campaign";
 import { collections } from "./collections/collections";
 import StorefrontStyles from "./StorefrontStyles";
 import StorefrontFooter from "./footer/StorefrontFooter";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 import useReveal from "./ui/useReveal";
 import { ScopedCssBaseline } from "@mui/material";
@@ -26,6 +27,7 @@ import SignInPage from "./auth/SignInPage";
 import { AuthProvider } from "./auth/AuthContext";
 import CatalogueGate from "./CatalogueGate";
 import { paths } from "./routes";
+import { createQueryClient } from "./queryClient";
 
 function NotFound({ title, detail, href, action }) {
   return (
@@ -232,13 +234,16 @@ function Storefront() {
 }
 
 export default function StorefrontPreview() {
+  const [queryClient] = useState(createQueryClient);
   return (
-    <BrowserRouter>
-      <CatalogueGate>
-        <AuthProvider>
-          <Storefront />
-        </AuthProvider>
-      </CatalogueGate>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <CatalogueGate>
+          <AuthProvider>
+            <Storefront />
+          </AuthProvider>
+        </CatalogueGate>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }

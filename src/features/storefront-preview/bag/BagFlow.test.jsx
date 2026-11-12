@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { products } from "../products";
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { createQueryClient } from "../queryClient";
 import usePreviewBag from "./usePreviewBag";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import BagPage from "./BagPage";
@@ -13,6 +16,15 @@ const testTheme = createTheme({
 });
 
 function BagHarness() {
+  const [client] = useState(createQueryClient);
+  return (
+    <QueryClientProvider client={client}>
+      <Bag />
+    </QueryClientProvider>
+  );
+}
+
+function Bag() {
   const bag = usePreviewBag();
   return (
     <MemoryRouter>

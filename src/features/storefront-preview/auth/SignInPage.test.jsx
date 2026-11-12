@@ -87,3 +87,19 @@ test("registration is reachable directly", () => {
   expect(screen.getByRole("heading", { name: "Sign up." })).toBeInTheDocument();
   expect(document.title).toBe("Sign up — RESONANCE");
 });
+
+test("signing out returns to the sign-in form and empties the shown bag", async () => {
+  mockApi.on("GET /users/me", 200, { id: 1, email: "demo@example.com" });
+  mockApi.on("GET /cart", 200, { id: 3, items: [{ product_id: 1, amount: 2 }] });
+  window.history.replaceState({}, "", "/sign-in");
+  render(<StorefrontPreview />);
+  expect(await screen.findByText("Signed in as demo@example.com")).toBeInTheDocument();
+  expect(
+    await screen.findByRole("button", { name: "Shopping bag, 2 items" }),
+  ).toBeInTheDocument();
+
+  mockApi.on("POST /users/signout", 204, null);
+  fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
+  expect(await screen.findByRole("heading", { name: "Sign in." })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Shopping bag, 0 items" })).toBeInTheDocument();
+});

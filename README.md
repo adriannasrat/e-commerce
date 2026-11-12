@@ -19,7 +19,7 @@ no money is ever taken.
 
 | Area | Technology |
 | --- | --- |
-| Frontend | React 19, MUI and Emotion, built with Vite |
+| Frontend | React 19, MUI and Emotion, TanStack Query for server state, built with Vite |
 | Language | JavaScript, with TypeScript adopted gradually |
 | API | Node.js and Express |
 | Database | MariaDB with Sequelize and versioned Umzug migrations |
@@ -29,7 +29,9 @@ no money is ever taken.
 
 The frontend lives in `src/features/storefront-preview/`, grouped by feature with
 styles beside their components. Every page has its own URL, such as `/store` or
-`/product/form-05`, and `routes.ts` both builds and reads those addresses. In
+`/product/form-05`, and `routes.ts` both builds and reads those addresses. The
+session, the catalogue and the signed-in cart live in one TanStack Query cache.
+Cart changes and checkout run one at a time, each on the latest server result. In
 development Vite proxies API calls to Express, so the browser sees a single origin.
 
 The API separates HTTP routes from services and Sequelize models. A few decisions

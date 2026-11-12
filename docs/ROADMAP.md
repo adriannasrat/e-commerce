@@ -48,7 +48,7 @@ Checkout guarantees, which every change must keep:
 
 - [x] Move from Create React App to Vite and Vitest, with lint and type checks in CI.
 - [x] Replace hash routes with real URLs.
-- [ ] Fetch server data through TanStack Query.
+- [x] Fetch server data through TanStack Query.
 - [ ] Move images and films to object storage behind a CDN, with a `product_media` table.
 - [ ] Prefix the API with `/api/v1`, validate configuration at startup, add security headers and structured logging.
 - [ ] Choose free hosting for the frontend, API and database, and deploy on every merge.
