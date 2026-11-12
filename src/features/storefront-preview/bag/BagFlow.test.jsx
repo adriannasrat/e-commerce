@@ -30,7 +30,7 @@ function Bag() {
     <MemoryRouter>
       <ThemeProvider theme={testTheme}>
         <PreviewHeader bag={bag} />
-        <button onClick={() => bag.add("black")}>Add Form 01</button>
+        <button onClick={() => bag.add("black")}>Add Atlas</button>
         <BagPage bag={bag} />
       </ThemeProvider>
     </MemoryRouter>
@@ -44,12 +44,12 @@ beforeEach(() => {
 
 test("adding, changing quantity and removing updates the page, badge and saved bag", () => {
   const { unmount } = render(<BagHarness />);
-  fireEvent.click(screen.getByRole("button", { name: "Add Form 01" }));
+  fireEvent.click(screen.getByRole("button", { name: "Add Atlas" }));
   expect(
     screen.getByRole("button", { name: "Shopping bag, 1 item" }),
   ).toBeInTheDocument();
   fireEvent.change(
-    screen.getByRole("combobox", { name: "Quantity for Form 01" }),
+    screen.getByRole("combobox", { name: "Quantity for Atlas" }),
     { target: { value: "3" } },
   );
   expect(
@@ -61,9 +61,9 @@ test("adding, changing quantity and removing updates the page, badge and saved b
   unmount();
   render(<BagHarness />);
   expect(
-    screen.getByRole("combobox", { name: "Quantity for Form 01" }),
+    screen.getByRole("combobox", { name: "Quantity for Atlas" }),
   ).toHaveValue("3");
-  fireEvent.click(screen.getByRole("button", { name: "Remove Form 01" }));
+  fireEvent.click(screen.getByRole("button", { name: "Remove Atlas" }));
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
     "Your bag is empty.",
   );
@@ -72,10 +72,10 @@ test("adding, changing quantity and removing updates the page, badge and saved b
 
 test("bag icon opens the populated preview with a review-bag link", () => {
   render(<BagHarness />);
-  fireEvent.click(screen.getByRole("button", { name: "Add Form 01" }));
+  fireEvent.click(screen.getByRole("button", { name: "Add Atlas" }));
   fireEvent.click(screen.getByRole("button", { name: "Shopping bag, 1 item" }));
   const panel = screen.getByRole("dialog", { name: "Bag" });
-  expect(within(panel).getByText("Form 01")).toBeInTheDocument();
+  expect(within(panel).getByText("Atlas")).toBeInTheDocument();
   expect(
     within(panel).getByRole("link", { name: "Review bag (1)" }),
   ).toHaveAttribute("href", "/bag");
@@ -106,7 +106,7 @@ test("profile options open the corresponding preview information", async () => {
 
 test("adding a suggested product updates the reviewed bag and removes it from suggestions", () => {
   render(<BagHarness />);
-  fireEvent.click(screen.getByRole("button", { name: "Add Form 01" }));
+  fireEvent.click(screen.getByRole("button", { name: "Add Atlas" }));
   const suggestions = screen.getByRole("region", { name: "You may also like" });
   expect(within(suggestions).getAllByRole("article")).toHaveLength(3);
   fireEvent.click(
@@ -116,15 +116,15 @@ test("adding a suggested product updates the reviewed bag and removes it from su
     products.length - 1,
   );
   fireEvent.click(
-    within(suggestions).getByRole("button", { name: "Add Form 02 to bag" }),
+    within(suggestions).getByRole("button", { name: "Add Halo to bag" }),
   );
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-    "3 780 SEK",
+    "4 280 SEK",
   );
   expect(
     screen.getByRole("button", { name: "Shopping bag, 2 items" }),
   ).toBeInTheDocument();
   expect(
-    within(suggestions).queryByRole("button", { name: "Add Form 02 to bag" }),
+    within(suggestions).queryByRole("button", { name: "Add Halo to bag" }),
   ).not.toBeInTheDocument();
 });

@@ -147,6 +147,6 @@ test('retired models leave open carts but stay in paid ones', async () => {
     { cart_id: 2, product_id: form05 },
   ]);
   const forSale = await select('SELECT slug FROM Products WHERE retired_at IS NULL AND category IS NOT NULL ORDER BY id');
-  assert.deepEqual(forSale.map(({ slug }) => slug), ['black', 'white', 'silver', 'pocket-05', 'form-05', 'form-06', 'pocket-06', 'pocket-07', 'pocket-08']);
+  assert.deepEqual(forSale.map(({ slug }) => slug), ['black', 'silver', 'pocket-05', 'form-05', 'form-06', 'pocket-06', 'pocket-07', 'pocket-08']);
   await sequelize.close();
 });

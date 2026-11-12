@@ -4,7 +4,7 @@ import HeadphoneImage from '../HeadphoneImage';
 import { headphoneImages } from '../headphoneImages';
 import { paths } from "../routes";
 
-// Form 01 as a cut-out, lit from behind so the dark model reads on the dark card.
+// Atlas as a cut-out, lit from behind so the dark model reads on the dark card.
 const form01 = headphoneImages.find((image) => image.id === "black");
 
 export default function JournalFeature() {

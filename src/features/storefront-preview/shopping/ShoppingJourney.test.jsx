@@ -14,9 +14,10 @@ test('catalog filters narrow the grid and adding a model opens its confirmation'
   render(<StorefrontPreview />);
   const filters = screen.getByRole('group', { name: 'Filter by fit' });
   fireEvent.click(within(filters).getByRole('button', { name: 'In-ear' }));
-  expect(screen.getAllByRole('button', { name: /Add Pocket .* to bag/ })).toHaveLength(collectionModels('in-ear').length);
-  expect(screen.queryByRole('button', { name: /Add Form .* to bag/ })).not.toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: 'Add Pocket 06 to bag' }));
+  const addButtons = (series) => new RegExp(`Add (${collectionModels(series).map((model) => model.name).join('|')}) to bag`);
+  expect(screen.getAllByRole('button', { name: addButtons('in-ear') })).toHaveLength(collectionModels('in-ear').length);
+  expect(screen.queryByRole('button', { name: addButtons('over-ear') })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Add Pebble to bag' }));
   expect(await screen.findByRole('heading', { name: /Added to your bag/i })).toBeInTheDocument();
   expect(window.location.pathname).toBe('/bag/added/pocket-06');
 });
@@ -26,8 +27,8 @@ test('cross-series comparison links to the chosen model and prevents duplicate c
   render(<StorefrontPreview />);
   const compare = screen.getByRole('region', { name: 'Which pair is yours?' });
   fireEvent.change(within(compare).getByLabelText('Headphone 1'), { target: { value: 'silver' } });
-  expect(within(compare).getByRole('link', { name: 'Explore Form 03' })).toHaveAttribute('href', '/product/silver');
-  expect(within(within(compare).getByLabelText('Headphone 2')).getByRole('option', { name: 'Form 03' })).toBeDisabled();
+  expect(within(compare).getByRole('link', { name: 'Explore Halo' })).toHaveAttribute('href', '/product/silver');
+  expect(within(within(compare).getByLabelText('Headphone 2')).getByRole('option', { name: 'Halo' })).toBeDisabled();
 });
 
 test('search opens a matching product and offers feedback for an empty result', async () => {
@@ -39,6 +40,6 @@ test('search opens a matching product and offers feedback for an empty result', 
   fireEvent.change(field, { target: { value: 'missing' } });
   expect(within(dialog).getByRole('status')).toHaveTextContent('No matching models');
   fireEvent.change(field, { target: { value: 'silver Over Ear' } });
-  fireEvent.click(within(dialog).getByRole('link', { name: /Form 03/ }));
-  expect(await screen.findByRole('heading', { level: 1, name: 'Form 03' })).toBeInTheDocument();
+  fireEvent.click(within(dialog).getByRole('link', { name: /Halo/ }));
+  expect(await screen.findByRole('heading', { level: 1, name: 'Halo' })).toBeInTheDocument();
 });

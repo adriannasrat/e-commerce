@@ -12,26 +12,26 @@ import { paths } from "../routes";
 const slideContent = [
   {
     id: "silver",
-    eyebrow: "Form 03",
+    eyebrow: "Halo",
     title: "Quietly bold, from every angle.",
     photo: lifestyle.silverResting,
   },
   {
     id: "pocket-07",
-    eyebrow: "Pocket 07",
+    eyebrow: "Prism",
     title: "Polished metal, pocket-sized.",
     photo: lifestyle.pocket07BudAngle,
   },
   {
     id: "black",
-    eyebrow: "Form 01",
+    eyebrow: "Atlas",
     title: "A little closer to the music.",
     photo: lifestyle.form01Cup,
   },
   {
     id: "silver-evening",
     model: "silver",
-    eyebrow: "Form 03",
+    eyebrow: "Halo",
     title: "After hours, in every colour.",
     photo: lifestyle.silverAfterHours,
   },

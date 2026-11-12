@@ -3,13 +3,13 @@ import { bagReducer, normaliseBag } from "./bagState";
 test("merges repeated additions and keeps finishes separate", () => {
   let rows = bagReducer([], { type: "add", id: "black" });
   rows = bagReducer(rows, { type: "add", id: "black" });
-  rows = bagReducer(rows, { type: "add", id: "white" });
+  rows = bagReducer(rows, { type: "add", id: "silver" });
   expect(rows).toEqual([
     { id: "black", quantity: 2 },
-    { id: "white", quantity: 1 },
+    { id: "silver", quantity: 1 },
   ]);
   expect(bagReducer(rows, { type: "remove", id: "black" })).toEqual([
-    { id: "white", quantity: 1 },
+    { id: "silver", quantity: 1 },
   ]);
 });
 
@@ -19,7 +19,7 @@ test("validates saved data and rejects invalid quantities", () => {
     normaliseBag([
       { id: "unknown", quantity: 1 },
       null,
-      { id: "white", quantity: -1 },
+      { id: "silver", quantity: -1 },
       { id: "black", quantity: 1000 },
       { id: "black", quantity: 1 },
     ]),

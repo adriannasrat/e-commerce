@@ -14,7 +14,7 @@ export default function RangeSet() {
         <h2 className="rx-section-title" id="store-set-title">
           Two forms. One quiet idea.
         </h2>
-        <p>Five Form models and four Pocket models, made to sit side by side.</p>
+        <p>Four Form models and four Pocket models, made to sit side by side.</p>
         <a className="rx-link" href={paths.compare}>
           Compare the range
         </a>

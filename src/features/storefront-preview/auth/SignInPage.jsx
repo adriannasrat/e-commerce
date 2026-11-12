@@ -29,7 +29,7 @@ export default function SignInPage({ mode = "sign-in" }) {
           </h2>
           <HeadphoneImage image={image} className="sign-in-headphones" />
           <div className="sign-in-art-caption">
-            <span>Form 03 · Silver</span>
+            <span>Halo · Silver</span>
             <span>Made for your moments.</span>
           </div>
         </aside>

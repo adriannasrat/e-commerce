@@ -23,7 +23,7 @@ test("shows loading, then the shop with the API's data", async () => {
   renderGate();
   expect(screen.getByRole("status")).toHaveTextContent("Loading the collection");
   expect(await screen.findByText("The shop")).toBeInTheDocument();
-  expect(products[0]).toMatchObject({ id: "black", name: "Form 01", price: 1500.5 });
+  expect(products[0]).toMatchObject({ id: "black", name: "Atlas", price: 1500.5 });
 });
 
 test("an empty catalogue says so instead of showing an empty shop", async () => {

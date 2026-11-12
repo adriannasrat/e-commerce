@@ -3,7 +3,7 @@ export const testCatalogue = [
   {
     id: 1,
     slug: "black",
-    title: "Form 01",
+    title: "Atlas",
     finish_name: "Graphite",
     category: "over-ear",
     price_ore: 179000,
@@ -12,20 +12,9 @@ export const testCatalogue = [
     description: "A dark, sculptural expression for your everyday listening ritual.",
   },
   {
-    id: 2,
-    slug: "white",
-    title: "Form 02",
-    finish_name: "Chalk",
-    category: "over-ear",
-    price_ore: 199000,
-    stock_quantity: 25,
-    tagline: "Make room for your own rhythm.",
-    description: "Soft tones and a clean silhouette. A fresh perspective on personal audio.",
-  },
-  {
     id: 3,
     slug: "silver",
-    title: "Form 03",
+    title: "Halo",
     finish_name: "Silver",
     category: "over-ear",
     price_ore: 249000,
@@ -36,7 +25,7 @@ export const testCatalogue = [
   {
     id: 9,
     slug: "pocket-05",
-    title: "Pocket 05",
+    title: "Pearl",
     finish_name: "Chalk",
     category: "in-ear",
     price_ore: 109000,
@@ -47,7 +36,7 @@ export const testCatalogue = [
   {
     id: 10,
     slug: "form-05",
-    title: "Form 05",
+    title: "Tide",
     finish_name: "Ocean",
     category: "over-ear",
     price_ore: 259000,
@@ -58,7 +47,7 @@ export const testCatalogue = [
   {
     id: 11,
     slug: "form-06",
-    title: "Form 06",
+    title: "Grove",
     finish_name: "Sage",
     category: "over-ear",
     price_ore: 259000,
@@ -69,7 +58,7 @@ export const testCatalogue = [
   {
     id: 13,
     slug: "pocket-06",
-    title: "Pocket 06",
+    title: "Pebble",
     finish_name: "Carbon",
     category: "in-ear",
     price_ore: 129000,
@@ -80,7 +69,7 @@ export const testCatalogue = [
   {
     id: 14,
     slug: "pocket-07",
-    title: "Pocket 07",
+    title: "Prism",
     finish_name: "Slate",
     category: "in-ear",
     price_ore: 169000,
@@ -91,7 +80,7 @@ export const testCatalogue = [
   {
     id: 15,
     slug: "pocket-08",
-    title: "Pocket 08",
+    title: "Drift",
     finish_name: "Ocean",
     category: "in-ear",
     price_ore: 149000,

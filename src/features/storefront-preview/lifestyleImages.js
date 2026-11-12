@@ -7,73 +7,73 @@ const base = "/local-preview/lifestyle/";
 export const lifestyle = {
   silverResting: {
     src: `${base}silver-resting.jpg`,
-    alt: "Form 03 headphones resting on a pale surface against a plum wall",
+    alt: "Halo headphones resting on a pale surface against a plum wall",
     model: "silver",
     focus: "68% 60%",
   },
   silverStand: {
     src: `${base}silver-stand.jpg`,
-    alt: "Form 03 headphones on a stand in soft pink light",
+    alt: "Halo headphones on a stand in soft pink light",
     model: "silver",
     focus: "50% 60%",
   },
   silverStandClose: {
     src: `${base}silver-stand-close.jpg`,
-    alt: "Close-up of a Form 03 ear cup and headband",
+    alt: "Close-up of a Halo ear cup and headband",
     model: "silver",
     focus: "70% 55%",
   },
   silverDesk: {
     src: `${base}silver-desk.jpg`,
-    alt: "Form 03 headphones on a desk beside a keyboard",
+    alt: "Halo headphones on a desk beside a keyboard",
     model: "silver",
     focus: "50% 45%",
   },
   silverAfterHours: {
     src: `${base}silver-after-hours.jpg`,
-    alt: "Form 03 headphones under blue and green evening light",
+    alt: "Halo headphones under blue and green evening light",
     model: "silver",
     focus: "45% 55%",
   },
   form01Cup: {
     src: `${base}form-01-cup.webp`,
-    alt: "Close-up of a Form 01 ear cup, its brushed metal and woven cushion in low light",
+    alt: "Close-up of an Atlas ear cup, its brushed metal and woven cushion in low light",
     model: "black",
     focus: "45% 50%",
   },
   form01Cushion: {
     src: `${base}form-01-cushion.webp`,
-    alt: "Close-up of the stitched cushion of a Form 01 ear cup",
+    alt: "Close-up of the stitched cushion of an Atlas ear cup",
     model: "black",
     focus: "45% 55%",
   },
   form01Mesh: {
     src: `${base}form-01-mesh.webp`,
-    alt: "Close-up of the knit mesh and control button on a Form 01 ear cup",
+    alt: "Close-up of the knit mesh and control button on an Atlas ear cup",
     model: "black",
     focus: "45% 50%",
   },
   pocket07Set: {
     src: `${base}pocket-07-set.webp`,
-    alt: "Pocket 07 earbuds beside their slate case on black",
+    alt: "Prism earbuds beside their slate case on black",
     model: "pocket-07",
     focus: "50% 64%",
   },
   pocket07Case: {
     src: `${base}pocket-07-case.webp`,
-    alt: "Close-up of the Pocket 07 case lid and its status light",
+    alt: "Close-up of the Prism case lid and its status light",
     model: "pocket-07",
     focus: "50% 50%",
   },
   pocket07Bud: {
     src: `${base}pocket-07-bud.webp`,
-    alt: "Close-up of a Pocket 07 earbud, its metal shell and soft tip",
+    alt: "Close-up of a Prism earbud, its metal shell and soft tip",
     model: "pocket-07",
     focus: "50% 45%",
   },
   pocket07BudAngle: {
     src: `${base}pocket-07-bud-angle.webp`,
-    alt: "A single Pocket 07 earbud turning in the dark",
+    alt: "A single Prism earbud turning in the dark",
     model: "pocket-07",
     focus: "55% 45%",
   },
@@ -89,17 +89,17 @@ export const lifestyle = {
 // Extra product-page views, in addition to the studio shot and close-up.
 export const productViews = {
   black: [
-    { id: "cup", label: "Form 01 ear cup up close", photo: lifestyle.form01Cup },
-    { id: "mesh", label: "Form 01 mesh and controls", photo: lifestyle.form01Mesh },
+    { id: "cup", label: "Atlas ear cup up close", photo: lifestyle.form01Cup },
+    { id: "mesh", label: "Atlas mesh and controls", photo: lifestyle.form01Mesh },
   ],
   "pocket-07": [
-    { id: "set", label: "Pocket 07 with its case", photo: lifestyle.pocket07Set },
-    { id: "bud", label: "Pocket 07 earbud up close", photo: lifestyle.pocket07Bud },
+    { id: "set", label: "Prism with its case", photo: lifestyle.pocket07Set },
+    { id: "bud", label: "Prism earbud up close", photo: lifestyle.pocket07Bud },
   ],
   silver: [
     {
       id: "context",
-      label: "Form 03 in context",
+      label: "Halo in context",
       photo: lifestyle.silverStandClose,
     },
   ],

@@ -12,11 +12,11 @@ export const films = {
     description:
       "Dark over-ear headphones floating against a pale backdrop, turning slowly from front to side.",
   }),
-  "over-ear": film("form-film", {
-    title: "See it move.",
+  "over-ear": film("form-detail", {
+    title: "See its details.",
     lead: "Every curve of the Form silhouette, up close.",
     description:
-      "Dark over-ear headphones turning in the air, then close-ups of the ear cup, headband and crown.",
+      "Dark over-ear headphones in the air with close-ups of the ear cup, headband and crown.",
   }),
   "in-ear": film("pocket-film", {
     title: "Small, from every angle.",
@@ -42,14 +42,13 @@ const formOrbit = (name) =>
 
 // Only models whose shape matches the footage get a film on their own page.
 export const productFilms = {
-  black: formOrbit("Form 01"),
-  silver: formOrbit("Form 03"),
-  "form-05": formOrbit("Form 05"),
-  "form-06": formOrbit("Form 06"),
+  black: formOrbit("Atlas"),
+  silver: formOrbit("Halo"),
+  "form-05": formOrbit("Tide"),
+  "form-06": formOrbit("Grove"),
   "pocket-06": film("pocket-orbit", {
     title: "In motion.",
     lead: "Case and buds, from every side.",
-    description:
-      "Carbon earbuds floating and turning beside their open case.",
+    description: "Carbon earbuds floating and turning beside their open case.",
   }),
 };
