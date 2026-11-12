@@ -1,4 +1,4 @@
-// Product films and the Sand set feature on the store page.
+// Product films and the range feature on the store page.
 const styles = [
   {
     ".rx-film": {

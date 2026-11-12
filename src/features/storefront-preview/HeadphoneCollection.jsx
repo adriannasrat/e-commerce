@@ -7,7 +7,7 @@ import BookmarkBorderRounded from "@mui/icons-material/BookmarkBorderRounded";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import PersonOutlineRounded from "@mui/icons-material/PersonOutlineRounded";
 import ModelCompare from "./shopping/ModelCompare";
-import SandSet from "./shopping/SandSet";
+import RangeSet from "./shopping/RangeSet";
 import { collectionHref } from "./collections/collections";
 import HeadphoneImage from "./HeadphoneImage";
 import { products, formatPrice, newModels } from "./products";
@@ -19,7 +19,7 @@ import ModelCard from "./ui/ModelCard";
 import Shelf from "./ui/Shelf";
 import { paths } from "./routes";
 
-const darkCards = ["silver", "black", "in-ear-black", "form-04", "pocket-05"];
+const darkCards = ["silver", "black", "pocket-05"];
 
 const help = [
   {
@@ -134,7 +134,7 @@ export default function HeadphoneCollection({ onAddToBag }) {
         })}
       </Shelf>
 
-      <SandSet />
+      <RangeSet />
 
       <Film film={films.details} />
 

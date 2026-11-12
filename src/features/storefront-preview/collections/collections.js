@@ -15,8 +15,8 @@ export const collections = {
     series: "Pocket series",
     line: "Take the music with you.",
     description: "Personal audio in a pocket-sized form.",
-    feature: "in-ear-red",
-    art: "Colour in motion.",
+    feature: "pocket-07",
+    art: "Polished metal.",
   },
 };
 

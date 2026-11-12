@@ -74,6 +74,9 @@ const styles = [
   { ".product-detail-photo:hover .product-detail-stage > svg": { transform: "scale(1.025)" } },
   { '.product-detail-photo[data-view="detail"] .product-detail-stage > svg': { transform: "scale(1.55)" } },
   { '.product-detail-photo[data-kind="photo"]': { padding: "0", cursor: "zoom-in" } },
+  // A photo fills the frame exactly, so a portrait shot is cropped around its
+  // focus point instead of growing past the frame and losing its lower half.
+  { '.product-detail-photo[data-kind="photo"] .product-detail-stage': { position: "absolute", inset: "0" } },
   { '.product-detail-photo[data-kind="photo"] .rx-photo-fill': { transition: "transform 700ms var(--ease-out), opacity 360ms ease" } },
   { '.product-detail-photo[data-kind="photo"]:hover .rx-photo-fill': { transform: "scale(1.02)" } },
   { ".product-detail-thumbnail-photo": { borderRadius: "8px" } },

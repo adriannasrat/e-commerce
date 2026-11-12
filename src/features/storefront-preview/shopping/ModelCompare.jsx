@@ -4,7 +4,7 @@ import HeadphoneImage from '../HeadphoneImage';
 import { productHref } from '../usePreviewRoute';
 
 export default function ModelCompare() {
-  const [selection, setSelection] = useState(['black', 'in-ear-white']);
+  const [selection, setSelection] = useState(['black', 'pocket-07']);
   const models = selection.map(id => products.find(model => model.id === id));
 
   function choose(index, id) {

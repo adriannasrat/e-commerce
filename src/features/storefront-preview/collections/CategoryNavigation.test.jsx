@@ -16,7 +16,7 @@ beforeEach(() => {
 
 test.each([
   ["over-ear", "Over-ear", "Form 03", "silver"],
-  ["in-ear", "In-ear", "Pocket 03", "in-ear-red"],
+  ["in-ear", "In-ear", "Pocket 06", "pocket-06"],
 ])(
   "opens the %s collection, compares its models and navigates to the selected product",
   async (id, title, model, productId) => {

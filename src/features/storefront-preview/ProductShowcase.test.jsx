@@ -24,8 +24,8 @@ test("shows one promo tile per category with matching collection links", () => {
 
 test("model tiles link straight to their product pages", () => {
   render(<ProductShowcase />);
-  const tile = screen.getByRole("article", { name: "Pocket 03" });
+  const tile = screen.getByRole("article", { name: "Pocket 06" });
   expect(
-    within(tile).getByRole("link", { name: "Buy Pocket 03" }),
-  ).toHaveAttribute("href", "/product/in-ear-red");
+    within(tile).getByRole("link", { name: "Buy Pocket 06" }),
+  ).toHaveAttribute("href", "/product/pocket-06");
 });

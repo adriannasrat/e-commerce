@@ -42,6 +42,7 @@ const formOrbit = (name) =>
 
 // Only models whose shape matches the footage get a film on their own page.
 export const productFilms = {
+  black: formOrbit("Form 01"),
   silver: formOrbit("Form 03"),
   "form-05": formOrbit("Form 05"),
   "form-06": formOrbit("Form 06"),

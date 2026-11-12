@@ -14,17 +14,21 @@ test('an empty database migrates, and running again changes nothing', async () =
   await sequelize.close();
 });
 
-async function migrateLegacyDatabase(seed) {
+// Seeds a database in its original schema, then migrates it up to `to`, or to
+// the end. A test stops right after the migration it is about, so later data
+// changes such as retiring products do not blur what it checks.
+async function migrateLegacyDatabase(seed, to) {
   await resetDatabase();
   const sequelize = new Sequelize(config);
   const migrator = createMigrator(sequelize);
   await migrator.up({ to: '001-baseline.js' });
   await seed(sequelize);
-  await migrator.up();
+  await migrator.up(to ? { to } : undefined);
   return sequelize;
 }
 
 const now = "'2025-08-25 16:54:34'";
+const BEFORE_RETIREMENT = "010-product-retirement.js";
 
 test('existing products keep their data with prices converted to öre', async () => {
   const sequelize = await migrateLegacyDatabase(async (db) => {
@@ -52,7 +56,7 @@ test('duplicate cart rows merge, and the database then rejects invalid rows', as
     await db.query(`INSERT INTO Carts (id, user_id, payed, createdAt, updatedAt) VALUES (1, 1, 0, ${now}, ${now})`);
     await db.query(`INSERT INTO CartRows (amount, cart_id, product_id, createdAt, updatedAt)
       VALUES (2, 1, 1, ${now}, ${now}), (3, 1, 1, ${now}, ${now}), (0, 1, 1, ${now}, ${now})`);
-  });
+  }, BEFORE_RETIREMENT);
   const rows = await sequelize.query('SELECT amount FROM CartRows', { type: QueryTypes.SELECT });
   assert.deepEqual(rows, [{ amount: 5 }]);
   const insert = (amount) => sequelize.query(`INSERT INTO CartRows (amount, cart_id, product_id, createdAt, updatedAt)
@@ -98,7 +102,7 @@ test('several unpaid carts merge into one, and paid carts are left alone', async
       VALUES (1, 1, 1, ${now}, ${now}), (2, 1, 0, ${now}, ${now}), (3, 1, 0, ${now}, ${now})`);
     await db.query(`INSERT INTO CartRows (amount, cart_id, product_id, createdAt, updatedAt)
       VALUES (9, 1, 1, ${now}, ${now}), (1, 2, 1, ${now}, ${now}), (2, 2, 2, ${now}, ${now}), (3, 3, 1, ${now}, ${now})`);
-  });
+  }, BEFORE_RETIREMENT);
   const select = (sql) => sequelize.query(sql, { type: QueryTypes.SELECT });
   assert.deepEqual(await select('SELECT id, paid FROM Carts ORDER BY id'), [{ id: 1, paid: 1 }, { id: 3, paid: 0 }]);
   assert.deepEqual(await select('SELECT cart_id, product_id, amount FROM CartRows ORDER BY cart_id, product_id'), [
@@ -110,5 +114,39 @@ test('several unpaid carts merge into one, and paid carts are left alone', async
     sequelize.query(`INSERT INTO Carts (user_id, paid, createdAt, updatedAt) VALUES (1, 0, ${now}, ${now})`),
     { name: 'SequelizeUniqueConstraintError' },
   );
+  await sequelize.close();
+});
+
+test('the original flowers are retired, while the headphones stay for sale', async () => {
+  const sequelize = await migrateLegacyDatabase(seedUserAndProduct, BEFORE_RETIREMENT);
+  const select = (sql) => sequelize.query(sql, { type: QueryTypes.SELECT });
+  const [rose] = await select("SELECT retired_at FROM Products WHERE title = 'Rose'");
+  assert.ok(rose.retired_at instanceof Date);
+  const [{ count }] = await select('SELECT COUNT(*) AS count FROM Products WHERE category IS NOT NULL AND retired_at IS NOT NULL');
+  assert.equal(Number(count), 0);
+  await sequelize.close();
+});
+
+test('retired models leave open carts but stay in paid ones', async () => {
+  await resetDatabase();
+  const sequelize = new Sequelize(config);
+  const migrator = createMigrator(sequelize);
+  const select = (sql) => sequelize.query(sql, { type: QueryTypes.SELECT });
+  await migrator.up({ to: '010-product-retirement.js' });
+  const [{ id: form04 }] = await select("SELECT id FROM Products WHERE slug = 'form-04'");
+  const [{ id: form05 }] = await select("SELECT id FROM Products WHERE slug = 'form-05'");
+  await sequelize.query(`INSERT INTO Users (id, email, password, createdAt, updatedAt) VALUES (1, 'a@example.test', 'secret', ${now}, ${now})`);
+  await sequelize.query(`INSERT INTO Carts (id, user_id, paid, paid_at, createdAt, updatedAt)
+    VALUES (1, 1, 1, ${now}, ${now}, ${now}), (2, 1, 0, NULL, ${now}, ${now})`);
+  await sequelize.query(`INSERT INTO CartRows (cart_id, product_id, amount, unit_price_ore, createdAt, updatedAt)
+    VALUES (1, ${form04}, 1, 279000, ${now}, ${now}), (2, ${form04}, 2, NULL, ${now}, ${now}), (2, ${form05}, 1, NULL, ${now}, ${now})`);
+
+  await migrator.up();
+  assert.deepEqual(await select('SELECT cart_id, product_id FROM CartRows ORDER BY cart_id, product_id'), [
+    { cart_id: 1, product_id: form04 },
+    { cart_id: 2, product_id: form05 },
+  ]);
+  const forSale = await select('SELECT slug FROM Products WHERE retired_at IS NULL AND category IS NOT NULL ORDER BY id');
+  assert.deepEqual(forSale.map(({ slug }) => slug), ['black', 'white', 'silver', 'pocket-05', 'form-05', 'form-06', 'pocket-06', 'pocket-07']);
   await sequelize.close();
 });

@@ -44,7 +44,9 @@ test("opens the enlarged product image in a labelled dialog", () => {
   );
   const dialog = screen.getByRole("dialog", { name: "Form 01 enlarged image" });
   expect(
-    within(dialog).getByRole("img", { name: "Black headphones" }),
+    within(dialog).getByRole("img", {
+      name: "Graphite over-ear headphones with brushed metal cups",
+    }),
   ).toBeTruthy();
   expect(
     within(dialog).getByRole("button", { name: "Close enlarged image" }),
@@ -104,16 +106,16 @@ test("recommendation navigation exposes other products", () => {
 });
 
 test("models with lifestyle photography offer extra gallery views", () => {
-  const pocket = products.find((item) => item.id === "in-ear-white");
+  const pocket = products.find((item) => item.id === "pocket-07");
   render(<ProductDetail product={pocket} />);
   const views = screen.getByRole("group", { name: "Product image view" });
   expect(within(views).getAllByRole("button")).toHaveLength(4);
-  fireEvent.click(within(views).getByRole("button", { name: "Pocket 02 in context" }));
+  fireEvent.click(within(views).getByRole("button", { name: "Pocket 07 with its case" }));
   expect(
-    screen.getByRole("img", { name: "Pocket 02 earbuds and case on black" }),
+    screen.getByRole("img", { name: "Pocket 07 earbuds beside their slate case on black" }),
   ).toBeInTheDocument();
-  fireEvent.click(within(views).getByRole("button", { name: "Buds out of the case" }));
+  fireEvent.click(within(views).getByRole("button", { name: "Pocket 07 earbud up close" }));
   expect(
-    screen.getByRole("img", { name: "Pocket 02 earbuds beside their open case" }),
+    screen.getByRole("img", { name: "Close-up of a Pocket 07 earbud, its metal shell and soft tip" }),
   ).toBeInTheDocument();
 });
