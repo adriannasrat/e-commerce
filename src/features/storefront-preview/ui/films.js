@@ -1,9 +1,11 @@
+import { mediaUrl } from "../media";
+
 // Silent product films. Each entry is a looping clip with a poster frame; the
 // description stands in for the picture for anyone who cannot see it.
 const film = (name, content) => ({
   id: name,
-  src: `/local-preview/film/${name}.mp4`,
-  poster: `/local-preview/film/${name}.jpg`,
+  src: mediaUrl(`films/${name}.mp4`),
+  poster: mediaUrl(`films/${name}.jpg`),
   ...content,
 });
 
