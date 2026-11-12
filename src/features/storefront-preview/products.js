@@ -28,7 +28,6 @@ export const finishColors = {
   Graphite: "#363735",
   Chalk: "#eeede7",
   Silver: "#b6b8ba",
-  Onyx: "#1f1f21",
   Ocean: "#2f4d73",
   Sage: "#71896f",
   Carbon: "#26262a",

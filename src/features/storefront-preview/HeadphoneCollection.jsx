@@ -19,7 +19,7 @@ import ModelCard from "./ui/ModelCard";
 import Shelf from "./ui/Shelf";
 import { paths } from "./routes";
 
-const darkCards = ["silver", "black", "pocket-05"];
+const darkCards = ["silver", "black"];
 
 const help = [
   {

@@ -32,12 +32,12 @@ export const headphoneImages = [
   {
     id: "pocket-05",
     category: "in-ear",
-    label: "Onyx in-ear headphones in an open case",
-    src: "/local-preview/pocket-05.png",
-    finish: "graphite",
-    width: 2250,
-    height: 1720,
-    bounds: [702, 372, 1618, 1284],
+    label: "Chalk earbuds above their open case",
+    src: "/local-preview/pocket-05.webp",
+    finish: "chalk",
+    width: 1104,
+    height: 1632,
+    bounds: [40, 40, 1065, 1593],
   },
   {
     id: "form-05",

@@ -28,6 +28,10 @@ const benefitIcons = {
   pricing: SellOutlined,
 };
 
+// Dark models sit on a dark card and light ones on a light card, so every
+// product keeps its contrast whatever order the range is in.
+const cardTone = (model) => (model.image.finish === "graphite" ? "dark" : "light");
+
 function HeroGallery({ models, collection }) {
   return (
     <Shelf
@@ -35,10 +39,10 @@ function HeroGallery({ models, collection }) {
       label={`${collection.name} highlights`}
       reveal="zoom"
     >
-      {models.map((model, index) => (
+      {models.map((model) => (
         <article
           key={model.id}
-          className={`sound-gallery-card sound-gallery-card--${index % 2 ? "light" : "dark"}`}
+          className={`sound-gallery-card sound-gallery-card--${cardTone(model)}`}
           aria-labelledby={`gallery-${model.id}`}
         >
           <div className="sound-gallery-copy">
