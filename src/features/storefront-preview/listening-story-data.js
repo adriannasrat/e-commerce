@@ -2,7 +2,7 @@ import { lifestyle } from "./lifestyleImages";
 
 export const listeningStories = [
   {
-    id: "white",
+    id: "form-06",
     tone: "chalk",
     label: "01 · Slow moments",
     title: "A little space.\nJust for you.",

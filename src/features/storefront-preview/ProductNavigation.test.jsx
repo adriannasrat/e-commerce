@@ -21,17 +21,17 @@ test("a recommendation opens its product details at the top", async () => {
   });
   window.scrollTo.mockClear();
   fireEvent.click(
-    within(recommendations).getByRole("link", { name: /Form 02/ }),
+    within(recommendations).getByRole("link", { name: /Form 03/ }),
   );
   expect(
-    await screen.findByRole("heading", { level: 1, name: "Form 02" }),
+    await screen.findByRole("heading", { level: 1, name: "Form 03" }),
   ).toHaveFocus();
-  expect(window.location.pathname).toBe("/product/white");
+  expect(window.location.pathname).toBe("/product/silver");
   expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "instant" });
   expect(
     within(screen.getByRole("group", { name: "Product colours" })).getByRole(
       "button",
       { pressed: true },
     ),
-  ).toHaveAccessibleName("Chalk");
+  ).toHaveAccessibleName("Silver");
 });

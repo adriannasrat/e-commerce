@@ -116,15 +116,15 @@ test("adding a suggested product updates the reviewed bag and removes it from su
     products.length - 1,
   );
   fireEvent.click(
-    within(suggestions).getByRole("button", { name: "Add Form 02 to bag" }),
+    within(suggestions).getByRole("button", { name: "Add Form 03 to bag" }),
   );
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-    "3 780 SEK",
+    "4 280 SEK",
   );
   expect(
     screen.getByRole("button", { name: "Shopping bag, 2 items" }),
   ).toBeInTheDocument();
   expect(
-    within(suggestions).queryByRole("button", { name: "Add Form 02 to bag" }),
+    within(suggestions).queryByRole("button", { name: "Add Form 03 to bag" }),
   ).not.toBeInTheDocument();
 });

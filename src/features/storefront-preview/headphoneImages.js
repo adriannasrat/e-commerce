@@ -10,16 +10,6 @@ export const headphoneImages = [
     bounds: [658, 159, 1738, 1437],
   },
   {
-    id: "white",
-    category: "over-ear",
-    label: "White headphones",
-    src: "/local-preview/white-headphones.png",
-    finish: "chalk",
-    width: 768,
-    height: 768,
-    bounds: [127, 27, 664, 748],
-  },
-  {
     id: "silver",
     category: "over-ear",
     label: "Silver headphones",

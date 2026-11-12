@@ -7,7 +7,7 @@ import { productHref } from "./usePreviewRoute";
 // actions and the product underneath, alternating light and dark.
 const tiles = [
   {
-    id: "white",
+    id: "silver",
     name: "Over-ear",
     kicker: "Form series",
     tone: "light",

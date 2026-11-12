@@ -12,17 +12,6 @@ export const testCatalogue = [
     description: "A dark, sculptural expression for your everyday listening ritual.",
   },
   {
-    id: 2,
-    slug: "white",
-    title: "Form 02",
-    finish_name: "Chalk",
-    category: "over-ear",
-    price_ore: 199000,
-    stock_quantity: 25,
-    tagline: "Make room for your own rhythm.",
-    description: "Soft tones and a clean silhouette. A fresh perspective on personal audio.",
-  },
-  {
     id: 3,
     slug: "silver",
     title: "Form 03",

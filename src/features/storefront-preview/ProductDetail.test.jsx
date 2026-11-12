@@ -59,7 +59,7 @@ test("changing products resets the gallery, scroll and heading focus", () => {
   window.scrollTo.mockClear();
   rerender(<ProductDetail product={products[1]} />);
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-    "Form 02",
+    "Form 03",
   );
   expect(screen.getByRole("heading", { level: 1 })).toHaveFocus();
   expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "instant" });

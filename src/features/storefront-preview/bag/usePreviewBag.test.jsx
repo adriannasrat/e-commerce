@@ -36,7 +36,7 @@ test("a guest's bag moves to the server on sign-in and then leaves the device", 
   let merged;
   mockApi.on("POST /cart/merge", 200, (body) => {
     merged = body.items;
-    return cart([[1, 1], [2, 4]]);
+    return cart([[1, 1], [3, 4]]);
   });
   useAuth.mockReturnValue({ user: { id: 7 } });
   rerender();
