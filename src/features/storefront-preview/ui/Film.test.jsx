@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Film from "./Film";
-import { films, productFilms } from "./films";
+import { films } from "./films";
 import { products } from "../products";
 
 const film = films["over-ear"];
@@ -71,8 +71,11 @@ test("a film that cannot load removes its whole section", () => {
   expect(screen.queryByRole("heading", { name: film.title })).toBeNull();
 });
 
-test("every product film belongs to a model in the catalogue", () => {
-  Object.keys(productFilms).forEach((id) => {
-    expect(products.some((product) => product.id === id)).toBe(true);
+test("product films come with the catalogue and play from the media folder", () => {
+  const withFilm = products.filter((product) => product.film);
+  expect(withFilm.map((product) => product.id)).toEqual(["black", "silver", "form-05", "form-06", "pocket-06"]);
+  withFilm.forEach(({ film: productFilm }) => {
+    expect(productFilm.src).toMatch(/^\/media\/films\/.+\.mp4$/);
+    expect(productFilm.poster).toMatch(/^\/media\/films\/.+\.jpg$/);
   });
 });

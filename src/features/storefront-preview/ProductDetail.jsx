@@ -9,9 +9,7 @@ import ScrollReveal from "./ScrollReveal";
 import { finishColors, formatPrice, newModels, products } from "./products";
 import LocalNav from "./ui/LocalNav";
 import Photo from "./ui/Photo";
-import { productViews } from "./lifestyleImages";
 import Film from "./ui/Film";
-import { productFilms } from "./ui/films";
 import ProductPurchaseOptions from "./ProductPurchaseOptions";
 import ProductInformation from "./ProductInformation";
 import RelatedProducts from "./RelatedProducts";
@@ -50,7 +48,7 @@ export default function ProductDetail({ product, onAddToBag }) {
     />
   );
 
-  const extraViews = productViews[product.id] || [];
+  const extraViews = product.views;
   const views = [
     { id: "full", label: "Full product view" },
     { id: "detail", label: "Close-up view" },
@@ -186,7 +184,7 @@ export default function ProductDetail({ product, onAddToBag }) {
           </p>
         </ScrollReveal>
       </div>
-      {productFilms[product.id] && <Film film={productFilms[product.id]} />}
+      {product.film && <Film film={product.film} />}
       <ProductInformation product={product} category={category} />
       <RelatedProducts key={product.id} product={product} />
       <StorefrontDialog

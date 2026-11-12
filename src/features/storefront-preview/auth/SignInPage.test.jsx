@@ -50,13 +50,13 @@ test("switching to registration preserves the artwork and validates matching pas
   expect(screen.getByRole("status")).toHaveTextContent(
     "No reset email has been sent",
   );
-  const artwork = screen.getByRole("img", { name: "Silver headphones" });
+  const artwork = screen.getByRole("img", { name: "Silver over-ear headphones" });
   window.scrollTo.mockClear();
   fireEvent.click(screen.getByRole("link", { name: "Sign up" }));
   expect(
     await screen.findByRole("heading", { name: "Sign up." }),
   ).toHaveFocus();
-  expect(screen.getByRole("img", { name: "Silver headphones" })).toBe(artwork);
+  expect(screen.getByRole("img", { name: "Silver over-ear headphones" })).toBe(artwork);
   expect(window.scrollTo).not.toHaveBeenCalled();
   fireEvent.change(screen.getByRole("textbox", { name: "Email address" }), {
     target: { value: "demo@example.com" },
@@ -78,7 +78,7 @@ test("switching to registration preserves the artwork and validates matching pas
   expect(
     await screen.findByRole("heading", { name: "Sign in." }),
   ).toHaveFocus();
-  expect(screen.getByRole("img", { name: "Silver headphones" })).toBe(artwork);
+  expect(screen.getByRole("img", { name: "Silver over-ear headphones" })).toBe(artwork);
 });
 
 test("registration is reachable directly", () => {

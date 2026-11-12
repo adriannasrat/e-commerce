@@ -34,23 +34,3 @@ export const films = {
   }),
 };
 
-const formOrbit = (name) =>
-  film("form-orbit", {
-    title: "In motion.",
-    lead: `The ${name} silhouette, shown here in Titanium.`,
-    description:
-      "Over-ear headphones in a dark titanium finish turning slowly in the air.",
-  });
-
-// Only models whose shape matches the footage get a film on their own page.
-export const productFilms = {
-  black: formOrbit("Atlas"),
-  silver: formOrbit("Halo"),
-  "form-05": formOrbit("Tide"),
-  "form-06": formOrbit("Grove"),
-  "pocket-06": film("pocket-orbit", {
-    title: "In motion.",
-    lead: "Case and buds, from every side.",
-    description: "Carbon earbuds floating and turning beside their open case.",
-  }),
-};

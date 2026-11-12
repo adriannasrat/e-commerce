@@ -25,12 +25,6 @@ export const lifestyle = {
     model: "silver",
     focus: "70% 55%",
   },
-  silverDesk: {
-    src: `${base}halo-desk.jpg`,
-    alt: "Halo headphones on a desk beside a keyboard",
-    model: "silver",
-    focus: "50% 45%",
-  },
   silverAfterHours: {
     src: `${base}halo-after-hours.jpg`,
     alt: "Halo headphones under blue and green evening light",
@@ -48,12 +42,6 @@ export const lifestyle = {
     alt: "Close-up of the stitched cushion of an Atlas ear cup",
     model: "black",
     focus: "45% 55%",
-  },
-  form01Mesh: {
-    src: `${base}atlas-mesh.webp`,
-    alt: "Close-up of the knit mesh and control button on an Atlas ear cup",
-    model: "black",
-    focus: "45% 50%",
   },
   pocket07Set: {
     src: `${base}prism-set.webp`,
@@ -86,23 +74,4 @@ export const lifestyle = {
     alt: "Silver over-ear headphones beside white earbuds and their case",
     focus: "50% 50%",
   },
-};
-
-// Extra product-page views, in addition to the studio shot and close-up.
-export const productViews = {
-  black: [
-    { id: "cup", label: "Atlas ear cup up close", photo: lifestyle.form01Cup },
-    { id: "mesh", label: "Atlas mesh and controls", photo: lifestyle.form01Mesh },
-  ],
-  "pocket-07": [
-    { id: "set", label: "Prism with its case", photo: lifestyle.pocket07Set },
-    { id: "bud", label: "Prism earbud up close", photo: lifestyle.pocket07Bud },
-  ],
-  silver: [
-    {
-      id: "context",
-      label: "Halo in context",
-      photo: lifestyle.silverStandClose,
-    },
-  ],
 };
