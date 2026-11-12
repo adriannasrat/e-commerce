@@ -8,65 +8,165 @@
 // crop: the part of a cut-out the product fills, in image pixels.
 // tone: whether a cut-out needs a dark or a light backdrop.
 const studio = (path, alt, width, height, crop, tone) => ({
-  role: 'main', kind: 'cutout', position: 0, path, alt, width, height, crop, tone,
+  role: "main",
+  kind: "cutout",
+  position: 0,
+  path,
+  alt,
+  width,
+  height,
+  crop,
+  tone,
 });
 const view = (position, path, label, alt, focus) => ({
-  role: 'gallery', kind: 'photo', position, path, label, alt, focus,
+  role: "gallery",
+  kind: "photo",
+  position,
+  path,
+  label,
+  alt,
+  focus,
 });
 const formOrbit = (name) => ({
-  role: 'film',
-  kind: 'film',
+  role: "film",
+  kind: "film",
   position: 0,
-  path: 'films/form-orbit.mp4',
-  poster: 'films/form-orbit.jpg',
-  label: 'In motion.',
+  path: "films/form-orbit.mp4",
+  poster: "films/form-orbit.jpg",
+  label: "In motion.",
   caption: `The ${name} silhouette, shown here in Titanium.`,
-  alt: 'Over-ear headphones in a dark titanium finish turning slowly in the air.',
+  alt: "Over-ear headphones in a dark titanium finish turning slowly in the air.",
 });
 
 const media = {
   black: [
-    studio('products/atlas.webp', 'Graphite over-ear headphones with brushed metal cups', 2400, 1597, [658, 159, 1738, 1437], 'dark'),
-    view(1, 'photos/atlas-cup.webp', 'Atlas ear cup up close', 'Close-up of an Atlas ear cup, its brushed metal and woven cushion in low light', '45% 50%'),
-    view(2, 'photos/atlas-mesh.webp', 'Atlas mesh and controls', 'Close-up of the knit mesh and control button on an Atlas ear cup', '45% 50%'),
-    formOrbit('Atlas'),
+    studio(
+      "products/atlas.webp",
+      "Graphite over-ear headphones with brushed metal cups",
+      2400,
+      1597,
+      [658, 159, 1738, 1437],
+      "dark",
+    ),
+    view(
+      1,
+      "photos/atlas-cup.webp",
+      "Atlas ear cup up close",
+      "Close-up of an Atlas ear cup, its brushed metal and woven cushion in low light",
+      "45% 50%",
+    ),
+    view(
+      2,
+      "photos/atlas-mesh.webp",
+      "Atlas mesh and controls",
+      "Close-up of the knit mesh and control button on an Atlas ear cup",
+      "45% 50%",
+    ),
+    formOrbit("Atlas"),
   ],
   silver: [
-    studio('products/halo.webp', 'Silver over-ear headphones', 1600, 1455, [368, 94, 1368, 1428], 'light'),
-    view(1, 'photos/halo-stand-close.jpg', 'Halo in context', 'Close-up of a Halo ear cup and headband', '70% 55%'),
-    formOrbit('Halo'),
+    studio(
+      "products/halo.webp",
+      "Silver over-ear headphones",
+      1600,
+      1455,
+      [368, 94, 1368, 1428],
+      "light",
+    ),
+    view(
+      1,
+      "photos/halo-stand-close.jpg",
+      "Halo in context",
+      "Close-up of a Halo ear cup and headband",
+      "70% 55%",
+    ),
+    formOrbit("Halo"),
   ],
-  'form-05': [
-    studio('products/tide.webp', 'Ocean blue over-ear headphones', 1131, 1536, [136, 226, 1013, 1288], 'dark'),
-    formOrbit('Tide'),
+  "form-05": [
+    studio(
+      "products/tide.webp",
+      "Ocean blue over-ear headphones",
+      1131,
+      1536,
+      [136, 226, 1013, 1288],
+      "dark",
+    ),
+    formOrbit("Tide"),
   ],
-  'form-06': [
-    studio('products/grove.webp', 'Sage green over-ear headphones', 1366, 768, [369, 64, 951, 719], 'light'),
-    formOrbit('Grove'),
+  "form-06": [
+    studio(
+      "products/grove.webp",
+      "Sage green over-ear headphones",
+      1366,
+      768,
+      [369, 64, 951, 719],
+      "light",
+    ),
+    formOrbit("Grove"),
   ],
-  'pocket-05': [
-    studio('products/pearl.webp', 'Chalk earbuds above their open case', 1104, 1632, [40, 40, 1065, 1593], 'light'),
+  "pocket-05": [
+    studio(
+      "products/pearl.webp",
+      "Chalk earbuds above their open case",
+      1104,
+      1632,
+      [40, 40, 1065, 1593],
+      "light",
+    ),
   ],
-  'pocket-06': [
-    studio('products/pebble.webp', 'Carbon earbuds beside their open case', 1366, 759, [341, 136, 1022, 642], 'dark'),
+  "pocket-06": [
+    studio(
+      "products/pebble.webp",
+      "Carbon earbuds beside their open case",
+      1366,
+      759,
+      [341, 136, 1022, 642],
+      "dark",
+    ),
     {
-      role: 'film',
-      kind: 'film',
+      role: "film",
+      kind: "film",
       position: 0,
-      path: 'films/pocket-orbit.mp4',
-      poster: 'films/pocket-orbit.jpg',
-      label: 'In motion.',
-      caption: 'Case and buds, from every side.',
-      alt: 'Carbon earbuds floating and turning beside their open case.',
+      path: "films/pocket-orbit.mp4",
+      poster: "films/pocket-orbit.jpg",
+      label: "In motion.",
+      caption: "Case and buds, from every side.",
+      alt: "Carbon earbuds floating and turning beside their open case.",
     },
   ],
-  'pocket-07': [
-    studio('products/prism.webp', 'Slate earbuds floating above their open case', 690, 1186, [120, 262, 572, 932], 'dark'),
-    view(1, 'photos/prism-set.webp', 'Prism with its case', 'Prism earbuds beside their slate case on black', '50% 64%'),
-    view(2, 'photos/prism-bud.webp', 'Prism earbud up close', 'Close-up of a Prism earbud, its metal shell and soft tip', '50% 45%'),
+  "pocket-07": [
+    studio(
+      "products/prism.webp",
+      "Slate earbuds floating above their open case",
+      690,
+      1186,
+      [120, 262, 572, 932],
+      "dark",
+    ),
+    view(
+      1,
+      "photos/prism-set.webp",
+      "Prism with its case",
+      "Prism earbuds beside their slate case on black",
+      "50% 64%",
+    ),
+    view(
+      2,
+      "photos/prism-bud.webp",
+      "Prism earbud up close",
+      "Close-up of a Prism earbud, its metal shell and soft tip",
+      "50% 45%",
+    ),
   ],
-  'pocket-08': [
-    studio('products/drift.webp', 'Ocean blue earbuds above their open case', 1108, 1664, [40, 40, 1069, 1625], 'light'),
+  "pocket-08": [
+    studio(
+      "products/drift.webp",
+      "Ocean blue earbuds above their open case",
+      1108,
+      1664,
+      [40, 40, 1069, 1625],
+      "light",
+    ),
   ],
 };
 
