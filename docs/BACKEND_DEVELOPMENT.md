@@ -40,5 +40,8 @@ when configuring a deployed environment; local defaults are not deployment polic
   database, so it refuses any `DB_NAME` that does not end in `_test`.
 
 `GET /health` is a process liveness check, not proof of database connectivity.
+Each product's images and films are rows in `ProductMedia`: one main cut-out,
+optional gallery views and an optional film, with paths relative to the
+storefront's media base. The database allows one main image per product.
 Products without a `category`, such as the original flowers, stay in the database
 but are not sold. Checkout is a demo: `paid` is set without any real payment.

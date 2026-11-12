@@ -84,10 +84,12 @@ See [backend development](docs/BACKEND_DEVELOPMENT.md) for every setting.
 
 ### Images and films
 
-Product photography and films are kept out of Git, in `public/local-preview/`.
-A fresh clone runs without them but shows no imagery. The expected file paths are
-listed in `src/features/storefront-preview/headphoneImages.js`,
-`lifestyleImages.js` and `ui/films.js`.
+Images and films live in `public/media/` and ship with the storefront to its CDN.
+Each product's cut-out, gallery views and film are rows in the `ProductMedia`
+table, which the API returns with the product. Editorial photos and films are
+listed in `lifestyleImages.js` and `ui/films.js`. Every path goes through
+`mediaUrl`, so setting `VITE_MEDIA_BASE_URL` at build time serves the media from
+another host. `scripts/whiten-films.sh` rebuilds the films from local originals.
 
 ## Tests
 
