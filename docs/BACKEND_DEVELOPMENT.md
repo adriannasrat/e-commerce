@@ -26,6 +26,8 @@ File paths are resolved relative to the module, not the working directory.
 | DB_NAME | shop_db | Database name |
 | DB_USER | root | Local development database user |
 | DB_PASS | unset | Database password; never logged |
+| NODE_ENV | development | `development`, `test` or `production`; production sends the session cookie over HTTPS only |
+| LOG_LEVEL | info | `fatal`, `error`, `warn`, `info`, `debug`, `trace` or `silent` |
 
 Startup checks the configuration and reports every problem at once, by variable
 name and never by value. Ports must be integers between 1 and 65535, `NODE_ENV`
@@ -34,6 +36,15 @@ not be empty. Common misspellings such as `DB_PASSWORD` are flagged. In producti
 `DB_HOST` and `DB_PASS` are required, since local defaults are not deployment
 policy. Startup failures name their cause, such as a busy port or a refused
 database login, without printing driver messages.
+
+## Logging
+
+The API logs one line per request with its id, method, path, status and duration,
+as JSON for hosts and log tools and readably in a development terminal. Every
+response carries an `X-Request-Id`; a caller's own valid id is reused, so an error
+a visitor reports can be found in the log. Headers, cookies, bodies and driver
+messages are never logged, and failed requests log only the error type. The tests
+run with `LOG_LEVEL=silent`.
 
 ## Commands and checks
 

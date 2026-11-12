@@ -33,6 +33,9 @@ function describeStartupFailure(error, port) {
 }
 
 if (require.main === module) {
+  // The environment module loads .env before the logger is created.
+  require('./config/environment');
+  const { logger } = require('./logger');
   let port;
   async function main() {
     const { readEnvironment } = require('./config/environment');
@@ -40,11 +43,11 @@ if (require.main === module) {
     const { createApp } = require('./app');
     const database = require('./config/database');
     await startServer({ app: createApp(), database, port });
-    console.log(`API listening on port ${port}`);
+    logger.info({ port }, 'API listening');
   }
 
   main().catch((error) => {
-    for (const line of describeStartupFailure(error, port)) console.error(line);
+    for (const line of describeStartupFailure(error, port)) logger.error(line);
     process.exitCode = 1;
   });
 }

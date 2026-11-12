@@ -48,3 +48,28 @@ test('every response carries security headers and hides the framework', async t 
     assert.equal(headers.get('x-powered-by'), null);
   }
 });
+
+test('each request is logged once with its id, never with headers or cookies', async t => {
+  const { createApp } = require('../app');
+  const { createLogger } = require('../logger');
+  const lines = [];
+  const logger = createLogger({ LOG_LEVEL: 'info' }, { write: (line) => lines.push(line) });
+  const server = createApp({ logger }).listen(0, '127.0.0.1');
+  t.after(() => new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve())));
+  await once(server, 'listening');
+  const base = `http://127.0.0.1:${server.address().port}`;
+
+  const traced = await fetch(`${base}/api/v1/nowhere`, { headers: { 'x-request-id': 'trace-1', cookie: 'session=secret-token' } });
+  assert.equal(traced.headers.get('x-request-id'), 'trace-1');
+  const invented = await fetch(`${base}/health`, { headers: { 'x-request-id': 'not a valid id!' } });
+  assert.match(invented.headers.get('x-request-id'), /^[0-9a-f-]{36}$/);
+
+  const entries = lines.map((line) => JSON.parse(line));
+  assert.equal(entries.length, 2);
+  assert.deepEqual(entries[0].req, { id: 'trace-1', method: 'GET', url: '/api/v1/nowhere' });
+  assert.equal(entries[0].res.statusCode, 404);
+  assert.equal(entries[0].level, 40);
+  assert.equal(entries[1].req.id, invented.headers.get('x-request-id'));
+  assert.equal(entries[1].level, 30);
+  assert.ok(lines.every((line) => !line.includes('secret-token') && !line.includes('cookie')));
+});

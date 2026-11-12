@@ -59,3 +59,10 @@ test('production needs an explicit database host and password', () => {
   const config = readEnvironment({ NODE_ENV: 'production', DB_HOST: 'db.internal', DB_PASS: 'x' });
   assert.equal(config.secureCookies, true);
 });
+
+test('an unknown log level is reported', () => {
+  assert.deepEqual(problemsFor({ LOG_LEVEL: 'loud' }), [
+    'LOG_LEVEL must be one of fatal, error, warn, info, debug, trace, silent',
+  ]);
+  assert.deepEqual(problemsFor({ LOG_LEVEL: 'debug' }), []);
+});

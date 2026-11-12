@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 // Shell values take precedence, followed by the root and backend .env files.
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// Loaded after the .env files, so the logger sees LOG_LEVEL and NODE_ENV from them.
+const { LOG_LEVELS } = require('../logger');
 
 // Every problem is collected before failing, so one start shows them all.
 // Messages name variables, never their values, which may be secrets.
@@ -41,6 +43,9 @@ function readEnvironment(env = process.env) {
   const nodeEnv = env.NODE_ENV ?? 'development';
   if (!NODE_ENVS.includes(nodeEnv)) {
     problems.push(`NODE_ENV must be one of ${NODE_ENVS.join(', ')}`);
+  }
+  if (env.LOG_LEVEL !== undefined && !LOG_LEVELS.includes(env.LOG_LEVEL)) {
+    problems.push(`LOG_LEVEL must be one of ${LOG_LEVELS.join(', ')}`);
   }
   for (const [wrong, right] of Object.entries(MISSPELLINGS)) {
     if (env[wrong] !== undefined && env[right] === undefined) {
