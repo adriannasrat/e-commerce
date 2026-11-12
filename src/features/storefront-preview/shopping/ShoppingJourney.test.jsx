@@ -16,9 +16,9 @@ test('catalog filters narrow the grid and adding a model opens its confirmation'
   fireEvent.click(within(filters).getByRole('button', { name: 'In-ear' }));
   expect(screen.getAllByRole('button', { name: /Add Pocket .* to bag/ })).toHaveLength(collectionModels('in-ear').length);
   expect(screen.queryByRole('button', { name: /Add Form .* to bag/ })).not.toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: 'Add Pocket 03 to bag' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Add Pocket 06 to bag' }));
   expect(await screen.findByRole('heading', { name: /Added to your bag/i })).toBeInTheDocument();
-  expect(window.location.pathname).toBe('/bag/added/in-ear-red');
+  expect(window.location.pathname).toBe('/bag/added/pocket-06');
 });
 
 test('cross-series comparison links to the chosen model and prevents duplicate choices', () => {

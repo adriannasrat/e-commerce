@@ -28,12 +28,9 @@ export const finishColors = {
   Graphite: "#363735",
   Chalk: "#eeede7",
   Silver: "#b6b8ba",
-  Crimson: "#a92c38",
   Onyx: "#1f1f21",
-  Espresso: "#3b2621",
   Ocean: "#2f4d73",
   Sage: "#71896f",
-  Sand: "#c8b8a1",
   Carbon: "#26262a",
   Slate: "#57585c",
 };
@@ -42,7 +39,6 @@ export const finishColors = {
 export const newModels = [
   "form-05",
   "form-06",
-  "form-07",
   "pocket-06",
   "pocket-07",
 ];

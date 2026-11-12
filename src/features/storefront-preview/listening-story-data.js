@@ -11,12 +11,12 @@ export const listeningStories = [
       "An unhurried morning. A favourite album. A moment that belongs to you. Explore the soft tones and sculptural silhouette of our over-ear collection.",
   },
   {
-    id: "in-ear-black",
+    id: "pocket-07",
     tone: "graphite",
     label: "02 · Everyday rhythm",
     title: "Small form.\nBig personality.",
     detail: "Your soundtrack goes with you.",
-    photo: lifestyle.pocketGraphiteWood,
+    photo: lifestyle.pocket07Set,
     description:
       "From the first train to the long way home. Discover a compact shape and a darker palette in our in-ear collection. A different expression of the same personal ritual.",
   },

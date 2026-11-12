@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import HeadphoneImage from "./HeadphoneImage";
 import ProductPlaceholder from "./ProductPlaceholder";
 import ScrollReveal from "./ScrollReveal";
-import { finishColors, formatPrice, newModels } from "./products";
+import { finishColors, formatPrice, newModels, products } from "./products";
 import LocalNav from "./ui/LocalNav";
 import Photo from "./ui/Photo";
 import { productViews } from "./lifestyleImages";
@@ -16,10 +16,11 @@ import ProductPurchaseOptions from "./ProductPurchaseOptions";
 import ProductInformation from "./ProductInformation";
 import RelatedProducts from "./RelatedProducts";
 
-const finishesByCategory = {
-  "over-ear": ["Graphite", "Chalk", "Silver", "Onyx", "Ocean", "Sage", "Sand"],
-  "in-ear": ["Graphite", "Chalk", "Crimson", "Espresso", "Onyx", "Carbon", "Slate"],
-};
+// The finishes on offer in a series, one per model, in catalogue order.
+const finishesIn = (category) =>
+  products
+    .filter((item) => item.image.category === category)
+    .map((item) => item.finishName);
 
 export default function ProductDetail({ product, onAddToBag }) {
   const title = useRef(null);
@@ -29,7 +30,7 @@ export default function ProductDetail({ product, onAddToBag }) {
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const category =
     product.image.category === "over-ear" ? "Over-ear" : "In-ear";
-  const finishes = finishesByCategory[product.image.category];
+  const finishes = finishesIn(product.image.category);
 
   useLayoutEffect(() => {
     title.current.focus({ preventScroll: true });
