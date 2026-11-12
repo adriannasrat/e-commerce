@@ -88,4 +88,15 @@ export const testCatalogue = [
     tagline: "Polished metal, pocket-sized.",
     description: "A satin slate case and slim stems. The most refined shape in the Pocket series.",
   },
+  {
+    id: 15,
+    slug: "pocket-08",
+    title: "Pocket 08",
+    finish_name: "Ocean",
+    category: "in-ear",
+    price_ore: 149000,
+    stock_quantity: 25,
+    tagline: "Deep blue, close to you.",
+    description: "A deep Ocean finish from the buds to the case, for a little colour in every day.",
+  },
 ];

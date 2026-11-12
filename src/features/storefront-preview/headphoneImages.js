@@ -79,4 +79,14 @@ export const headphoneImages = [
     height: 1186,
     bounds: [120, 262, 572, 932],
   },
+  {
+    id: "pocket-08",
+    category: "in-ear",
+    label: "Ocean blue earbuds above their open case",
+    src: "/local-preview/pocket-08.webp",
+    finish: "chalk",
+    width: 1108,
+    height: 1664,
+    bounds: [40, 40, 1069, 1625],
+  },
 ];
