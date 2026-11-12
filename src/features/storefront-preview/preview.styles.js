@@ -50,10 +50,10 @@ const styles = [
     },
   },
   { "#preview-main": { outline: "none" } },
-  // Home hero: copy on the film's own backdrop tone, then the film full-bleed.
+  // Home hero: copy on the same white as the film, then the film full-bleed.
   {
     ".preview-hero": {
-      background: "#e3e1d3",
+      background: "#ffffff",
       color: "var(--rx-ink)",
       textAlign: "center",
     },

@@ -22,13 +22,13 @@ const styles = [
     },
   },
   {
-    // The tone of the footage's backdrop, so nothing flashes before the poster.
+    // The footage is shot on white, so nothing flashes before the poster.
     ".rx-film-frame": {
       position: "relative",
       aspectRatio: "16 / 9",
       overflow: "hidden",
       borderRadius: "clamp(16px, 2.4vw, 28px)",
-      background: "#e6e3da",
+      background: "#ffffff",
     },
   },
   {
