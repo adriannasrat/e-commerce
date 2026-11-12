@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const { loadUser } = require('./auth/session');
 const userRoutes = require('./routes/userRoutes');
 const cartRoutes = require('./routes/cartRoutes');
@@ -20,6 +21,10 @@ function createApi() {
 
 function createApp() {
   const app = express();
+  // Security headers on every response: no MIME sniffing, no framing, no
+  // referrer leaks and no X-Powered-By. The API only returns JSON, so the
+  // default content security policy can stay strict.
+  app.use(helmet());
   app.use(express.json());
 
   // Liveness for the host, outside the versioned API.
