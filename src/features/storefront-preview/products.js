@@ -40,4 +40,5 @@ export const newModels = [
   "form-06",
   "pocket-06",
   "pocket-07",
+  "pocket-08",
 ];
