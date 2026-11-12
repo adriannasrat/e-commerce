@@ -27,8 +27,13 @@ File paths are resolved relative to the module, not the working directory.
 | DB_USER | root | Local development database user |
 | DB_PASS | unset | Database password; never logged |
 
-Ports must be integers between 1 and 65535. Use a dedicated database user
-when configuring a deployed environment; local defaults are not deployment policy.
+Startup checks the configuration and reports every problem at once, by variable
+name and never by value. Ports must be integers between 1 and 65535, `NODE_ENV`
+must be `development`, `test` or `production`, and set database variables must
+not be empty. Common misspellings such as `DB_PASSWORD` are flagged. In production
+`DB_HOST` and `DB_PASS` are required, since local defaults are not deployment
+policy. Startup failures name their cause, such as a busy port or a refused
+database login, without printing driver messages.
 
 ## Commands and checks
 

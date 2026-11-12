@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { readEnvironment } = require('../config/environment');
+const { ConfigurationError, readEnvironment } = require('../config/environment');
 
 test('configuration preserves development defaults and uses MariaDB consistently', () => {
   const config = readEnvironment({});
@@ -17,10 +17,45 @@ test('explicit database and server settings override defaults', () => {
   assert.deepEqual(config.database, { database: 'test_shop', username: 'test_user', password: 'test-password', host: 'database', port: 3307, dialect: 'mariadb', logging: false });
 });
 
+const problemsFor = (env) => {
+  try {
+    readEnvironment(env);
+    return [];
+  } catch (error) {
+    assert.ok(error instanceof ConfigurationError);
+    return error.problems;
+  }
+};
+
 test('invalid ports fail early without including supplied values in errors', () => {
   for (const key of ['PORT', 'DB_PORT']) {
     for (const value of ['', '0', '-1', '65536', '5000x', '3.5', 'sensitive-value']) {
-      assert.throws(() => readEnvironment({ [key]: value }), { message: `${key} must be an integer between 1 and 65535` });
+      assert.deepEqual(problemsFor({ [key]: value }), [`${key} must be an integer between 1 and 65535`]);
     }
   }
+});
+
+test('every problem is reported at once, naming variables but never values', () => {
+  const problems = problemsFor({ PORT: 'secret-1', DB_PORT: 'secret-2', DB_NAME: ' ', NODE_ENV: 'staging', DB_PASSWORD: 'secret-3' });
+  assert.deepEqual(problems, [
+    'NODE_ENV must be one of development, test, production',
+    'DB_PASSWORD is not read; set DB_PASS instead',
+    'PORT must be an integer between 1 and 65535',
+    'DB_NAME must not be empty',
+    'DB_PORT must be an integer between 1 and 65535',
+  ]);
+  assert.ok(problems.every((problem) => !problem.includes('secret')));
+});
+
+test('a misspelled password variable is fine once the real one is set', () => {
+  assert.deepEqual(problemsFor({ DB_PASSWORD: 'x', DB_PASS: 'x' }), []);
+});
+
+test('production needs an explicit database host and password', () => {
+  assert.deepEqual(problemsFor({ NODE_ENV: 'production' }), [
+    'DB_HOST is required in production',
+    'DB_PASS is required in production',
+  ]);
+  const config = readEnvironment({ NODE_ENV: 'production', DB_HOST: 'db.internal', DB_PASS: 'x' });
+  assert.equal(config.secureCookies, true);
 });
