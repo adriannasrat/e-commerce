@@ -66,3 +66,10 @@ test('an unknown log level is reported', () => {
   ]);
   assert.deepEqual(problemsFor({ LOG_LEVEL: 'debug' }), []);
 });
+
+test('DB_SSL turns on verified TLS, and only true or false are accepted', () => {
+  assert.equal(readEnvironment({}).database.dialectOptions, undefined);
+  assert.deepEqual(readEnvironment({ DB_SSL: 'true' }).database.dialectOptions, { ssl: { rejectUnauthorized: true } });
+  assert.equal(readEnvironment({ DB_SSL: 'false' }).database.dialectOptions, undefined);
+  assert.deepEqual(problemsFor({ DB_SSL: 'yes' }), ['DB_SSL must be true or false']);
+});
