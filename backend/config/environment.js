@@ -71,11 +71,14 @@ function readEnvironment(env = process.env) {
       port: port('DB_PORT', 3306),
       dialect: 'mariadb',
       logging: false,
+      // The driver's one-second default is too short for a hosted database
+      // that sleeps when idle and needs a few seconds to wake.
+      dialectOptions: { connectTimeout: 10000 },
     },
   };
   // Hosted databases require TLS. The certificate is verified against the
   // system's trusted authorities.
-  if (flag('DB_SSL')) config.database.dialectOptions = { ssl: { rejectUnauthorized: true } };
+  if (flag('DB_SSL')) config.database.dialectOptions.ssl = { rejectUnauthorized: true };
 
   // Local defaults suit development only. A deployed API names its database.
   if (nodeEnv === 'production') {
