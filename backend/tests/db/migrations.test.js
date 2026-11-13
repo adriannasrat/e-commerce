@@ -63,14 +63,17 @@ test('duplicate cart rows merge, and the database then rejects invalid rows', as
     VALUES (${amount}, 1, 1, ${now}, ${now})`);
   await assert.rejects(insert(1), { name: "SequelizeUniqueConstraintError" });
   await sequelize.query('DELETE FROM CartRows');
-  await assert.rejects(insert(0), /CONSTRAINT/);
+  await assert.rejects(insert(0), /cart_rows_amount_positive/);
   await sequelize.close();
 });
 
 test('ratings without an owner survive adding user_id', async () => {
   const sequelize = await migrateLegacyDatabase(async (db) => {
     await seedUserAndProduct(db);
-    await db.query('ALTER TABLE Ratings DROP FOREIGN KEY ratings_ibfk_1');
+    // MariaDB and TiDB name the generated key differently, so it is looked up.
+    const [{ name }] = await db.query(`SELECT CONSTRAINT_NAME AS name FROM information_schema.REFERENTIAL_CONSTRAINTS
+      WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = 'Ratings' AND REFERENCED_TABLE_NAME = 'Users'`, { type: QueryTypes.SELECT });
+    await db.query(`ALTER TABLE Ratings DROP FOREIGN KEY ${name}`);
     await db.query('ALTER TABLE Ratings DROP COLUMN user_id');
     await db.query(`INSERT INTO Ratings (rating, product_id, createdAt, updatedAt) VALUES (4, 1, ${now}, ${now})`);
   });
@@ -161,8 +164,8 @@ test('product media allows one main image per product and only known roles', asy
      VALUES (${id}, '${role}', 'photo', ${position}, 'x.webp', 'x', ${now}, ${now})`,
   );
   await assert.rejects(insert('main', 0), { name: 'SequelizeUniqueConstraintError' });
-  await assert.rejects(insert('main', 1), /CONSTRAINT/);
-  await assert.rejects(insert('poster', 5), /CONSTRAINT/);
+  await assert.rejects(insert('main', 1), /product_media_one_main/);
+  await assert.rejects(insert('poster', 5), /product_media_role/);
   await insert('gallery', 9);
   await sequelize.close();
 });
