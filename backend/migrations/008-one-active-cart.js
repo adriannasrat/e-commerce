@@ -30,8 +30,8 @@ module.exports = {
       await sequelize.query('DELETE FROM Carts WHERE id = :extra', { replacements });
     }
 
-    await sequelize.query(`ALTER TABLE Carts
-      ADD COLUMN active_user_id INT AS (IF(paid = 0, user_id, NULL)) VIRTUAL,
-      ADD CONSTRAINT carts_one_active_per_user UNIQUE (active_user_id)`);
+    // Two statements, since TiDB cannot add a column and its key at once.
+    await sequelize.query('ALTER TABLE Carts ADD COLUMN active_user_id INT AS (IF(paid = 0, user_id, NULL)) VIRTUAL');
+    await sequelize.query('ALTER TABLE Carts ADD CONSTRAINT carts_one_active_per_user UNIQUE (active_user_id)');
   },
 };

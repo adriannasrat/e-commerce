@@ -7,8 +7,9 @@ module.exports = {
     await sequelize.query(`ALTER TABLE Products
       MODIFY price_ore INT NOT NULL,
       MODIFY stock_quantity INT NOT NULL DEFAULT 0,
-      DROP COLUMN price,
-      ADD CONSTRAINT products_price_ore_not_negative CHECK (price_ore >= 0),
-      ADD CONSTRAINT products_stock_not_negative CHECK (stock_quantity >= 0)`);
+      DROP COLUMN price`);
+    // One constraint per statement, which TiDB requires for CHECK.
+    await sequelize.query('ALTER TABLE Products ADD CONSTRAINT products_price_ore_not_negative CHECK (price_ore >= 0)');
+    await sequelize.query('ALTER TABLE Products ADD CONSTRAINT products_stock_not_negative CHECK (stock_quantity >= 0)');
   },
 };

@@ -21,10 +21,12 @@ const STOCK = 25;
 module.exports = {
   up: async ({ context: sequelize }) => {
     await sequelize.query(`ALTER TABLE Products
-      ADD COLUMN slug VARCHAR(64) NULL UNIQUE,
+      ADD COLUMN slug VARCHAR(64) NULL,
       ADD COLUMN tagline VARCHAR(255) NULL,
       ADD COLUMN finish_name VARCHAR(64) NULL,
       ADD COLUMN category VARCHAR(16) NULL`);
+    // A separate statement, since TiDB cannot add a column and its key at once.
+    await sequelize.query('ALTER TABLE Products ADD UNIQUE KEY slug (slug)');
     for (const [slug, title, finish, category, priceOre, tagline, description, imageUrl] of models) {
       await sequelize.query(
         `INSERT INTO Products (slug, title, finish_name, category, price_ore, tagline, description, imageUrl, stock_quantity, createdAt, updatedAt)
