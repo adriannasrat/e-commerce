@@ -102,7 +102,8 @@ deploys never migrate. Every merge to `main` deploys.
 
 The database is a MySQL-compatible TiDB Cloud Starter cluster. Production needs
 `NODE_ENV=production`, `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` and
-`DB_SSL=true`, set in the Vercel project.
+`DB_SSL=true`, set in the Vercel project. TiDB ignores CHECK constraints until
+`SET GLOBAL tidb_enable_check_constraint = ON` has been run once on the cluster.
 
 ## Tests
 
