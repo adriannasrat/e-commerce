@@ -14,7 +14,7 @@ test('configuration preserves development defaults and uses MariaDB consistently
 test('explicit database and server settings override defaults', () => {
   const config = readEnvironment({ PORT: '5010', DB_PORT: '3307', DB_NAME: 'test_shop', DB_USER: 'test_user', DB_PASS: 'test-password', DB_HOST: 'database' });
   assert.equal(config.port, 5010);
-  assert.deepEqual(config.database, { database: 'test_shop', username: 'test_user', password: 'test-password', host: 'database', port: 3307, dialect: 'mariadb', logging: false });
+  assert.deepEqual(config.database, { database: 'test_shop', username: 'test_user', password: 'test-password', host: 'database', port: 3307, dialect: 'mariadb', logging: false, dialectOptions: { connectTimeout: 10000 } });
 });
 
 const problemsFor = (env) => {
@@ -65,4 +65,11 @@ test('an unknown log level is reported', () => {
     'LOG_LEVEL must be one of fatal, error, warn, info, debug, trace, silent',
   ]);
   assert.deepEqual(problemsFor({ LOG_LEVEL: 'debug' }), []);
+});
+
+test('DB_SSL turns on verified TLS, and only true or false are accepted', () => {
+  assert.equal(readEnvironment({}).database.dialectOptions.ssl, undefined);
+  assert.deepEqual(readEnvironment({ DB_SSL: 'true' }).database.dialectOptions.ssl, { rejectUnauthorized: true });
+  assert.equal(readEnvironment({ DB_SSL: 'false' }).database.dialectOptions.ssl, undefined);
+  assert.deepEqual(problemsFor({ DB_SSL: 'yes' }), ['DB_SSL must be true or false']);
 });

@@ -40,6 +40,13 @@ function readEnvironment(env = process.env) {
     return value;
   };
 
+  const flag = (name) => {
+    const value = env[name];
+    if (value === undefined) return false;
+    if (value !== 'true' && value !== 'false') problems.push(`${name} must be true or false`);
+    return value === 'true';
+  };
+
   const nodeEnv = env.NODE_ENV ?? 'development';
   if (!NODE_ENVS.includes(nodeEnv)) {
     problems.push(`NODE_ENV must be one of ${NODE_ENVS.join(', ')}`);
@@ -64,8 +71,14 @@ function readEnvironment(env = process.env) {
       port: port('DB_PORT', 3306),
       dialect: 'mariadb',
       logging: false,
+      // The driver's one-second default is too short for a hosted database
+      // that sleeps when idle and needs a few seconds to wake.
+      dialectOptions: { connectTimeout: 10000 },
     },
   };
+  // Hosted databases require TLS. The certificate is verified against the
+  // system's trusted authorities.
+  if (flag('DB_SSL')) config.database.dialectOptions.ssl = { rejectUnauthorized: true };
 
   // Local defaults suit development only. A deployed API names its database.
   if (nodeEnv === 'production') {

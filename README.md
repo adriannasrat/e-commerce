@@ -91,6 +91,20 @@ listed in `lifestyleImages.js` and `ui/films.js`. Every path goes through
 `mediaUrl`, so setting `VITE_MEDIA_BASE_URL` at build time serves the media from
 another host. `scripts/whiten-films.sh` rebuilds the films from local originals.
 
+## Deployment
+
+The storefront and the API deploy together to Vercel. The built storefront and
+`public/media` are served from its CDN, and `api/index.js` runs the same Express
+app as a serverless function, so `/api/v1` shares the site's origin and the
+session cookie. A production deploy runs the database migrations first, through
+`scripts/vercel-build.js`, and a failed migration stops the deploy. Preview
+deploys never migrate. Every merge to `main` deploys.
+
+The database is a MySQL-compatible TiDB Cloud Starter cluster. Production needs
+`NODE_ENV=production`, `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` and
+`DB_SSL=true`, set in the Vercel project. TiDB ignores CHECK constraints until
+`SET GLOBAL tidb_enable_check_constraint = ON` has been run once on the cluster.
+
 ## Tests
 
 | Command | Covers |
