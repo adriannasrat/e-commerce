@@ -33,3 +33,28 @@ test('a busy HTTP port rejects startup and closes the pool', async () => {
   await assert.rejects(startServer({ app, database, port: 5000 }), failure);
   assert.equal(closed, true);
 });
+
+test('startup failures are described by cause, without driver details', () => {
+  const { describeStartupFailure } = require('../server');
+  const { ConfigurationError } = require('../config/environment');
+  const named = (name, extra = {}) => Object.assign(new Error('secret driver message for root:hunter2'), { name, ...extra });
+
+  assert.deepEqual(
+    describeStartupFailure(new ConfigurationError(['PORT must be an integer between 1 and 65535']), undefined),
+    ['PORT must be an integer between 1 and 65535'],
+  );
+  assert.deepEqual(describeStartupFailure(Object.assign(new Error('x'), { code: 'EADDRINUSE' }), 5001), [
+    'Port 5001 is already in use. Stop the other process or set PORT.',
+  ]);
+  const lines = [
+    describeStartupFailure(named('SequelizeAccessDeniedError'), 5001),
+    describeStartupFailure(named('SequelizeConnectionError', { parent: { code: 'ER_BAD_DB_ERROR' } }), 5001),
+    describeStartupFailure(named('SequelizeConnectionRefusedError'), 5001),
+    describeStartupFailure(named('TypeError'), 5001),
+  ].flat();
+  assert.match(lines[0], /DB_USER and DB_PASS/);
+  assert.match(lines[1], /DB_NAME does not exist, or DB_USER may not use it/);
+  assert.match(lines[2], /could not be reached/);
+  assert.match(lines[3], /API startup failed/);
+  assert.ok(lines.every((line) => !line.includes('hunter2')));
+});

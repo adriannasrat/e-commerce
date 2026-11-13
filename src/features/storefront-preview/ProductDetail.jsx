@@ -9,7 +9,6 @@ import ScrollReveal from "./ScrollReveal";
 import { finishColors, formatPrice, newModels, products } from "./products";
 import LocalNav from "./ui/LocalNav";
 import Photo from "./ui/Photo";
-import Film from "./ui/Film";
 import ProductPurchaseOptions from "./ProductPurchaseOptions";
 import ProductInformation from "./ProductInformation";
 import RelatedProducts from "./RelatedProducts";
@@ -102,7 +101,9 @@ export default function ProductDetail({ product, onAddToBag }) {
           <h1 ref={title} tabIndex={-1} data-reveal="up">
             {product.name}
           </h1>
-          <p className="product-detail-tagline" data-reveal="up">{product.tagline}</p>
+          <p className="product-detail-tagline" data-reveal="up">
+            {product.tagline}
+          </p>
           <p className="product-detail-price" data-reveal="up">
             {formatPrice(product.price)} <span>Demo price</span>
           </p>
@@ -184,7 +185,7 @@ export default function ProductDetail({ product, onAddToBag }) {
           </p>
         </ScrollReveal>
       </div>
-      {product.film && <Film film={product.film} />}
+      {/* {product.film && <Film film={product.film} />} */}
       <ProductInformation product={product} category={category} />
       <RelatedProducts key={product.id} product={product} />
       <StorefrontDialog

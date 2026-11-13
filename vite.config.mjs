@@ -2,9 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // The API runs separately. In development, Vite forwards its routes so the
-// browser sees one origin and the session cookie stays same-site. Page paths
-// in routes.ts must not start with these prefixes, or they reach the API.
+// browser sees one origin and the session cookie stays same-site.
 const api = "http://localhost:5001";
+
+// One prefix for every API call, so page paths never reach the API.
+const proxy = { "/api": api };
 
 export default defineConfig({
   plugins: [react()],
@@ -13,11 +15,11 @@ export default defineConfig({
   envDir: false,
   server: {
     port: 3000,
-    proxy: { "/users": api, "/products": api, "/cart": api },
+    proxy,
   },
   preview: {
     port: 3000,
-    proxy: { "/users": api, "/products": api, "/cart": api },
+    proxy,
   },
   test: {
     environment: "jsdom",

@@ -10,7 +10,10 @@
     "@tanstack/react-query": "^5.107.1",
     "dotenv": "^16.4.7",
     "express": "^4.22.3",
+    "helmet": "^8.3.0",
     "mariadb": "^3.5.5",
+    "pino": "^10.4.0",
+    "pino-http": "^11.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.18.5",
@@ -26,8 +29,8 @@
     "typecheck": "tsc",
     "migrate": "node backend/migrate.js",
     "start:api": "node backend/server.js",
-    "test:api": "node --test backend/tests/*.test.js",
-    "test:db": "node --test --test-concurrency=1 backend/tests/db/*.test.js"
+    "test:api": "LOG_LEVEL=silent node --test backend/tests/*.test.js",
+    "test:db": "LOG_LEVEL=silent node --test --test-concurrency=1 backend/tests/db/*.test.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -42,6 +45,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
     "jsdom": "^31.0.0",
+    "pino-pretty": "^13.2.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.2",
     "vite": "^8.3.7",

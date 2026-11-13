@@ -50,7 +50,7 @@ Checkout guarantees, which every change must keep:
 - [x] Replace hash routes with real URLs.
 - [x] Fetch server data through TanStack Query.
 - [x] Serve images and films from a tracked `/media` folder on the storefront's CDN, with a `product_media` table and a configurable media base for object storage later.
-- [ ] Prefix the API with `/api/v1`, validate configuration at startup, add security headers and structured logging.
+- [x] Prefix the API with `/api/v1`, validate configuration at startup, add security headers and structured logging.
 - [ ] Deploy the storefront to Vercel, choose free hosting without a card for the API and database, and deploy on every merge.
 - [ ] Add a demo sign-in and a nightly reset of demo data.
 
