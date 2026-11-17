@@ -103,3 +103,15 @@ test("signing out returns to the sign-in form and empties the shown bag", async 
   expect(await screen.findByRole("heading", { name: "Sign in." })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Shopping bag, 0 items" })).toBeInTheDocument();
 });
+
+test("the demo signs a visitor in to an account of their own without credentials", async () => {
+  window.history.replaceState({}, "", "/sign-in");
+  render(<StorefrontPreview />);
+  mockApi.on("POST /demo/sign-in", 503, { error: "Service unavailable" });
+  fireEvent.click(screen.getByRole("button", { name: "Try the demo" }));
+  expect(await screen.findByText("Service unavailable")).toBeInTheDocument();
+
+  mockApi.on("POST /demo/sign-in", 201, { id: 7, email: "demo-1a2b3c4d5e6f@resonance.test" });
+  fireEvent.click(screen.getByRole("button", { name: "Try the demo" }));
+  await waitFor(() => expect(window.location.pathname).toBe("/"));
+});

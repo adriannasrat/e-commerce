@@ -289,9 +289,39 @@ const styles = [
     },
   },
   {
+    ".sign-in-demo-button": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "9px",
+      minHeight: "48px",
+      width: "100%",
+      marginTop: "12px",
+      border: "1px solid #d2d2d7",
+      borderRadius: "12px",
+      background: "transparent",
+      color: "#1d1d1f",
+      font: "inherit",
+      fontSize: "17px",
+      cursor: "pointer",
+      transition: "border-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
+    },
+  },
+  {
+    ".sign-in-demo-button:hover": {
+      borderColor: "#1d1d1f",
+    },
+  },
+  {
+    ".sign-in-demo-button svg": {
+      width: "18px",
+      height: "18px",
+    },
+  },
+  {
     ".sign-in-demo": {
       color: "#76766e",
-      fontSize: "10px",
+      fontSize: "12px",
       textAlign: "center",
       marginTop: "16px",
     },
