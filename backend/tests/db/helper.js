@@ -33,10 +33,10 @@ async function startApi(t) {
   // A minimal cookie-keeping client, one per simulated visitor.
   return () => {
     let cookie = '';
-    return async (method, url, body) => {
+    return async (method, url, body, headers = {}) => {
       const response = await fetch(base + url, {
         method,
-        headers: { 'content-type': 'application/json', cookie },
+        headers: { 'content-type': 'application/json', cookie, ...headers },
         body: body === undefined ? undefined : JSON.stringify(body),
       });
       const set = response.headers.get('set-cookie');
