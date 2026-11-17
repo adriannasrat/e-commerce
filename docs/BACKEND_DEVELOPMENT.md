@@ -29,6 +29,7 @@ File paths are resolved relative to the module, not the working directory.
 | NODE_ENV | development | `development`, `test` or `production`; production sends the session cookie over HTTPS only |
 | LOG_LEVEL | info | `fatal`, `error`, `warn`, `info`, `debug`, `trace` or `silent` |
 | DB_SSL | false | `true` connects with verified TLS, as hosted databases require |
+| CRON_SECRET | unset | Bearer token for the nightly demo reset, which refuses all calls when unset |
 
 Startup checks the configuration and reports every problem at once, by variable
 name and never by value. Ports must be integers between 1 and 65535, `NODE_ENV`
