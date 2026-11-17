@@ -105,6 +105,11 @@ The database is a MySQL-compatible TiDB Cloud Starter cluster. Production needs
 `DB_SSL=true`, set in the Vercel project. TiDB ignores CHECK constraints until
 `SET GLOBAL tidb_enable_check_constraint = ON` has been run once on the cluster.
 
+Visitors can sign in to a demo account of their own without a password. Every
+night at 03:00 UTC, Vercel Cron calls `/api/v1/demo/reset`, which removes every
+account with its bags, orders and ratings and refills the stock. The call needs
+`CRON_SECRET` set in the Vercel project, and the reset refuses all calls without it.
+
 ## Tests
 
 | Command | Covers |

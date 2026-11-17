@@ -5,6 +5,7 @@ import VisibilityOutlined from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlined from "@mui/icons-material/VisibilityOffOutlined";
 import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
+import HeadphonesOutlined from "@mui/icons-material/HeadphonesOutlined";
 import { useAuth } from "./AuthContext";
 import { paths } from "../routes";
 
@@ -13,7 +14,7 @@ export default function AuthForm({ signingUp }) {
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  const { user, signIn, signOut, signUp } = useAuth();
+  const { user, signIn, signInToDemo, signOut, signUp } = useAuth();
   const navigate = useNavigate();
   useLayoutEffect(() => {
     heading.current?.focus({ preventScroll: true });
@@ -42,6 +43,18 @@ export default function AuthForm({ signingUp }) {
     } catch (error) {
       setMessage(error.message);
       form.elements.password.value = "";
+      setBusy(false);
+    }
+  }
+
+  async function tryDemo() {
+    setBusy(true);
+    setMessage("");
+    try {
+      await signInToDemo();
+      navigate(paths.home);
+    } catch (error) {
+      setMessage(error.message);
       setBusy(false);
     }
   }
@@ -149,6 +162,18 @@ export default function AuthForm({ signingUp }) {
           {signingUp ? "Create account" : "Sign in"}
         </button>
       </form>
+      <button
+        type="button"
+        className="sign-in-demo-button"
+        onClick={tryDemo}
+        disabled={busy}
+      >
+        <HeadphonesOutlined />
+        Try the demo
+      </button>
+      <p className="sign-in-demo">
+        No email or password needed. Demo accounts are cleared every night.
+      </p>
       <p className="sign-in-feedback" role="status">
         {message}
       </p>

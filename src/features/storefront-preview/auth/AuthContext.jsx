@@ -34,6 +34,8 @@ export function AuthProvider({ children }) {
       user,
       signIn: async (credentials) => setUser(await api("POST", "/users/signin", credentials)),
       signUp: async (credentials) => setUser(await api("POST", "/users/signup", credentials)),
+      // A fresh account for this visitor, with no email or password to type.
+      signInToDemo: async () => setUser(await api("POST", "/demo/sign-in")),
       signOut: async () => {
         await api("POST", "/users/signout");
         // The next person on this device must never see the previous cart.

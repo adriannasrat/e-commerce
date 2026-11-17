@@ -63,6 +63,8 @@ function readEnvironment(env = process.env) {
   const config = {
     port: port('PORT', 5001),
     secureCookies: nodeEnv === 'production',
+    // Authorizes the nightly demo reset. Unset, the reset refuses every call.
+    cronSecret: text('CRON_SECRET', undefined),
     database: {
       database: text('DB_NAME', 'shop_db'),
       username: text('DB_USER', 'root'),

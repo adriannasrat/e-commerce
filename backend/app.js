@@ -5,6 +5,7 @@ const pinoHttp = require('pino-http');
 const { logger: defaultLogger } = require('./logger');
 const { loadUser } = require('./auth/session');
 const userRoutes = require('./routes/userRoutes');
+const demoRoutes = require('./routes/demoRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const productRoutes = require('./routes/productRoutes');
 
@@ -16,6 +17,7 @@ function createApi() {
   const api = express.Router();
   api.use(loadUser);
   api.use('/users', userRoutes);
+  api.use('/demo', demoRoutes);
   api.use('/cart', cartRoutes);
   api.use('/products', productRoutes);
   api.use((req, res) => res.status(404).json({ error: 'Not found' }));

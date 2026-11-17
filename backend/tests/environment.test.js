@@ -73,3 +73,9 @@ test('DB_SSL turns on verified TLS, and only true or false are accepted', () => 
   assert.equal(readEnvironment({ DB_SSL: 'false' }).database.dialectOptions.ssl, undefined);
   assert.deepEqual(problemsFor({ DB_SSL: 'yes' }), ['DB_SSL must be true or false']);
 });
+
+test('CRON_SECRET is optional but never empty', () => {
+  assert.equal(readEnvironment({}).cronSecret, undefined);
+  assert.equal(readEnvironment({ CRON_SECRET: 'nightly' }).cronSecret, 'nightly');
+  assert.deepEqual(problemsFor({ CRON_SECRET: ' ' }), ['CRON_SECRET must not be empty']);
+});
