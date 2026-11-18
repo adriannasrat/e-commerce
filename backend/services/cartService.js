@@ -1,7 +1,6 @@
-const { Transaction } = require('sequelize');
 const { HttpError } = require('../http');
-const sequelize = require('../config/database');
 const { Cart, CartRow, Product } = require('../models');
+const { inTransaction } = require('./transaction');
 
 const findActiveCart = (userId) => Cart.findOne({ where: { user_id: userId, paid: false } });
 
@@ -16,11 +15,6 @@ async function getOrCreateActiveCart(userId) {
     throw error;
   }
 }
-
-// Row locks do the protecting here. A waiting lock must then see the latest
-// committed row, which MariaDB's REPEATABLE READ refuses with error 1020.
-const inTransaction = (work) =>
-  sequelize.transaction({ isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED }, work);
 
 // Changes lock the cart row, so they cannot land in a cart that is being paid.
 async function withActiveCart(userId, change) {
