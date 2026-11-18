@@ -6,8 +6,11 @@ const bagReviewStyles = {
     maxWidth: 320,
     margin: "24px auto 0",
   },
-  ".bag-summary .bag-checkout-actions": { maxWidth: "none" },
-  ".bag-checkout-actions .bag-button": { margin: 0, borderRadius: 10 },
+  ".bag-checkout-actions .bag-button": {
+    margin: 0,
+    borderRadius: 10,
+    width: "320px",
+  },
   ".bag-row-image": { gridRow: "span 2" },
   ".bag-item-services": {
     gridColumn: "2 / -1",
@@ -86,6 +89,7 @@ const bagReviewStyles = {
     textAlign: "center",
     padding: "28px 5%",
   },
+  ".bag-collection-banner h2": { color: "var(--rx-ink) !important" },
   ".bag-collection-banner svg": {
     width: "100%",
     height: "clamp(140px, 22vw, 275px)",
