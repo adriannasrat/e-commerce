@@ -55,7 +55,7 @@ run with `LOG_LEVEL=silent`.
   the repository, with `mariadb-dump -u webshop_user -p shop_db > ~/shop_db-backup.sql`.
 - `npm run start:api` starts the API after MariaDB authentication succeeds.
 - `npm run test:api` needs no database.
-- `npm run test:db` covers migrations, accounts, carts and checkout. It empties its
+- `npm run test:db` covers migrations, accounts, carts and orders. It empties its
   database, so it refuses any `DB_NAME` that does not end in `_test`.
 
 `GET /health` is a process liveness check, not proof of database connectivity.
@@ -63,4 +63,7 @@ Each product's images and films are rows in `ProductMedia`: one main cut-out,
 optional gallery views and an optional film, with paths relative to the
 storefront's media base. The database allows one main image per product.
 Products without a `category`, such as the original flowers, stay in the database
-but are not sold. Checkout is a demo: `paid` is set without any real payment.
+but are not sold. `POST /api/v1/orders` turns the signed-in user's cart into an
+order and removes the cart. Orders are `pending`, `paid` or `cancelled`, and the
+database requires a payment time on every paid order. This demo takes no payment,
+so an order is `paid` as soon as it is placed.

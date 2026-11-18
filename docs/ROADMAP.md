@@ -56,7 +56,7 @@ Checkout guarantees, which every change must keep:
 
 ### Phase 2: Show the commerce flow
 
-- [ ] Model orders with explicit statuses, separate from carts.
+- [x] Model orders with explicit statuses, separate from carts.
 - [ ] Take payments through Stripe in test mode, confirmed only by its webhook.
 - [ ] Add an account page with order history.
 - [ ] Limit repeated sign-in attempts.
