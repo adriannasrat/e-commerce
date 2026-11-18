@@ -6,12 +6,15 @@ import HeadphoneImage from "../HeadphoneImage";
 import { products } from "../products";
 import ScrollReveal from "../ScrollReveal";
 import AuthForm from "./AuthForm";
-import { paths } from "../routes";
+import { useLocation } from "react-router-dom";
+import { paths, returnPath, withReturn } from "../routes";
 
 
 export default function SignInPage({ mode = "sign-in" }) {
   const image = products.find((product) => product.id === "silver")?.image;
   const signingUp = mode === "sign-up";
+  const next = returnPath(useLocation().search);
+  const fromCheckout = next === paths.checkout;
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
@@ -44,7 +47,7 @@ export default function SignInPage({ mode = "sign-in" }) {
             </a>
             <a
               className="sign-in-text-button"
-              href={signingUp ? paths.signIn : paths.signUp}
+              href={withReturn(signingUp ? paths.signIn : paths.signUp, next)}
             >
               {signingUp ? <LoginOutlined /> : <PersonAddAltOutlined />}
               {signingUp ? "Sign in" : "Sign up"}
@@ -52,8 +55,8 @@ export default function SignInPage({ mode = "sign-in" }) {
           </div>
           <AuthForm key={mode} signingUp={signingUp} />
           <div className="sign-in-panel-bottom">
-            <a href={paths.store}>
-              <ArrowBack /> Back to the collection
+            <a href={fromCheckout ? paths.checkout : paths.store}>
+              <ArrowBack /> {fromCheckout ? "Back to checkout" : "Back to the collection"}
             </a>
             <span>Listen your way.</span>
           </div>

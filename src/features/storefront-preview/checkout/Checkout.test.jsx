@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import StorefrontPreview from "../StorefrontPreview";
 import { mockApi } from "../testApi";
 import { BAG_STORAGE_KEY } from "../bag/bagState";
@@ -110,4 +110,28 @@ test("an order is shown only to a signed-in owner", async () => {
   mockApi.on("GET /orders/42", 404, { error: "Order not found" });
   render(<StorefrontPreview />);
   expect(await screen.findByRole("heading", { name: "Order not found." })).toBeInTheDocument();
+});
+
+test("signing in from checkout returns there", async () => {
+  window.history.replaceState({}, "", "/sign-in?return=%2Fcheckout");
+  render(<StorefrontPreview />);
+  expect(await screen.findByRole("link", { name: "Back to checkout" })).toHaveAttribute("href", "/checkout");
+  expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute("href", "/sign-up?return=%2Fcheckout");
+  fireEvent.change(screen.getByRole("textbox", { name: "Email address" }), { target: { value: user.email } });
+  fireEvent.change(screen.getByLabelText("Password"), { target: { value: "secret-password" } });
+  mockApi.on("POST /users/signin", 200, user);
+  mockApi.on("GET /cart", 200, { id: null, items: [] });
+  fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+  await waitFor(() => expect(window.location.pathname).toBe("/checkout"));
+});
+
+test("a return address off this site is ignored", async () => {
+  window.history.replaceState({}, "", "/sign-in?return=%2F%2Fevil.example");
+  render(<StorefrontPreview />);
+  fireEvent.change(screen.getByRole("textbox", { name: "Email address" }), { target: { value: user.email } });
+  fireEvent.change(screen.getByLabelText("Password"), { target: { value: "secret-password" } });
+  mockApi.on("POST /users/signin", 200, user);
+  mockApi.on("GET /cart", 200, { id: null, items: [] });
+  fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+  await waitFor(() => expect(window.location.pathname).toBe("/"));
 });
