@@ -248,7 +248,6 @@ const styles = [
     },
   },
   { ".product-showcase-dark": { background: "#000" } },
-  { ".product-showcase-warm": { background: "linear-gradient(#fbeae6, #f3d3cc)" } },
   {
     ".product-showcase-category": {
       margin: "0 0 2px",
