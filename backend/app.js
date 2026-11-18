@@ -7,6 +7,7 @@ const { loadUser } = require('./auth/session');
 const userRoutes = require('./routes/userRoutes');
 const demoRoutes = require('./routes/demoRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const productRoutes = require('./routes/productRoutes');
 
 // Every API route lives under one versioned prefix, so a later version can
@@ -19,6 +20,7 @@ function createApi() {
   api.use('/users', userRoutes);
   api.use('/demo', demoRoutes);
   api.use('/cart', cartRoutes);
+  api.use('/orders', orderRoutes);
   api.use('/products', productRoutes);
   api.use((req, res) => res.status(404).json({ error: 'Not found' }));
   return api;

@@ -18,7 +18,7 @@ async function createDemoUser() {
 // starts as the first did.
 async function resetDemoData() {
   await sequelize.transaction(async (transaction) => {
-    for (const table of ['Sessions', 'Ratings', 'CartRows', 'Carts', 'Users']) {
+    for (const table of ['Sessions', 'Ratings', 'OrderLines', 'Orders', 'CartRows', 'Carts', 'Users']) {
       await sequelize.query(`DELETE FROM ${table}`, { transaction });
     }
     await sequelize.query('UPDATE Products SET stock_quantity = :stock WHERE category IS NOT NULL', {
