@@ -17,7 +17,7 @@ export type ApiMedia = {
   tone: "dark" | "light" | null;
 };
 
-type Cutout = {
+export type Cutout = {
   id: string;
   category: string;
   label: string;
