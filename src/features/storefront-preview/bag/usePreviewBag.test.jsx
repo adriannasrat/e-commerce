@@ -86,7 +86,7 @@ test("checkout pays the current cart and leaves it empty", async () => {
   await waitFor(() => expect(result.current.count).toBe(2));
 
   let paid;
-  mockApi.on("POST /cart/checkout", 200, (body) => {
+  mockApi.on("POST /orders", 201, (body) => {
     paid = body.cartId;
     return { id: 1, total_ore: 358000 };
   });
@@ -116,7 +116,7 @@ test("checkout waits for a change that is still on its way to the server", async
     return reply(path, init);
   };
   mockApi.on("PUT /cart/items/1", 200, ({ amount }) => cart([[1, amount]]));
-  mockApi.on("POST /cart/checkout", 200, { id: 9, total_ore: 537000 });
+  mockApi.on("POST /orders", 201, { id: 9, total_ore: 537000 });
   mockApi.on("GET /cart", 200, { id: null, items: [] });
 
   let paying;
@@ -131,5 +131,5 @@ test("checkout waits for a change that is still on its way to the server", async
   await act(async () => {
     await paying;
   });
-  expect(calls).toEqual(["PUT /api/v1/cart/items/1", "POST /api/v1/cart/checkout", "GET /api/v1/cart"]);
+  expect(calls).toEqual(["PUT /api/v1/cart/items/1", "POST /api/v1/orders", "GET /api/v1/cart"]);
 });
