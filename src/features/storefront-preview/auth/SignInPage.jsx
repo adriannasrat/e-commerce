@@ -6,6 +6,7 @@ import HeadphoneImage from "../HeadphoneImage";
 import { products } from "../products";
 import ScrollReveal from "../ScrollReveal";
 import AuthForm from "./AuthForm";
+import { useAuth } from "./AuthContext";
 import { useLocation } from "react-router-dom";
 import { paths, returnPath, withReturn } from "../routes";
 
@@ -15,6 +16,8 @@ export default function SignInPage({ mode = "sign-in" }) {
   const signingUp = mode === "sign-up";
   const next = returnPath(useLocation().search);
   const fromCheckout = next === paths.checkout;
+  // Signed in, the panel only offers signing out, so switching forms is moot.
+  const signedIn = Boolean(useAuth().user);
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
@@ -45,13 +48,15 @@ export default function SignInPage({ mode = "sign-in" }) {
             >
               RESONANCE
             </a>
-            <a
-              className="sign-in-text-button"
-              href={withReturn(signingUp ? paths.signIn : paths.signUp, next)}
-            >
-              {signingUp ? <LoginOutlined /> : <PersonAddAltOutlined />}
-              {signingUp ? "Sign in" : "Sign up"}
-            </a>
+            {!signedIn && (
+              <a
+                className="sign-in-text-button"
+                href={withReturn(signingUp ? paths.signIn : paths.signUp, next)}
+              >
+                {signingUp ? <LoginOutlined /> : <PersonAddAltOutlined />}
+                {signingUp ? "Sign in" : "Sign up"}
+              </a>
+            )}
           </div>
           <AuthForm key={mode} signingUp={signingUp} />
           <div className="sign-in-panel-bottom">
