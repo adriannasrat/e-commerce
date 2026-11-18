@@ -85,7 +85,7 @@ export default function usePreviewBag() {
     scope: cartScope,
     mutationFn: async ({ owner }) => {
       const current = await latestCart(owner);
-      const order = await api("POST", "/cart/checkout", { cartId: current.id });
+      const order = await api("POST", "/orders", { cartId: current.id });
       queryClient.setQueryData(cartKey(owner), await api("GET", "/cart"));
       return order;
     },

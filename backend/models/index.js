@@ -7,6 +7,8 @@ const CartRow = require("./CartRow");
 const Rating = require("./Rating");
 const Session = require("./Session");
 const ProductMedia = require("./ProductMedia");
+const Order = require("./Order");
+const OrderLine = require("./OrderLine");
 
 // Relationships
 User.hasMany(Cart, { foreignKey: "user_id", onDelete: "CASCADE" });
@@ -29,4 +31,11 @@ Session.belongsTo(User, { foreignKey: "user_id" });
 Product.hasMany(ProductMedia, { foreignKey: "product_id", as: "media", onDelete: "CASCADE" });
 ProductMedia.belongsTo(Product, { foreignKey: "product_id" });
 
-module.exports = { Product, ProductMedia, User, Cart, CartRow, Rating, Session };
+User.hasMany(Order, { foreignKey: "user_id", onDelete: "CASCADE" });
+Order.belongsTo(User, { foreignKey: "user_id" });
+
+Order.hasMany(OrderLine, { foreignKey: "order_id", as: "lines", onDelete: "CASCADE" });
+OrderLine.belongsTo(Order, { foreignKey: "order_id" });
+OrderLine.belongsTo(Product, { foreignKey: "product_id" });
+
+module.exports = { Product, ProductMedia, User, Cart, CartRow, Order, OrderLine, Rating, Session };

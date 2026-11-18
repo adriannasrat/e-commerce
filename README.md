@@ -12,7 +12,7 @@ no money is ever taken.
 - Product pages with image views, zoom, product films and related models.
 - Sign up and sign in with hashed passwords and httpOnly session cookies.
 - A bag that lives in the browser for guests and merges into the server cart on sign-in.
-- A checkout that locks stock, buys at most once per cart and freezes prices in the purchase history.
+- A checkout that locks stock, buys at most once per cart and freezes prices in the order history.
 - Keyboard focus handling and reduced-motion support throughout.
 
 ## Stack
@@ -40,10 +40,12 @@ carry most of the weight:
 - **Prices are stored in öre** as integers, so totals never suffer from rounding.
 - **Sessions are opaque tokens** in an httpOnly cookie, and only a digest is stored.
   Routes act on the signed-in user and never accept a user id.
-- **One active cart per user** is enforced by the database through a unique
-  generated column, not only by application code.
-- **Checkout runs in a single transaction.** Stock rows are locked in a fixed order
-  to avoid deadlocks, and a repeated request for the same cart buys only once.
+- **A cart is only the bag being filled.** The database allows one per user, and
+  placing an order turns it into an order with its own lines and an explicit
+  status: `pending`, `paid` or `cancelled`.
+- **Placing an order runs in a single transaction.** Stock rows are locked in a
+  fixed order to avoid deadlocks, and a repeated request for the same cart
+  returns the same order.
 
 ## Run it locally
 
