@@ -18,6 +18,8 @@ import theme from "./theme";
 import ListeningStories from "./ListeningStories";
 import ProductDetail from "./ProductDetail";
 import ProductShowcase from "./ProductShowcase";
+import CheckoutPage from "./checkout/CheckoutPage";
+import OrderPage from "./checkout/OrderPage";
 import { products } from "./products";
 import usePreviewRoute from "./usePreviewRoute";
 import usePreviewBag from "./bag/usePreviewBag";
@@ -91,6 +93,8 @@ function Storefront() {
   const isSignUp = route.name === "signUp";
   const isSignIn = route.name === "signIn" || isSignUp;
   const isNotFound = route.name === "notFound";
+  const isCheckout = route.name === "checkout";
+  const orderId = route.name === "order" ? route.id : null;
   function addToBag(id) {
     bag.add(id);
     navigate(paths.added(id));
@@ -102,6 +106,8 @@ function Storefront() {
     (categoryId && collections[categoryId].name) ||
     (addedId !== null && "Your selection") ||
     (isBag && "Your bag") ||
+    (isCheckout && "Checkout") ||
+    (orderId !== null && "Your order") ||
     (isSignIn && (isSignUp ? "Sign up" : "Sign in")) ||
     (isCatalog && "The collection") ||
     (isJournal && "Listening journal") ||
@@ -119,6 +125,8 @@ function Storefront() {
     if (
       productId !== null ||
       isBag ||
+      isCheckout ||
+      orderId !== null ||
       isSignIn ||
       addedId !== null ||
       categoryId
@@ -142,6 +150,8 @@ function Storefront() {
     pathname,
     productId,
     isBag,
+    isCheckout,
+    orderId,
     addedId,
     isSignIn,
     categoryId,
@@ -195,6 +205,8 @@ function Storefront() {
             ) : null}
             {category && <CategoryPage key={category.id} {...category} />}
             {isBag && <BagPage bag={bag} />}
+            {isCheckout && <CheckoutPage bag={bag} />}
+            {orderId !== null && <OrderPage key={orderId} id={orderId} />}
             {isSignIn && <SignInPage mode={isSignUp ? "sign-up" : "sign-in"} />}
             {addedId !== null &&
               (addedProduct ? (

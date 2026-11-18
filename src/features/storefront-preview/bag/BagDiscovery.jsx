@@ -20,7 +20,7 @@ const questions = [
   ],
   [
     "Which payments do you accept?",
-    "Both checkout options demonstrate the shopping flow. No payment details are collected or orders placed.",
+    "Checkout places a real demo order with a demo payment. No card details are collected and nothing is charged.",
   ],
 ];
 
