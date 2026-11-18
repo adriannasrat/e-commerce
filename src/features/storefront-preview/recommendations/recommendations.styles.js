@@ -1,9 +1,10 @@
 // Feature styles consumed by StorefrontStyles through MUI GlobalStyles.
 const styles = [
   {
+    // Stays in view below the 44px navigation bar while the suggestions scroll.
     ".added-summary": {
       "position": "sticky",
-      "top": "0",
+      "top": "44px",
       "zIndex": "6",
       "display": "flex",
       "alignItems": "center",
@@ -232,6 +233,13 @@ const styles = [
           "gridTemplateColumns": "repeat(2, minmax(0, 1fr))"
         }
       }
+    ]
+  },
+  {
+    // On compact screens the summary wraps to several lines, too tall to keep
+    // pinned, so it scrolls away with the page.
+    "@media (max-width: 833px)": [
+      { ".added-summary": { "position": "static" } }
     ]
   },
   {
