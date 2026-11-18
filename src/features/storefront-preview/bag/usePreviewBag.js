@@ -83,9 +83,9 @@ export default function usePreviewBag() {
 
   const pay = useMutation({
     scope: cartScope,
-    mutationFn: async ({ owner }) => {
+    mutationFn: async ({ owner, delivery }) => {
       const current = await latestCart(owner);
-      const order = await api("POST", "/orders", { cartId: current.id });
+      const order = await api("POST", "/orders", { cartId: current.id, delivery });
       queryClient.setQueryData(cartKey(owner), await api("GET", "/cart"));
       return order;
     },
@@ -103,7 +103,9 @@ export default function usePreviewBag() {
     items,
     error: error || (cart.isError ? cart.error.message : ""),
     signedIn: Boolean(userId),
-    checkout: () => pay.mutateAsync({ owner: userId }),
+    // True while a signed-in visitor's cart is first loading.
+    loading: Boolean(userId) && cart.isPending,
+    checkout: (delivery) => pay.mutateAsync({ owner: userId, delivery }),
     count: items.reduce((sum, item) => sum + item.quantity, 0),
     total: items.reduce(
       (sum, item) => sum + item.quantity * item.product.price,

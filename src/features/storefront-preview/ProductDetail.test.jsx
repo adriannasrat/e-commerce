@@ -105,6 +105,26 @@ test("recommendation navigation exposes other products", () => {
   expect(pages[pages.length - 1]).toHaveAttribute("aria-current", "page");
 });
 
+test("on a phone, recommendations are one row to swipe instead of pages", () => {
+  window.matchMedia = (media) => ({
+    media,
+    matches: media.includes("max-width"),
+    addEventListener() {},
+    removeEventListener() {},
+    addListener() {},
+    removeListener() {},
+  });
+  try {
+    render(<ProductDetail product={products[0]} />);
+    const related = screen.getByRole("region", { name: "You may also like" });
+    expect(within(related).getAllByRole("link")).toHaveLength(products.length - 1);
+    expect(screen.queryByRole("button", { name: "Next recommendations" })).toBeNull();
+    expect(screen.getAllByRole("button", { name: /Recommendation page/ })).toHaveLength(products.length - 1);
+  } finally {
+    delete window.matchMedia;
+  }
+});
+
 test("models with lifestyle photography offer extra gallery views", () => {
   const pocket = products.find((item) => item.id === "pocket-07");
   render(<ProductDetail product={pocket} />);

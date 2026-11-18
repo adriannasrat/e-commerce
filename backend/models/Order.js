@@ -3,6 +3,7 @@ const sequelize = require("../config/database");
 
 // pending: placed, awaiting payment. paid: payment confirmed. cancelled: never paid.
 const ORDER_STATUSES = ["pending", "paid", "cancelled"];
+const DELIVERIES = ["standard", "express"];
 
 const Order = sequelize.define("Order", {
   id: {
@@ -24,6 +25,17 @@ const Order = sequelize.define("Order", {
     validate: { isIn: [ORDER_STATUSES] },
   },
   paid_at: DataTypes.DATE,
+  delivery: {
+    type: DataTypes.STRING(16),
+    allowNull: false,
+    defaultValue: "standard",
+    validate: { isIn: [DELIVERIES] },
+  },
+  delivery_ore: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
 });
 
 module.exports = Order;

@@ -138,6 +138,23 @@ test("checkout", async (t) => {
     assert.deepEqual((await api("GET", "/orders")).body, []);
   });
 
+  await t.test("express delivery is priced by the server, and an order is its owner's alone", async () => {
+    const api = await shopper();
+    const other = await shopper();
+    const product = await stocked(3, 100000);
+    const cartId = await fill(api, product, 1);
+    assert.equal((await api("POST", "/orders", { cartId, delivery: "drone" })).status, 400);
+
+    const { body: order } = await api("POST", "/orders", { cartId, delivery: "express", delivery_ore: 0 });
+    assert.equal(order.delivery, "express");
+    assert.equal(order.delivery_ore, 14900);
+    assert.equal(order.subtotal_ore, 100000);
+    assert.equal(order.total_ore, 114900);
+    assert.deepEqual((await api("GET", `/orders/${order.id}`)).body, order);
+    assert.equal((await other("GET", `/orders/${order.id}`)).status, 404);
+    assert.equal((await api("GET", "/orders/nope")).status, 404);
+  });
+
   await t.test("only your own, non-empty cart can be paid", async () => {
     const owner = await shopper();
     const other = await shopper();

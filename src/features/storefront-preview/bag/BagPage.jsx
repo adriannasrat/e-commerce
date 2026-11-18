@@ -1,7 +1,4 @@
-import StorefrontDialog from "../StorefrontDialog";
-import { useLayoutEffect, useRef, useState } from "react";
-import { DialogContent, DialogTitle, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { useLayoutEffect, useRef } from "react";
 import HeadphoneImage from "../HeadphoneImage";
 import { productHref } from "../usePreviewRoute";
 import { formatPrice } from "../products";
@@ -12,39 +9,18 @@ import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import { paths } from "../routes";
 
-function CheckoutActions({ onSelect }) {
+function CheckoutActions() {
   return (
     <div className="bag-checkout-actions">
-      <button
-        className="bag-button"
-        onClick={() => onSelect("Express checkout")}
-      >
-        Express checkout
-      </button>
-      <button className="bag-button" onClick={() => onSelect("Check out")}>
+      <a className="bag-button" href={paths.checkout}>
         Check out
-      </button>
+      </a>
     </div>
   );
 }
 
 export default function BagPage({ bag }) {
   const heading = useRef(null);
-  const [checkout, setCheckout] = useState(false);
-  const [order, setOrder] = useState(null);
-  const [placing, setPlacing] = useState(false);
-  const [checkoutError, setCheckoutError] = useState("");
-  async function placeOrder() {
-    setPlacing(true);
-    setCheckoutError("");
-    try {
-      setOrder(await bag.checkout());
-    } catch (error) {
-      setCheckoutError(error.message);
-    } finally {
-      setPlacing(false);
-    }
-  }
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     heading.current.focus({ preventScroll: true });
@@ -63,7 +39,7 @@ export default function BagPage({ bag }) {
             : "Your next favourite is waiting."}
         </p>
         {bag.count ? (
-          <CheckoutActions onSelect={setCheckout} />
+          <CheckoutActions />
         ) : (
           <a className="bag-button" href={paths.store}>
             Explore headphones
@@ -130,7 +106,7 @@ export default function BagPage({ bag }) {
               </span>
               <span>
                 <LocalShippingOutlined />
-                Delivery unavailable
+                Free standard delivery
               </span>
             </div>
           </div>
@@ -144,66 +120,17 @@ export default function BagPage({ bag }) {
           </div>
           <div>
             <span>Delivery</span>
-            <span>Not available in this demo</span>
+            <span>Free with standard delivery</span>
           </div>
           <div className="bag-summary-total">
             <strong>Total</strong>
             <strong>{formatPrice(bag.total)}</strong>
           </div>
-          <CheckoutActions onSelect={setCheckout} />
+          <CheckoutActions />
           <a href={paths.store}>Continue exploring</a>
         </div>
       )}
       {bag.count > 0 && <BagDiscovery bag={bag} />}
-      <StorefrontDialog
-        open={Boolean(checkout)}
-        onClose={() => setCheckout(false)}
-        aria-labelledby="demo-checkout-title"
-        maxWidth="xs"
-        fullWidth
-      >
-        <DialogTitle id="demo-checkout-title">
-          {checkout || "Checkout"}
-          <IconButton
-            aria-label="Close checkout information"
-            onClick={() => setCheckout(false)}
-            sx={{ float: "right" }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          {order ? (
-            <p role="status">
-              Order {order.id} is placed. Total {formatPrice(order.total_ore / 100)}. This
-              is a demo, so no payment was taken.
-            </p>
-          ) : bag.signedIn ? (
-            <>
-              <p>
-                Place your order for {formatPrice(bag.total)}. This is a demo, so no
-                payment is taken.
-              </p>
-              {checkoutError && <p role="alert">{checkoutError}</p>}
-              <button
-                type="button"
-                className="bag-button"
-                disabled={placing}
-                onClick={placeOrder}
-              >
-                Place order
-              </button>
-            </>
-          ) : (
-            <>
-              <p>Sign in to place your order. Your bag comes with you.</p>
-              <a className="bag-button" href={paths.signIn}>
-                Sign in
-              </a>
-            </>
-          )}
-        </DialogContent>
-      </StorefrontDialog>
     </section>
   );
 }

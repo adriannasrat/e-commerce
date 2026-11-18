@@ -66,4 +66,6 @@ Products without a `category`, such as the original flowers, stay in the databas
 but are not sold. `POST /api/v1/orders` turns the signed-in user's cart into an
 order and removes the cart. Orders are `pending`, `paid` or `cancelled`, and the
 database requires a payment time on every paid order. This demo takes no payment,
-so an order is `paid` as soon as it is placed.
+so an order is `paid` as soon as it is placed. Each order records its delivery, `standard` or `express`,
+with the price the server set for it, and `GET /api/v1/orders/:id` returns one
+of the signed-in user's orders.

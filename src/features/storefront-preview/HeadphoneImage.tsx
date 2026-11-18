@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { type ReactEventHandler, useState } from "react";
+import type { Cutout } from "./catalogueMedia";
 
 // Optical size per category: earbuds framed as tightly as headphones read
 // far too large next to them, so they get extra breathing room.
-const opticalScale = { "in-ear": 1.24 };
+const opticalScale: Record<string, number> = { "in-ear": 1.24 };
 
 // Fit visible products into the same frame without cropping wider cases or
 // distorting proportions. The photo fades in once decoded instead of popping.
@@ -11,6 +12,11 @@ export default function HeadphoneImage({
   className,
   decorative = false,
   onError,
+}: {
+  image: Cutout;
+  className?: string;
+  decorative?: boolean;
+  onError?: ReactEventHandler<SVGImageElement>;
 }) {
   const [loaded, setLoaded] = useState(false);
   const { src, label, width, height, bounds, category } = image;
@@ -38,7 +44,8 @@ export default function HeadphoneImage({
         height={height}
         className="rx-photo"
         data-loaded={loaded}
-        decoding="async"
+        // SVG images support async decoding, which React's types leave out.
+        {...{ decoding: "async" }}
         onLoad={() => setLoaded(true)}
         onError={onError}
       />

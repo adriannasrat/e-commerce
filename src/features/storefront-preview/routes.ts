@@ -2,8 +2,8 @@ export type CollectionId = "over-ear" | "in-ear";
 export type CollectionSection = "models" | "compare";
 
 export type Route =
-  | { name: "home" | "store" | "compare" | "journal" | "bag" | "signIn" | "signUp" }
-  | { name: "product" | "added"; id: string }
+  | { name: "home" | "store" | "compare" | "journal" | "bag" | "signIn" | "signUp" | "checkout" }
+  | { name: "product" | "added" | "order"; id: string }
   | { name: "collection"; id: CollectionId; section?: CollectionSection }
   | { name: "notFound" };
 
@@ -17,6 +17,8 @@ export const paths = {
   bag: "/bag",
   signIn: "/sign-in",
   signUp: "/sign-up",
+  checkout: "/checkout",
+  order: (id: string | number) => `/order/${encodeURIComponent(id)}`,
   product: (id: string) => `/product/${encodeURIComponent(id)}`,
   added: (id: string) => `/bag/added/${encodeURIComponent(id)}`,
   collection: (id: CollectionId, section?: CollectionSection) =>
@@ -31,6 +33,7 @@ const pages = {
   [paths.bag]: "bag",
   [paths.signIn]: "signIn",
   [paths.signUp]: "signUp",
+  [paths.checkout]: "checkout",
 } as const;
 
 function decode(segment: string): string | null {
@@ -46,11 +49,12 @@ export function matchRoute(pathname: string): Route {
   const page = pages[path as keyof typeof pages];
   if (page) return { name: page };
 
-  const item = /^\/(product|bag\/added)\/([^/]+)$/.exec(path);
+  const item = /^\/(product|bag\/added|order)\/([^/]+)$/.exec(path);
   if (item) {
     const id = decode(item[2]);
     if (id === null) return { name: "notFound" };
-    return { name: item[1] === "product" ? "product" : "added", id };
+    const name = item[1] === "bag/added" ? "added" : (item[1] as "product" | "order");
+    return { name, id };
   }
 
   const collection = /^\/(over-ear|in-ear)(?:\/(models|compare))?$/.exec(path);
@@ -62,3 +66,13 @@ export function matchRoute(pathname: string): Route {
 
   return { name: "notFound" };
 }
+
+// Where to go after signing in, from ?return=. Only paths on this site count,
+// so a crafted link cannot send a visitor elsewhere.
+export function returnPath(search: string): string | null {
+  const target = new URLSearchParams(search).get("return");
+  return target && target.startsWith("/") && !target.startsWith("//") ? target : null;
+}
+
+export const withReturn = (path: string, target: string | null) =>
+  target ? `${path}?return=${encodeURIComponent(target)}` : path;

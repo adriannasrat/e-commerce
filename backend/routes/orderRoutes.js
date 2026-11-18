@@ -11,8 +11,12 @@ router.get('/', wrap(async (req, res) => {
   res.json(await orderService.getOrders(req.user.id));
 }));
 
+router.get('/:orderId', wrap(async (req, res) => {
+  res.json(await orderService.getOrder(req.user.id, Number(req.params.orderId)));
+}));
+
 router.post('/', wrap(async (req, res) => {
-  res.status(201).json(await orderService.placeOrder(req.user.id, req.body.cartId));
+  res.status(201).json(await orderService.placeOrder(req.user.id, req.body));
 }));
 
 module.exports = router;

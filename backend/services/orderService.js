@@ -2,6 +2,9 @@ const { HttpError } = require('../http');
 const { Cart, CartRow, Order, OrderLine, Product } = require('../models');
 const { inTransaction } = require('./transaction');
 
+// The server sets the price of delivery, never the request.
+const DELIVERY_ORE = { standard: 0, express: 14900 };
+
 const linesWithProducts = { model: OrderLine, as: 'lines', include: [Product] };
 
 const toOrder = (order) => {
@@ -13,11 +16,16 @@ const toOrder = (order) => {
       amount,
       unit_price_ore: unitPriceOre,
     }));
+  const subtotal = items.reduce((sum, item) => sum + item.amount * item.unit_price_ore, 0);
   return {
     id: order.id,
     status: order.status,
+    placed_at: order.createdAt,
     paid_at: order.paid_at,
-    total_ore: items.reduce((sum, item) => sum + item.amount * item.unit_price_ore, 0),
+    delivery: order.delivery,
+    delivery_ore: order.delivery_ore,
+    subtotal_ore: subtotal,
+    total_ore: subtotal + order.delivery_ore,
     items,
   };
 };
@@ -28,8 +36,9 @@ const findOrder = (where, transaction) => Order.findOne({ where, include: [lines
 // cart goes with them. A repeated request for the same cart then finds its
 // order, so it cannot buy twice. This demo takes no payment, so an order is
 // paid as soon as it is placed.
-async function placeOrder(userId, cartId) {
+async function placeOrder(userId, { cartId, delivery = 'standard' } = {}) {
   if (!Number.isInteger(cartId)) throw new HttpError(400, 'cartId must be a cart id');
+  if (!Object.hasOwn(DELIVERY_ORE, delivery)) throw new HttpError(400, 'delivery must be standard or express');
   return inTransaction(async (transaction) => {
     const cart = await Cart.findOne({
       where: { id: cartId, user_id: userId },
@@ -53,7 +62,7 @@ async function placeOrder(userId, cartId) {
       transaction,
     });
     const order = await Order.create(
-      { user_id: userId, cart_id: cart.id, status: 'paid', paid_at: new Date() },
+      { user_id: userId, cart_id: cart.id, status: 'paid', paid_at: new Date(), delivery, delivery_ore: DELIVERY_ORE[delivery] },
       { transaction },
     );
     for (const product of products) {
@@ -85,4 +94,10 @@ async function getOrders(userId) {
   return orders.map(toOrder);
 }
 
-module.exports = { getOrders, placeOrder };
+async function getOrder(userId, orderId) {
+  const order = Number.isInteger(orderId) && await findOrder({ id: orderId, user_id: userId });
+  if (!order) throw new HttpError(404, 'Order not found');
+  return toOrder(order);
+}
+
+module.exports = { getOrder, getOrders, placeOrder };

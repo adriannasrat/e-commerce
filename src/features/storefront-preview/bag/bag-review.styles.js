@@ -3,21 +3,11 @@ const divider = "1px solid #dcdcd7";
 const bagReviewStyles = {
   ".bag-page .bag-checkout-actions": {
     display: "grid",
-    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-    gap: 12,
-    maxWidth: 600,
+    maxWidth: 320,
     margin: "24px auto 0",
   },
   ".bag-summary .bag-checkout-actions": { maxWidth: "none" },
   ".bag-checkout-actions .bag-button": { margin: 0, borderRadius: 10 },
-  ".bag-checkout-actions .bag-button:last-of-type": {
-    background: "#e8e7e3",
-    color: "#1d1d1f",
-    borderColor: "#e8e7e3",
-  },
-  ".bag-checkout-actions .bag-button:last-of-type:hover": {
-    background: "#deddd8",
-  },
   ".bag-row-image": { gridRow: "span 2" },
   ".bag-item-services": {
     gridColumn: "2 / -1",
@@ -129,7 +119,6 @@ const bagReviewStyles = {
       gap: "28px 16px",
     },
     ".bag-suggestions svg": { height: 125 },
-    ".bag-page .bag-checkout-actions": { gridTemplateColumns: "1fr" },
   },
 };
 

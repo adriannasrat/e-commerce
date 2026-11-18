@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import VisibilityOutlined from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlined from "@mui/icons-material/VisibilityOffOutlined";
@@ -7,7 +7,7 @@ import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import HeadphonesOutlined from "@mui/icons-material/HeadphonesOutlined";
 import { useAuth } from "./AuthContext";
-import { paths } from "../routes";
+import { paths, returnPath } from "../routes";
 
 export default function AuthForm({ signingUp }) {
   const heading = useRef(null);
@@ -16,6 +16,7 @@ export default function AuthForm({ signingUp }) {
   const [busy, setBusy] = useState(false);
   const { user, signIn, signInToDemo, signOut, signUp } = useAuth();
   const navigate = useNavigate();
+  const next = returnPath(useLocation().search) ?? paths.home;
   useLayoutEffect(() => {
     heading.current?.focus({ preventScroll: true });
   }, []);
@@ -39,7 +40,7 @@ export default function AuthForm({ signingUp }) {
     setMessage("");
     try {
       await (signingUp ? signUp(credentials) : signIn(credentials));
-      navigate(paths.home);
+      navigate(next);
     } catch (error) {
       setMessage(error.message);
       form.elements.password.value = "";
@@ -52,7 +53,7 @@ export default function AuthForm({ signingUp }) {
     setMessage("");
     try {
       await signInToDemo();
-      navigate(paths.home);
+      navigate(next);
     } catch (error) {
       setMessage(error.message);
       setBusy(false);
