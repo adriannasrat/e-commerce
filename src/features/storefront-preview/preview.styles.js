@@ -221,17 +221,19 @@ const styles = [
       filter: "drop-shadow(0 30px 60px rgba(255, 255, 255, 0.08))",
     },
   },
-  // Promo tile grid
+  // Promo tile grid: rounded white and graphite cards on light grey, the same
+  // look as the listening journal's mood cards.
   {
     ".product-showcase": {
-      padding: "12px",
+      padding: "20px",
+      background: "var(--rx-gray)",
     },
   },
   {
     ".product-showcase-grid": {
       display: "grid",
       gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-      gap: "12px",
+      gap: "20px",
     },
   },
   {
@@ -243,11 +245,12 @@ const styles = [
       minHeight: "clamp(560px, 46vw, 680px)",
       overflow: "hidden",
       paddingTop: "52px",
-      background: "var(--rx-gray)",
+      borderRadius: "28px",
+      background: "#fff",
       textAlign: "center",
     },
   },
-  { ".product-showcase-dark": { background: "#000" } },
+  { ".product-showcase-dark": { background: "#242523" } },
   {
     ".product-showcase-category": {
       margin: "0 0 2px",
@@ -529,7 +532,9 @@ const styles = [
   {
     "@media (max-width: 833px)": [
       { ".product-showcase-grid": { gridTemplateColumns: "1fr" } },
-      { ".product-showcase-tile": { minHeight: "500px", paddingTop: "44px" } },
+      { ".product-showcase": { padding: "16px" } },
+      { ".product-showcase-grid": { gap: "16px" } },
+      { ".product-showcase-tile": { minHeight: "500px", paddingTop: "44px", borderRadius: "24px" } },
       { ".shop-journal": { gridTemplateColumns: "1fr", textAlign: "center" } },
       { ".shop-journal p": { marginInline: "auto" } },
       { ".rx-highlights-viewport": { "--slide": "calc(100vw - 44px)" } },

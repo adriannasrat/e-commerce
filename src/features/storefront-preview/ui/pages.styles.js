@@ -28,6 +28,8 @@ const pageStyles = [
   { ".bag-row-price strong": { fontWeight: "600", fontVariantNumeric: "tabular-nums" } },
   { ".bag-quantity select": { borderRadius: "12px", borderColor: "#d2d2d7", fontSize: "17px" } },
   { ".bag-checkout-actions .bag-button": { borderRadius: "12px", minHeight: "50px" } },
+  { ".page-error-actions": { display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "20px", marginTop: "24px" } },
+  { ".page-error-actions a": { color: "var(--rx-link)" } },
   { ".bag-discovery > h2, .bag-collection-banner h2": { ...display } },
   { ".bag-suggestions h3": { fontWeight: "600" } },
   { ".bag-suggestions a": { color: "var(--rx-ink) !important" } },

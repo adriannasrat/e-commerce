@@ -94,6 +94,7 @@ test("signing out returns to the sign-in form and empties the shown bag", async 
   window.history.replaceState({}, "", "/sign-in");
   render(<StorefrontPreview />);
   expect(await screen.findByText("Signed in as demo@example.com")).toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "Sign up" })).toBeNull();
   expect(
     await screen.findByRole("button", { name: "Shopping bag, 2 items" }),
   ).toBeInTheDocument();

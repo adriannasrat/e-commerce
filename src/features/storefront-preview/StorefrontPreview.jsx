@@ -18,6 +18,7 @@ import theme from "./theme";
 import ListeningStories from "./ListeningStories";
 import ProductDetail from "./ProductDetail";
 import ProductShowcase from "./ProductShowcase";
+import PageErrorBoundary from "./PageErrorBoundary";
 import CheckoutPage from "./checkout/CheckoutPage";
 import OrderPage from "./checkout/OrderPage";
 import { products } from "./products";
@@ -182,6 +183,7 @@ function Storefront() {
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
           <main id="preview-main" tabIndex={-1} ref={main}>
+            <PageErrorBoundary resetKey={pathname}>
             {bag.error && (
               <p className="bag-error" role="alert">
                 {bag.error}
@@ -237,6 +239,7 @@ function Storefront() {
               <Highlights />
               <JournalFeature />
             </div>
+            </PageErrorBoundary>
           </main>
           <StorefrontFooter currentPage={pageName} />
         </div>
