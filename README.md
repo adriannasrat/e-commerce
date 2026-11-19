@@ -3,8 +3,8 @@
 [![CI](https://github.com/adriannasrat/e-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/adriannasrat/e-commerce/actions/workflows/ci.yml)
 
 A headphone storefront built as a portfolio project with React, Express and
-MariaDB. Accounts, the cart and checkout are real, but payments are a demo and
-no money is ever taken.
+MariaDB. Accounts, the cart and checkout are real, and payments run through
+Stripe in test mode, so no real money is ever taken.
 
 ## Features
 
@@ -46,6 +46,10 @@ carry most of the weight:
 - **Placing an order runs in a single transaction.** Stock rows are locked in a
   fixed order to avoid deadlocks, and a repeated request for the same cart
   returns the same order.
+- **Only Stripe's signed webhook marks an order paid.** The order reserves its
+  stock, then Stripe Checkout takes the payment outside any database
+  transaction. A payment page that expires cancels the order and returns its
+  stock, and repeated or late events change nothing.
 
 ## Run it locally
 
@@ -111,6 +115,14 @@ Visitors can sign in to a demo account of their own without a password. Every
 night at 03:00 UTC, Vercel Cron calls `/api/v1/demo/reset`, which removes every
 account with its bags, orders and ratings and refills the stock. The call needs
 `CRON_SECRET` set in the Vercel project, and the reset refuses all calls without it.
+
+Payments need `STRIPE_SECRET_KEY`, a test-mode key, and `STRIPE_WEBHOOK_SECRET`
+from a Stripe webhook that sends the `checkout.session.completed`,
+`checkout.session.expired`, `checkout.session.async_payment_succeeded` and
+`checkout.session.async_payment_failed` events to `/api/v1/payments/webhook`.
+The API refuses to start with a live key. Locally, run
+`stripe listen --forward-to localhost:5001/api/v1/payments/webhook` and use the
+secret it prints.
 
 ## Tests
 
