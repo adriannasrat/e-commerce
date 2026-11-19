@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import HeadphoneImage from "../HeadphoneImage";
 import { productHref } from "../usePreviewRoute";
 import { formatPrice } from "../products";
-import { MAX_QUANTITY } from "./bagState";
+import { quantityLimit } from "./bagState";
 
 import BagDiscovery from "./BagDiscovery";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
@@ -81,7 +81,7 @@ export default function BagPage({ bag }) {
                 bag.setQuantity(product.id, Number(event.target.value))
               }
             >
-              {Array.from({ length: MAX_QUANTITY }, (_, index) => (
+              {Array.from({ length: quantityLimit(product, quantity) }, (_, index) => (
                 <option key={index + 1} value={index + 1}>
                   {index + 1}
                 </option>

@@ -1,4 +1,4 @@
-import { bagReducer, normaliseBag } from "./bagState";
+import { MAX_QUANTITY, bagReducer, normaliseBag, quantityLimit } from "./bagState";
 
 test("merges repeated additions and keeps finishes separate", () => {
   let rows = bagReducer([], { type: "add", id: "black" });
@@ -30,4 +30,10 @@ test("validates saved data and rejects invalid quantities", () => {
       rows,
     ),
   );
+});
+
+test("offers no more than the stock, but keeps the amount already chosen", () => {
+  expect(quantityLimit({ stock: 3 }, 1)).toBe(3);
+  expect(quantityLimit({ stock: 3 }, 5)).toBe(5);
+  expect(quantityLimit({ stock: 500 }, 1)).toBe(MAX_QUANTITY);
 });

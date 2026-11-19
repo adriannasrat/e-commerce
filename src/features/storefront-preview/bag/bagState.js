@@ -2,6 +2,11 @@ import { products } from "../products";
 
 export const BAG_STORAGE_KEY = "resonance.preview.bag.v1";
 export const MAX_QUANTITY = 99;
+
+// The quantities a bag row can offer: no more than the shop has in stock, but
+// never fewer than the row already holds, so its current amount stays shown.
+export const quantityLimit = (product, quantity) =>
+  Math.min(MAX_QUANTITY, Math.max(product.stock ?? MAX_QUANTITY, quantity));
 export function normaliseBag(value) {
   if (!Array.isArray(value)) return [];
   const quantities = new Map();
