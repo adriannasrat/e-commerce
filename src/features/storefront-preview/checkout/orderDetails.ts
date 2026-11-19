@@ -10,6 +10,8 @@ export interface Order {
   delivery_ore: number;
   subtotal_ore: number;
   total_ore: number;
+  // Present when the order was just placed and awaits payment.
+  checkout_url?: string | null;
   items: { product_id: number; title: string; amount: number; unit_price_ore: number }[];
 }
 

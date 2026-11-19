@@ -10,6 +10,7 @@ import { formatPrice } from "../products";
 import { paths } from "../routes";
 import { checkoutStyles } from "./checkout.styles";
 import { type DeliveryId, type Order, deliveries, deliveryPrice } from "./orderDetails";
+import { TEST_CARD, goToPayment } from "./payment";
 
 interface Product {
   id: string;
@@ -183,7 +184,8 @@ function CheckoutForm({ bag, placing, setPlacing }: { bag: Bag; placing: boolean
     setError("");
     try {
       const order = await bag.checkout(delivery);
-      navigate(paths.order(order.id));
+      if (order.checkout_url) goToPayment(order.checkout_url);
+      else navigate(paths.order(order.id));
     } catch (failure) {
       setError((failure as Error).message);
       setPlacing(false);
@@ -217,16 +219,25 @@ function CheckoutForm({ bag, placing, setPlacing }: { bag: Bag; placing: boolean
           </section>
           <section aria-labelledby="checkout-payment">
             <h2 id="checkout-payment"><span>2</span>How would you like to pay?</h2>
-            <Option name="payment" value="demo" checked title="Demo payment" detail="Nothing is charged. No card details are needed." />
-            <Option name="payment" value="card" checked={false} disabled title="Card in test mode" detail="Coming with Stripe. Uses a test card, never a real one." />
+            <Option
+              name="payment"
+              value="card"
+              checked
+              title="Card, with Stripe"
+              detail="You pay on Stripe's secure page. Card details never reach this site."
+            />
+            <p className="cp-test-card">
+              Stripe runs in test mode, so no real card is charged. Pay with the test card{" "}
+              <strong>{TEST_CARD}</strong>, any future expiry date and any CVC.
+            </p>
           </section>
         </div>
         <Summary bag={bag} deliveryOre={deliveries[delivery].priceOre}>
           <button type="button" className="cp-primary cp-wide" disabled={placing} onClick={place}>
-            Place order
+            Continue to payment
           </button>
           {error && <p role="alert">{error}</p>}
-          <p className="cp-note"><LockOutlined /> This is a demo. No payment is taken.</p>
+          <p className="cp-note"><LockOutlined /> Secure payment with Stripe in test mode.</p>
         </Summary>
       </div>
     </div>

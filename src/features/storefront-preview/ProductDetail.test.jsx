@@ -88,12 +88,12 @@ test("purchase controls add the selected model and save it across visits", () =>
   ).toHaveAttribute("aria-pressed", "false");
 });
 
-test("delivery and payment actions explain the demo without starting checkout", () => {
+test("delivery and payment actions explain the demo and test-mode payment", () => {
   render(<ProductDetail product={products[0]} />);
   fireEvent.click(screen.getByRole("button", { name: "Express checkout" }));
   expect(
     screen.getByRole("dialog", { name: /Express checkout/ }),
-  ).toHaveTextContent("No payment details are collected");
+  ).toHaveTextContent("no real card is charged");
 });
 
 test("recommendation navigation exposes other products", () => {

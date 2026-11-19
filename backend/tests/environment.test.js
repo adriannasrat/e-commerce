@@ -79,3 +79,12 @@ test('CRON_SECRET is optional but never empty', () => {
   assert.equal(readEnvironment({ CRON_SECRET: 'nightly' }).cronSecret, 'nightly');
   assert.deepEqual(problemsFor({ CRON_SECRET: ' ' }), ['CRON_SECRET must not be empty']);
 });
+
+test('only Stripe test-mode keys are accepted, and the key is never echoed', () => {
+  assert.equal(readEnvironment({ STRIPE_SECRET_KEY: 'sk_test_abc' }).stripe.secretKey, 'sk_test_abc');
+  assert.equal(readEnvironment({ STRIPE_SECRET_KEY: 'rk_test_abc' }).stripe.secretKey, 'rk_test_abc');
+  for (const live of ['sk_live_secret', 'rk_live_secret', 'pk_test_wrong_kind']) {
+    assert.deepEqual(problemsFor({ STRIPE_SECRET_KEY: live }), ['STRIPE_SECRET_KEY must be a test-mode key']);
+  }
+  assert.deepEqual(readEnvironment({}).stripe, { secretKey: undefined, webhookSecret: undefined });
+});

@@ -30,6 +30,8 @@ File paths are resolved relative to the module, not the working directory.
 | LOG_LEVEL | info | `fatal`, `error`, `warn`, `info`, `debug`, `trace` or `silent` |
 | DB_SSL | false | `true` connects with verified TLS, as hosted databases require |
 | CRON_SECRET | unset | Bearer token for the nightly demo reset, which refuses all calls when unset |
+| STRIPE_SECRET_KEY | unset | Stripe test-mode secret key; a live key stops startup, and checkout refuses orders when unset |
+| STRIPE_WEBHOOK_SECRET | unset | Signing secret of the Stripe webhook; events are refused when unset |
 
 Startup checks the configuration and reports every problem at once, by variable
 name and never by value. Ports must be integers between 1 and 65535, `NODE_ENV`
@@ -64,8 +66,11 @@ optional gallery views and an optional film, with paths relative to the
 storefront's media base. The database allows one main image per product.
 Products without a `category`, such as the original flowers, stay in the database
 but are not sold. `POST /api/v1/orders` turns the signed-in user's cart into an
-order and removes the cart. Orders are `pending`, `paid` or `cancelled`, and the
-database requires a payment time on every paid order. This demo takes no payment,
-so an order is `paid` as soon as it is placed. Each order records its delivery, `standard` or `express`,
+order, reserves its stock and removes the cart, then opens a Stripe Checkout
+session and returns its `checkout_url`. Orders are `pending`, `paid` or
+`cancelled`, and the database requires a payment time on every paid order.
+Only `POST /api/v1/payments/webhook`, with Stripe's signature, marks an order
+`paid`; an expired session cancels it and returns its stock. An unpaid order's
+payment page is reopened with `POST /api/v1/orders/:id/payment`. Each order records its delivery, `standard` or `express`,
 with the price the server set for it, and `GET /api/v1/orders/:id` returns one
 of the signed-in user's orders.
