@@ -176,8 +176,8 @@ function OrderDetails({
         )}
       </div>
       <p className="cp-note">
-        Paid with Stripe in test mode, no real card is charged and nothing is
-        shipped.
+        Payments run through Stripe in test mode. No real card is charged and
+        nothing is shipped.
       </p>
     </div>
   );
