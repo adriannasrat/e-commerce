@@ -20,7 +20,7 @@ const questions = [
   ],
   [
     "Which payments do you accept?",
-    "Checkout places a real demo order with a demo payment. No card details are collected and nothing is charged.",
+    "Cards, through Stripe in test mode. Pay with the test card 4242 4242 4242 4242: no real card is charged.",
   ],
 ];
 

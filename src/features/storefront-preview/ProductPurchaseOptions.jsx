@@ -23,7 +23,7 @@ const messages = {
   ],
   checkout: [
     "Express checkout",
-    "You can explore the demo bag, but payments and checkout are not enabled. No payment details are collected.",
+    "Checkout takes payment through Stripe in test mode, so no real card is charged. Add this model to your bag and check out to try it.",
   ],
   help: [
     "Here to help",

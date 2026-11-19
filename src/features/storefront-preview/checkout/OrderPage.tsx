@@ -1,4 +1,5 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
@@ -9,6 +10,7 @@ import { useAuth } from "../auth/AuthContext";
 import { formatPrice, products } from "../products";
 import { paths } from "../routes";
 import { checkoutStyles } from "./checkout.styles";
+import { goToPayment } from "./payment";
 import {
   type Order,
   arrival,
@@ -31,16 +33,82 @@ const statusLabel = {
   cancelled: "Cancelled",
 };
 
-function OrderDetails({ order }: { order: Order }) {
+// What the page says at each step. A visitor back from Stripe waits a moment
+// for its confirmation, which arrives separately through the webhook.
+function headline(order: Order, returnedFromStripe: boolean) {
+  if (order.status === "paid") return ["Your order is placed.", ""];
+  if (order.status === "cancelled") {
+    return [
+      "This order was cancelled.",
+      "The payment was not completed in time, so nothing was charged and the items went back on sale.",
+    ];
+  }
+  return returnedFromStripe
+    ? [
+        "Confirming your payment.",
+        "This takes a few seconds. The page updates by itself.",
+      ]
+    : [
+        "Complete your payment.",
+        "Your items are reserved for 30 minutes while you pay.",
+      ];
+}
+
+function ResumePayment({ orderId }: { orderId: number }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  async function resume() {
+    setBusy(true);
+    setError("");
+    try {
+      const { checkout_url: url } = await api<{ checkout_url: string }>(
+        "POST",
+        `/orders/${orderId}/payment`,
+      );
+      goToPayment(url);
+    } catch (failure) {
+      setError((failure as Error).message);
+      setBusy(false);
+    }
+  }
+  return (
+    <>
+      <button
+        type="button"
+        className="cp-primary"
+        disabled={busy}
+        onClick={resume}
+      >
+        Continue to payment
+      </button>
+      {error && <p role="alert">{error}</p>}
+    </>
+  );
+}
+
+function OrderDetails({
+  order,
+  returnedFromStripe,
+}: {
+  order: Order;
+  returnedFromStripe: boolean;
+}) {
   const placedAt = new Date(order.placed_at);
   const delivery = deliveries[order.delivery];
+  const [title, detail] = headline(order, returnedFromStripe);
   return (
     <div className="cp-placed">
       <h1 id="order-title" tabIndex={-1}>
-        Your order is placed.
+        {title}
       </h1>
-      <p className="cp-placed-lead">
+      <p className="cp-placed-lead" aria-live="polite">
         Order <strong>{orderNumber(order.id)}</strong> · {formatDate(placedAt)}
+        {detail && (
+          <>
+            <br />
+            {detail}
+          </>
+        )}
       </p>
       {order.status !== "cancelled" && (
         <ol className="cp-progress" aria-label="Order progress">
@@ -99,12 +167,17 @@ function OrderDetails({ order }: { order: Order }) {
         </dl>
       </div>
       <div className="cp-placed-actions">
-        <a className="cp-primary" href={paths.store}>
-          Continue shopping
-        </a>
+        {order.status === "pending" && !returnedFromStripe ? (
+          <ResumePayment orderId={order.id} />
+        ) : (
+          <a className="cp-primary" href={paths.store}>
+            Continue shopping
+          </a>
+        )}
       </div>
       <p className="cp-note">
-        This is a demo. Nothing is charged and nothing is shipped.
+        Paid with Stripe in test mode, no real card is charged and nothing is
+        shipped.
       </p>
     </div>
   );
@@ -141,7 +214,12 @@ export default function OrderPage({ id }: { id: string }) {
     queryFn: () => api<Order>("GET", `/orders/${encodeURIComponent(id)}`),
     enabled: Boolean(user),
     retry: false,
+    // Until Stripe confirms or the hold expires, the order is checked again.
+    refetchInterval: (query) =>
+      query.state.data?.status === "pending" ? 2000 : false,
   });
+  const returnedFromStripe =
+    new URLSearchParams(useLocation().search).get("payment") === "done";
   const root = useRef<HTMLElement>(null);
   const shown = user === null || order.isSuccess || order.isError;
   useLayoutEffect(() => {
@@ -164,7 +242,10 @@ export default function OrderPage({ id }: { id: string }) {
           action="Sign in"
         />
       ) : order.isSuccess ? (
-        <OrderDetails order={order.data} />
+        <OrderDetails
+          order={order.data}
+          returnedFromStripe={returnedFromStripe}
+        />
       ) : order.isError ? (
         <Message
           title="Order not found."
