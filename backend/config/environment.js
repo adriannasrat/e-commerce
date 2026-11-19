@@ -65,6 +65,11 @@ function readEnvironment(env = process.env) {
     secureCookies: nodeEnv === 'production',
     // Authorizes the nightly demo reset. Unset, the reset refuses every call.
     cronSecret: text('CRON_SECRET', undefined),
+    // Unset, checkout and the payment webhook answer that payments are not set up.
+    stripe: {
+      secretKey: text('STRIPE_SECRET_KEY', undefined),
+      webhookSecret: text('STRIPE_WEBHOOK_SECRET', undefined),
+    },
     database: {
       database: text('DB_NAME', 'shop_db'),
       username: text('DB_USER', 'root'),
@@ -81,6 +86,12 @@ function readEnvironment(env = process.env) {
   // Hosted databases require TLS. The certificate is verified against the
   // system's trusted authorities.
   if (flag('DB_SSL')) config.database.dialectOptions.ssl = { rejectUnauthorized: true };
+
+  // The demo never takes real money, so only Stripe test-mode keys are accepted.
+  const stripeKey = env.STRIPE_SECRET_KEY;
+  if (stripeKey && !/^(sk|rk)_test_/.test(stripeKey)) {
+    problems.push('STRIPE_SECRET_KEY must be a test-mode key');
+  }
 
   // Local defaults suit development only. A deployed API names its database.
   if (nodeEnv === 'production') {
