@@ -9,6 +9,8 @@ const demoRoutes = require('./routes/demoRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const productRoutes = require('./routes/productRoutes');
+const { handlePaymentWebhook } = require('./routes/paymentWebhook');
+const { wrap } = require('./http');
 
 // Every API route lives under one versioned prefix, so a later version can
 // run beside this one and the storefront's own page paths never collide.
@@ -57,6 +59,13 @@ function createApp({ logger = defaultLogger } = {}) {
   // referrer leaks and no X-Powered-By. The API only returns JSON, so the
   // default content security policy can stay strict.
   app.use(helmet());
+  // Stripe signs the exact bytes it sends, so this route reads the raw body
+  // and is mounted before the JSON parser.
+  app.post(
+    `${API_PREFIX}/payments/webhook`,
+    express.raw({ type: 'application/json' }),
+    wrap(handlePaymentWebhook),
+  );
   app.use(express.json());
 
   // Liveness for the host, outside the versioned API.

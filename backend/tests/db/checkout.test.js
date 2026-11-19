@@ -29,7 +29,7 @@ test("checkout", async (t) => {
     (await Product.findByPk(product.id)).stock_quantity;
 
   await t.test(
-    "freezes the price, reduces stock and keeps the purchase as history",
+    "reserves stock, freezes the price and opens a payment page",
     async () => {
       const api = await shopper();
       const product = await stocked(5, 179000);
@@ -37,7 +37,8 @@ test("checkout", async (t) => {
 
       const { status, body: order } = await api("POST", "/orders", { cartId });
       assert.equal(status, 201);
-      assert.equal(order.status, "paid");
+      assert.equal(order.status, "pending");
+      assert.equal(order.checkout_url, `https://checkout.stripe.test/${order.id}`);
       assert.equal(order.total_ore, 358000);
       assert.equal(await stockOf(product), 3);
       assert.deepEqual((await api("GET", "/cart")).body.items, []);
@@ -150,7 +151,8 @@ test("checkout", async (t) => {
     assert.equal(order.delivery_ore, 14900);
     assert.equal(order.subtotal_ore, 100000);
     assert.equal(order.total_ore, 114900);
-    assert.deepEqual((await api("GET", `/orders/${order.id}`)).body, order);
+    const { checkout_url: _, ...stored } = order;
+    assert.deepEqual((await api("GET", `/orders/${order.id}`)).body, stored);
     assert.equal((await other("GET", `/orders/${order.id}`)).status, 404);
     assert.equal((await api("GET", "/orders/nope")).status, 404);
   });

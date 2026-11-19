@@ -36,6 +36,7 @@ const Order = sequelize.define("Order", {
     allowNull: false,
     defaultValue: 0,
   },
+  stripe_session_id: DataTypes.STRING(255),
 });
 
 module.exports = Order;
