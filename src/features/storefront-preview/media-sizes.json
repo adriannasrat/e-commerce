@@ -1,0 +1,104 @@
+{
+  "products/atlas.webp": [
+    640,
+    1280,
+    1920,
+    2400
+  ],
+  "products/drift.webp": [
+    640,
+    1108
+  ],
+  "products/grove.webp": [
+    640,
+    1280,
+    1366
+  ],
+  "products/halo.webp": [
+    640,
+    1280,
+    1600
+  ],
+  "products/pearl.webp": [
+    640,
+    1104
+  ],
+  "products/pebble.webp": [
+    640,
+    1280,
+    1366
+  ],
+  "products/prism.webp": [
+    640,
+    690
+  ],
+  "products/tide.webp": [
+    640,
+    1131
+  ],
+  "photos/atlas-cup.webp": [
+    640,
+    1280,
+    1920,
+    2528
+  ],
+  "photos/atlas-cushion.webp": [
+    640,
+    1280,
+    1920,
+    2816
+  ],
+  "photos/atlas-mesh.webp": [
+    640,
+    1280,
+    1920,
+    2528
+  ],
+  "photos/collection-pair.webp": [
+    640,
+    1280,
+    1920,
+    2752
+  ],
+  "photos/halo-after-hours.jpg": [
+    640,
+    1280,
+    1333
+  ],
+  "photos/halo-resting.jpg": [
+    640,
+    1280,
+    1920,
+    2000
+  ],
+  "photos/halo-stand-close.jpg": [
+    640,
+    1280,
+    1335
+  ],
+  "photos/halo-stand.jpg": [
+    640,
+    1280,
+    1335
+  ],
+  "photos/prism-bud-angle.webp": [
+    640,
+    1280,
+    1568
+  ],
+  "photos/prism-bud.webp": [
+    640,
+    1280,
+    1568
+  ],
+  "photos/prism-case.webp": [
+    640,
+    1280,
+    1568
+  ],
+  "photos/prism-set.webp": [
+    640,
+    1280,
+    1568
+  ]
+}
