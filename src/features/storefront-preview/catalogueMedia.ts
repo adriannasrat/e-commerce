@@ -1,4 +1,4 @@
-import { mediaSrcSet, mediaUrl } from "./media";
+import { type MediaSource, mediaSources, mediaSrcSet, mediaUrl } from "./media";
 
 // One row of a product's media, as the API returns it.
 export type ApiMedia = {
@@ -22,6 +22,8 @@ export type Cutout = {
   category: string;
   label: string;
   src: string;
+  // Smaller copies, for screens that do not need the full file.
+  sources: MediaSource[];
   finish: "graphite" | "chalk";
   width: number;
   height: number;
@@ -33,6 +35,7 @@ const cutout = (id: string, category: string, item: ApiMedia): Cutout => ({
   category,
   label: item.alt,
   src: mediaUrl(item.path),
+  sources: mediaSources(item.path),
   finish: item.tone === "dark" ? "graphite" : "chalk",
   width: item.width ?? 0,
   height: item.height ?? 0,

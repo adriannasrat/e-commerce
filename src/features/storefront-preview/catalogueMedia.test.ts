@@ -9,7 +9,7 @@ const row = (overrides: Partial<ApiMedia>): ApiMedia => ({
 test("the main cut-out becomes the product image, served from the media folder", () => {
   const { image } = productMedia("x", "in-ear", [row({})]);
   expect(image).toEqual({
-    id: "x", category: "in-ear", label: "X", src: "/media/products/x.webp",
+    id: "x", category: "in-ear", label: "X", src: "/media/products/x.webp", sources: [],
     finish: "graphite", width: 100, height: 80, bounds: [10, 5, 90, 75],
   });
   expect(productMedia("x", "in-ear", [row({ tone: "light" })]).image?.finish).toBe("chalk");
