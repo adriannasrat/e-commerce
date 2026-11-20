@@ -22,6 +22,8 @@ export default function RangeSet() {
       <img
         className="store-set-image"
         data-reveal="zoom"
+        srcSet={photo.srcSet}
+        sizes="auto, 100vw"
         src={photo.src}
         alt={photo.alt}
         width={2752}

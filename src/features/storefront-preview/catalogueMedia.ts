@@ -1,4 +1,4 @@
-import { mediaUrl } from "./media";
+import { mediaSrcSet, mediaUrl } from "./media";
 
 // One row of a product's media, as the API returns it.
 export type ApiMedia = {
@@ -53,7 +53,7 @@ export function productMedia(slug: string, category: string, media: ApiMedia[] =
         label: item.label ?? item.alt,
         ...(item.kind === "cutout"
           ? { cutout: cutout(`${slug}-${item.position}`, category, item) }
-          : { photo: { src: mediaUrl(item.path), alt: item.alt, focus: item.focus ?? "50% 50%" } }),
+          : { photo: { src: mediaUrl(item.path), srcSet: mediaSrcSet(item.path), alt: item.alt, focus: item.focus ?? "50% 50%" } }),
       })),
     film: film
       ? {
