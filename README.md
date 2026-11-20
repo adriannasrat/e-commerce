@@ -97,6 +97,13 @@ listed in `lifestyleImages.js` and `ui/films.js`. Every path goes through
 `mediaUrl`, so setting `VITE_MEDIA_BASE_URL` at build time serves the media from
 another host. `scripts/whiten-films.sh` rebuilds the films from local originals.
 
+Each cut-out and photo also exists in smaller widths, such as
+`atlas-640w.webp`, so a phone never downloads the file a large screen needs.
+Photos list them in `srcset`; cut-outs are drawn in SVG, which has no `srcset`,
+so they measure the size they are drawn at and pick a copy themselves. After
+adding or replacing an image, run `node scripts/resize-media.js`, which writes
+the copies and the list of widths in `media-sizes.json`.
+
 ## Deployment
 
 The storefront and the API deploy together to Vercel. The built storefront and

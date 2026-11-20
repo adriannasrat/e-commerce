@@ -15,6 +15,10 @@ export default function Photo({ photo, className = "", decorative = false, eager
     <img
       ref={image}
       className={`rx-photo rx-photo-fill ${className}`}
+      // A lazy photo is measured before it loads, so the browser picks the
+      // copy for its real size; an eager one assumes the full screen width.
+      srcSet={photo.srcSet}
+      sizes={photo.srcSet && "auto, 100vw"}
       src={photo.src}
       alt={decorative ? "" : photo.alt}
       loading={eager ? "eager" : "lazy"}
