@@ -40,7 +40,7 @@ const styles = [
       padding: "clamp(24px, 4vw, 64px)",
       overflow: "hidden",
       border: "0",
-      borderRadius: "18px",
+      borderRadius: "var(--rx-radius-card)",
       background: "var(--rx-gray)",
       color: "var(--rx-ink)",
       cursor: "zoom-in",
@@ -183,7 +183,7 @@ const styles = [
   { ".product-detail-finishes small": { display: "block", marginTop: "14px", fontSize: "12px", color: "var(--rx-muted)" } },
   // Purchase
   { ".product-purchase": { marginTop: "28px" } },
-  { ".product-fulfilment": { display: "grid", gap: "16px", padding: "20px", border: line, borderRadius: "18px" } },
+  { ".product-fulfilment": { display: "grid", gap: "16px", padding: "20px", border: line, borderRadius: "var(--rx-radius-card)" } },
   { ".product-fulfilment > div": { display: "flex", gap: "12px", alignItems: "flex-start" } },
   { ".product-fulfilment > div > svg,\n.product-help > svg": { width: "22px", color: "var(--rx-ink)" } },
   { ".product-fulfilment strong": { display: "block", fontSize: "14px", fontWeight: "600" } },
@@ -313,7 +313,7 @@ const styles = [
       flexDirection: "column",
       alignItems: "center",
       padding: "24px 20px 28px",
-      borderRadius: "18px",
+      borderRadius: "var(--rx-radius-card)",
       background: "var(--rx-gray)",
       color: "var(--rx-ink) !important",
       textAlign: "center",
@@ -379,7 +379,7 @@ const styles = [
     ".product-detail-zoom.MuiDialog-paper": {
       position: "relative",
       padding: "56px 32px 32px",
-      borderRadius: "28px",
+      borderRadius: "var(--rx-radius-panel)",
       background: "var(--rx-gray)",
     },
   },
@@ -397,7 +397,7 @@ const styles = [
   { ".product-detail-zoom h2": { position: "absolute", width: "1px", height: "1px", overflow: "hidden", clipPath: "inset(50%)" } },
   { ".product-detail-zoom-stage": { width: "100%", height: "min(70vh, 640px)" } },
   { ".product-detail-zoom-stage > svg": { width: "100%", height: "100%" } },
-  { '.product-detail-zoom-stage[data-kind="photo"]': { overflow: "hidden", borderRadius: "18px" } },
+  { '.product-detail-zoom-stage[data-kind="photo"]': { overflow: "hidden", borderRadius: "var(--rx-radius-card)" } },
   {
     "@media (max-width: 833px)": [
       { ".product-detail-layout": { gridTemplateColumns: "1fr", gridTemplateAreas: '"gallery" "summary"' } },

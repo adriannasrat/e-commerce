@@ -111,7 +111,7 @@ const styles = [
       "display": "flex",
       "flexDirection": "column",
       "background": "#fff",
-      "borderRadius": "22px",
+      "borderRadius": "var(--rx-radius-card)",
       "padding": "28px",
       "minWidth": "0"
     }

@@ -8,12 +8,14 @@ import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import HeadphonesOutlined from "@mui/icons-material/HeadphonesOutlined";
 import { useAuth } from "./AuthContext";
 import { paths, returnPath } from "../routes";
+import { Spinner } from "../ui/Loading";
 
 export default function AuthForm({ signingUp }) {
   const heading = useRef(null);
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
-  const [busy, setBusy] = useState(false);
+  // Which button is working: "form", "demo" or none.
+  const [busy, setBusy] = useState("");
   const { user, signIn, signInToDemo, signOut, signUp } = useAuth();
   const navigate = useNavigate();
   const next = returnPath(useLocation().search) ?? paths.home;
@@ -36,7 +38,7 @@ export default function AuthForm({ signingUp }) {
       email: form.elements.email.value,
       password: form.elements.password.value,
     };
-    setBusy(true);
+    setBusy("form");
     setMessage("");
     try {
       await (signingUp ? signUp(credentials) : signIn(credentials));
@@ -44,19 +46,19 @@ export default function AuthForm({ signingUp }) {
     } catch (error) {
       setMessage(error.message);
       form.elements.password.value = "";
-      setBusy(false);
+      setBusy("");
     }
   }
 
   async function tryDemo() {
-    setBusy(true);
+    setBusy("demo");
     setMessage("");
     try {
       await signInToDemo();
       navigate(next);
     } catch (error) {
       setMessage(error.message);
-      setBusy(false);
+      setBusy("");
     }
   }
 
@@ -158,8 +160,8 @@ export default function AuthForm({ signingUp }) {
             Forgot password?
           </button>
         )}
-        <button type="submit" className="sign-in-submit" disabled={busy}>
-          {signingUp ? <PersonAddAltOutlined /> : <LoginOutlined />}
+        <button type="submit" className="sign-in-submit" disabled={Boolean(busy)} aria-busy={busy === "form"}>
+          {busy === "form" ? <Spinner /> : signingUp ? <PersonAddAltOutlined /> : <LoginOutlined />}
           {signingUp ? "Create account" : "Sign in"}
         </button>
       </form>
@@ -167,9 +169,10 @@ export default function AuthForm({ signingUp }) {
         type="button"
         className="sign-in-demo-button"
         onClick={tryDemo}
-        disabled={busy}
+        disabled={Boolean(busy)}
+        aria-busy={busy === "demo"}
       >
-        <HeadphonesOutlined />
+        {busy === "demo" ? <Spinner /> : <HeadphonesOutlined />}
         Try the demo
       </button>
       <p className="sign-in-demo">

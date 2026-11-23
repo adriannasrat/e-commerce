@@ -32,7 +32,7 @@ const shoppingStyles = {
   '.shop-guide > div:first-of-type': { marginBottom: 28 },
   '.shop-guide small': { display: 'block', fontSize: 17, fontWeight: 600, color: 'var(--rx-muted)', marginBottom: 6 },
   '.shop-guide h2': { margin: 0, fontSize: 'clamp(32px, 4.2vw, 48px)', lineHeight: 1.08, fontWeight: 600 },
-  '.shop-guide > div:last-of-type': { padding: '8px clamp(20px, 4vw, 48px)', borderRadius: 28, background: 'var(--rx-gray)' },
+  '.shop-guide > div:last-of-type': { padding: '8px clamp(20px, 4vw, 48px)', borderRadius: 'var(--rx-radius-panel)', background: 'var(--rx-gray)' },
   '.shop-guide .disclosure + .disclosure': { borderTop: line },
   '.shop-guide h3': { margin: 0 },
   '.shop-guide button': { width: '100%', minHeight: 84, justifyContent: 'space-between', textAlign: 'left', fontSize: 21, fontWeight: 600, letterSpacing: '0.011em' },

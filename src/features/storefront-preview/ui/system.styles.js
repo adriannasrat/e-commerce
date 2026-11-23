@@ -21,10 +21,15 @@ const systemStyles = [
       "--rx-new": "#b8461b",
       "--rx-content": "1120px",
       "--rx-gutter": "max(22px, calc((100vw - var(--rx-content)) / 2))",
+      // Two corner radii for the whole storefront: cards, and the large
+      // panels and photos that fill a section. Panels round less on phones.
+      "--rx-radius-card": "18px",
+      "--rx-radius-panel": "28px",
       "--rx-card-shadow": "2px 4px 12px rgba(0, 0, 0, 0.08)",
       "--rx-card-shadow-hover": "2px 4px 16px rgba(0, 0, 0, 0.16)",
     },
   },
+  { "@media (max-width: 734px)": { ":root": { "--rx-radius-panel": "24px" } } },
   {
     // Headings that routes scroll to land below the sticky global and local
     // navigation instead of underneath them.
@@ -309,7 +314,7 @@ const systemStyles = [
       display: "flex",
       flexDirection: "column",
       overflow: "hidden",
-      borderRadius: "18px",
+      borderRadius: "var(--rx-radius-card)",
       background: "#fff",
       color: `${ink} !important`,
       boxShadow: "var(--rx-card-shadow)",

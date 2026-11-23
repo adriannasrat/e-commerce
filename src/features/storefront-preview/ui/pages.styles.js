@@ -108,7 +108,7 @@ const pageStyles = [
   },
   {
     ".recommendation-card": {
-      borderRadius: "18px",
+      borderRadius: "var(--rx-radius-card)",
       boxShadow: "var(--rx-card-shadow)",
     },
   },
