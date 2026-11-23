@@ -181,7 +181,7 @@ const styles = [
       background: "var(--rx-gray)",
     },
   },
-  { ".sound-campaign--dark": { background: "#000" } },
+  { ".sound-campaign--dark": { background: "var(--rx-graphite)" } },
   { ".sound-campaign--light": { background: "var(--rx-gray)" } },
   {
     ".sound-campaign-copy small": {
