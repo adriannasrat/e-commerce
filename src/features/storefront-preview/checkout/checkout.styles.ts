@@ -43,6 +43,26 @@ export const checkoutStyles = ` .cp {
  .cp-wide {
 	 width: 100%;
 }
+ /* A working button shows the loader in place of its label, which stays for
+    screen readers, so the button never changes size. */
+ .cp-primary[aria-busy=true], .cp-secondary[aria-busy=true] {
+	 position: relative;
+	 color: transparent !important;
+}
+ .cp-primary[aria-busy=true] > .rx-spinner, .cp-secondary[aria-busy=true] > .rx-spinner {
+	 position: absolute;
+	 top: 50%;
+	 left: 50%;
+	 margin: 0;
+	 font-size: 15px;
+	 transform: translate(-50%, -50%);
+}
+ .cp-primary[aria-busy=true] > .rx-spinner {
+	 color: #fff;
+}
+ .cp-secondary[aria-busy=true] > .rx-spinner {
+	 color: var(--rx-ink);
+}
  .cp-link {
 	 border: 0;
 	 background: none;
@@ -465,10 +485,11 @@ export const checkoutStyles = ` .cp {
 	 margin-top: 32px;
 }
  .cp-payment-actions {
-	 display: flex;
-	 flex-wrap: wrap;
-	 justify-content: center;
+	 display: grid;
+	 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	 gap: 12px;
+	 max-width: 480px;
+	 margin-inline: auto;
 }
  .cp-payment-hint {
 	 margin: 12px 0 0;

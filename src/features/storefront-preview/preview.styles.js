@@ -167,20 +167,21 @@ const styles = [
   { ".preview-earcup--left": { left: "0", transform: "rotate(-7deg)" } },
   { ".preview-earcup--right": { right: "0", transform: "rotate(7deg)" } },
   { ".preview-product-shadow": { display: "none" } },
-  // Full-bleed product heroes
+  // Product heroes as large rounded cards, inset like the product tiles below.
   {
     ".sound-campaign": {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       overflow: "hidden",
-      marginTop: "12px",
+      margin: "20px",
+      borderRadius: "var(--rx-radius-panel)",
       paddingTop: "clamp(44px, 6vw, 56px)",
       textAlign: "center",
       background: "var(--rx-gray)",
     },
   },
-  { ".sound-campaign--dark": { background: "#000" } },
+  { ".sound-campaign--dark": { background: "var(--rx-graphite)" } },
   { ".sound-campaign--light": { background: "var(--rx-gray)" } },
   {
     ".sound-campaign-copy small": {
@@ -250,7 +251,7 @@ const styles = [
       textAlign: "center",
     },
   },
-  { ".product-showcase-dark": { background: "#242523" } },
+  { ".product-showcase-dark": { background: "var(--rx-graphite)" } },
   {
     ".product-showcase-category": {
       margin: "0 0 2px",
@@ -533,6 +534,7 @@ const styles = [
     "@media (max-width: 833px)": [
       { ".product-showcase-grid": { gridTemplateColumns: "1fr" } },
       { ".product-showcase": { padding: "16px" } },
+      { ".sound-campaign": { margin: "16px" } },
       { ".product-showcase-grid": { gap: "16px" } },
       { ".product-showcase-tile": { minHeight: "500px", paddingTop: "44px", borderRadius: "var(--rx-radius-panel)" } },
       { ".shop-journal": { gridTemplateColumns: "1fr", textAlign: "center" } },

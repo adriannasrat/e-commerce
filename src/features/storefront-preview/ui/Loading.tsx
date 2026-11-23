@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 
 // One look for waiting, wherever it happens: a thin bar along the top of the
-// page while anything loads, and a spinner inside the button that started an
-// action. Both are decorative; the page's own text says what is going on.
+// page while anything loads, and three level-meter bars inside the button that
+// started an action, or larger while the page itself loads. Both are
+// decorative; the page's own text says what is going on.
 
-export function Spinner() {
-  return <span className="rx-spinner" aria-hidden="true" />;
+export function Spinner({ large = false }: { large?: boolean }) {
+  return (
+    <span className={large ? "rx-spinner rx-spinner--large" : "rx-spinner"} aria-hidden="true">
+      <i />
+      <i />
+      <i />
+    </span>
+  );
 }
 
 // Appears only once a wait lasts long enough to notice, so quick loads never

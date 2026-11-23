@@ -85,7 +85,7 @@ const styles = [
   },
   {
     ".listening-graphite": {
-      background: "#242523",
+      background: "var(--rx-graphite)",
       color: "#f5f5f0",
     },
   },

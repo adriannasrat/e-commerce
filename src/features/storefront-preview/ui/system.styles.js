@@ -17,6 +17,8 @@ const systemStyles = [
       "--rx-link": link,
       "--rx-link-dark": "#f0894a",
       "--rx-gray": "#f5f5f7",
+      // The dark card colour, a warm graphite rather than pure black.
+      "--rx-graphite": "#242523",
       "--rx-line": "#d2d2d7",
       "--rx-new": "#b8461b",
       "--rx-content": "1120px",
