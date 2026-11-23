@@ -251,6 +251,9 @@ const styles = [
       isolation: "isolate",
     },
   },
+  // The panel slides down from the top. It moves with transform, which the
+  // GPU handles alone; animating clip-path repainted the whole screen on every
+  // frame and stuttered on phones.
   {
     ".preview-menu::before": {
       content: '""',
@@ -258,11 +261,11 @@ const styles = [
       inset: "0",
       zIndex: "-1",
       background: "#fafafc",
-      clipPath: "inset(0 0 100%)",
-      transition: "clip-path 0.42s var(--ease-drawer)",
+      transform: "translateY(-100%)",
+      transition: "transform 0.42s var(--ease-drawer)",
     },
   },
-  { '.preview-menu[data-open="true"]::before': { clipPath: "inset(0)" } },
+  { '.preview-menu[data-open="true"]::before': { transform: "translateY(0)" } },
   {
     ".preview-menu .preview-menu-toggle": {
       position: "fixed",
