@@ -79,7 +79,7 @@ test("a failed merge keeps the guest bag for the next attempt", async () => {
   expect(JSON.parse(localStorage.getItem(BAG_STORAGE_KEY))).toHaveLength(1);
 });
 
-test("checkout pays the current cart and leaves it empty", async () => {
+test("checkout pays the current cart and keeps the bag until the payment goes through", async () => {
   useAuth.mockReturnValue({ user: { id: 7 } });
   mockApi.on("GET /cart", 200, cart([[1, 2]]));
   const { result } = renderBag();
@@ -90,14 +90,13 @@ test("checkout pays the current cart and leaves it empty", async () => {
     paid = body.cartId;
     return { id: 1, total_ore: 358000 };
   });
-  mockApi.on("GET /cart", 200, { id: null, items: [] });
   let order;
   await act(async () => {
     order = await result.current.checkout();
   });
   expect(paid).toBe(1);
   expect(order.total_ore).toBe(358000);
-  await waitFor(() => expect(result.current.count).toBe(0));
+  expect(result.current.count).toBe(2);
 });
 
 test("checkout waits for a change that is still on its way to the server", async () => {
@@ -117,7 +116,6 @@ test("checkout waits for a change that is still on its way to the server", async
   };
   mockApi.on("PUT /cart/items/1", 200, ({ amount }) => cart([[1, amount]]));
   mockApi.on("POST /orders", 201, { id: 9, total_ore: 537000 });
-  mockApi.on("GET /cart", 200, { id: null, items: [] });
 
   let paying;
   act(() => {
@@ -131,5 +129,5 @@ test("checkout waits for a change that is still on its way to the server", async
   await act(async () => {
     await paying;
   });
-  expect(calls).toEqual(["PUT /api/v1/cart/items/1", "POST /api/v1/orders", "GET /api/v1/cart"]);
+  expect(calls).toEqual(["PUT /api/v1/cart/items/1", "POST /api/v1/orders"]);
 });

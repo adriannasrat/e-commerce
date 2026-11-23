@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
 import { api } from "../api";
@@ -158,6 +158,12 @@ export default function OrderPage({ id }: { id: string }) {
     refetchInterval: (query) =>
       query.state.data?.status === "pending" ? 2000 : false,
   });
+  // Once paid, the server has emptied the bag, so it is loaded again.
+  const queryClient = useQueryClient();
+  const paid = order.data?.status === "paid";
+  useEffect(() => {
+    if (paid) queryClient.invalidateQueries({ queryKey: ["cart"] });
+  }, [paid, queryClient]);
   const returnedFromStripe =
     new URLSearchParams(useLocation().search).get("payment") === "done";
   const root = useRef<HTMLElement>(null);
