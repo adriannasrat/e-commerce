@@ -465,10 +465,11 @@ export const checkoutStyles = ` .cp {
 	 margin-top: 32px;
 }
  .cp-payment-actions {
-	 display: flex;
-	 flex-wrap: wrap;
-	 justify-content: center;
+	 display: grid;
+	 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	 gap: 12px;
+	 max-width: 480px;
+	 margin-inline: auto;
 }
  .cp-payment-hint {
 	 margin: 12px 0 0;
