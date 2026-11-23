@@ -46,8 +46,9 @@ const loadingStyles = [
       animation: "rx-spin 700ms linear infinite",
     },
   },
-  // Buttons that space their icon with a gap, or hold only the spinner, need no margin.
-  { ".sign-in-submit .rx-spinner, .sign-in-demo-button .rx-spinner, .rx-spinner:only-child": { marginRight: 0 } },
+  // Buttons that space their icon with a gap, and the arrow button that holds
+  // only the spinner, need no margin of their own.
+  { ".sign-in-submit .rx-spinner, .sign-in-demo-button .rx-spinner, .cp-field button .rx-spinner": { marginRight: 0 } },
   { "@keyframes rx-spin": { to: { transform: "rotate(360deg)" } } },
   { "@keyframes rx-pulse": { from: { opacity: 1 }, to: { opacity: 0.35 } } },
   {
