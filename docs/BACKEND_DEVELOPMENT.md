@@ -65,12 +65,17 @@ Each product's images and films are rows in `ProductMedia`: one main cut-out,
 optional gallery views and an optional film, with paths relative to the
 storefront's media base. The database allows one main image per product.
 Products without a `category`, such as the original flowers, stay in the database
-but are not sold. `POST /api/v1/orders` turns the signed-in user's cart into an
-order, reserves its stock and removes the cart, then opens a Stripe Checkout
-session and returns its `checkout_url`. Orders are `pending`, `paid` or
+but are not sold. `POST /api/v1/orders` gives the signed-in user's cart a pending
+order and reserves its stock, then opens a Stripe Checkout session and returns
+its `checkout_url`. The cart stays until the order is paid. Repeating the call
+for an unchanged cart returns the same order and page; a changed cart or
+delivery closes the open payment and places a new order, and so does any
+change to the cart itself. `POST /api/v1/orders/:id/cancel` closes an unpaid
+order's payment and returns its stock, and signing out of a demo account does
+the same for all its orders before removing the account. Orders are `pending`, `paid` or
 `cancelled`, and the database requires a payment time on every paid order.
 Only `POST /api/v1/payments/webhook`, with Stripe's signature, marks an order
-`paid`; an expired session cancels it and returns its stock. An unpaid order's
+`paid` and empties its cart; an expired session cancels it and returns its stock. An unpaid order's
 payment page is reopened with `POST /api/v1/orders/:id/payment`. Each order records its delivery, `standard` or `express`,
 with the price the server set for it, and `GET /api/v1/orders/:id` returns one
 of the signed-in user's orders.
