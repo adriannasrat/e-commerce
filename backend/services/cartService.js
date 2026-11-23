@@ -76,17 +76,21 @@ async function mergeGuestItems(userId, items) {
     ({ product_id: id, amount }) => Number.isInteger(id) && Number.isInteger(amount) && amount > 0,
   );
   if (!valid) throw new HttpError(400, 'Items must list product_id and a positive amount');
-  await withActiveCart(userId, async (cart, transaction) => {
-    for (const { product_id: productId, amount } of items) {
-      const product = await Product.findByPk(productId, { transaction });
-      if (!product || product.retired_at) continue;
-      const row = await CartRow.findOne({ where: { cart_id: cart.id, product_id: productId }, transaction });
-      const merged = Math.min(Math.max(amount, row ? row.amount : 0), product.stock_quantity);
-      if (merged > 0) await CartRow.upsert({ cart_id: cart.id, product_id: productId, amount: merged }, { transaction });
-      else if (row) await row.destroy({ transaction });
-    }
-  });
+  await withActiveCart(userId, (cart, transaction) => mergeItems(cart, items, transaction));
   return getCart(userId);
 }
 
-module.exports = { getCart, mergeGuestItems, setItemAmount };
+// Takes the larger of each item's amounts in the cart and in `items`, capped
+// by stock. Retired products are left out.
+async function mergeItems(cart, items, transaction) {
+  for (const { product_id: productId, amount } of items) {
+    const product = await Product.findByPk(productId, { transaction });
+    if (!product || product.retired_at) continue;
+    const row = await CartRow.findOne({ where: { cart_id: cart.id, product_id: productId }, transaction });
+    const merged = Math.min(Math.max(amount, row ? row.amount : 0), product.stock_quantity);
+    if (merged > 0) await CartRow.upsert({ cart_id: cart.id, product_id: productId, amount: merged }, { transaction });
+    else if (row) await row.destroy({ transaction });
+  }
+}
+
+module.exports = { getCart, mergeGuestItems, mergeItems, setItemAmount, withActiveCart };

@@ -23,6 +23,13 @@ function useFakeStripe() {
     return session;
   };
   payments.checkoutUrl = async (id) => (fakeStripe.sessions.get(id)?.open ? fakeStripe.sessions.get(id).url : null);
+  // A session marked `paid` was completed at Stripe and cannot be closed.
+  payments.closeCheckout = async (id) => {
+    const session = fakeStripe.sessions.get(id);
+    if (session.paid) return false;
+    session.open = false;
+    return true;
+  };
 }
 
 // A Stripe event for an order's session, signed as Stripe would sign it.

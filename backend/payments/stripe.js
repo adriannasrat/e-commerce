@@ -67,6 +67,21 @@ const payments = {
     return session.status === 'open' ? session.url : null;
   },
 
+  // Closes an unpaid order's payment page, so it can no longer take a payment.
+  // False when Stripe has already completed it.
+  async closeCheckout(sessionId) {
+    try {
+      await stripe().checkout.sessions.expire(sessionId);
+      return true;
+    } catch (error) {
+      // Only an open page can be expired; a closed one says how it ended.
+      const { status } = await stripe().checkout.sessions.retrieve(sessionId);
+      if (status === 'expired') return true;
+      if (status === 'complete') return false;
+      throw error;
+    }
+  },
+
   // Only events signed with the webhook secret are trusted.
   readEvent(rawBody, signature) {
     const { webhookSecret } = readEnvironment().stripe;
