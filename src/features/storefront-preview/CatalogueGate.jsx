@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "./api";
 import { products, setCatalogue } from "./products";
 import StorefrontStyles from "./StorefrontStyles";
+import { LoadingBar, Spinner } from "./ui/Loading";
 
 // The catalogue does not change while someone shops, so it loads once. The
 // shared products list stays the synchronous read model for the storefront.
@@ -29,8 +30,9 @@ export default function CatalogueGate({ children }) {
   return (
     <>
       <StorefrontStyles />
+      <LoadingBar />
       <main className="storefront-status">
-        {status === "loading" && <p role="status">Loading the collection…</p>}
+        {status === "loading" && <p role="status"><Spinner />Loading the collection…</p>}
         {status === "empty" && <p role="status">The collection is empty right now. Please check back soon.</p>}
         {status === "error" && (
           <div role="alert">

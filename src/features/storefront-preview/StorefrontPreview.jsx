@@ -29,6 +29,7 @@ import AddedToBag from "./recommendations/AddedToBag";
 import SignInPage from "./auth/SignInPage";
 import { AuthProvider } from "./auth/AuthContext";
 import CatalogueGate from "./CatalogueGate";
+import { LoadingBar } from "./ui/Loading";
 import { paths } from "./routes";
 import { createQueryClient } from "./queryClient";
 
@@ -180,6 +181,7 @@ function Storefront() {
         >
           Skip to content
         </a>
+        <LoadingBar />
         <div className="preview-shell">
           <PreviewHeader bag={bag} />
           <main id="preview-main" tabIndex={-1} ref={main}>
