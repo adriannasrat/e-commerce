@@ -1,16 +1,15 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
-import HeadphoneImage from "../HeadphoneImage";
-import type { Cutout } from "../catalogueMedia";
 import { api } from "../api";
 import { useAuth } from "../auth/AuthContext";
-import { formatPrice, products } from "../products";
+import { formatPrice } from "../products";
+import OrderLines from "./OrderLines";
 import { paths } from "../routes";
 import { checkoutStyles } from "./checkout.styles";
-import { goToPayment } from "./payment";
+import { PaymentActions } from "./PendingPayment";
 import {
   type Order,
   arrival,
@@ -21,11 +20,6 @@ import {
   orderStages,
 } from "./orderDetails";
 
-interface CatalogueProduct {
-  apiId: number;
-  finishName: string;
-  image: Cutout;
-}
 
 const statusLabel = {
   pending: "Awaiting payment",
@@ -40,7 +34,7 @@ function headline(order: Order, returnedFromStripe: boolean) {
   if (order.status === "cancelled") {
     return [
       "This order was cancelled.",
-      "The payment was not completed in time, so nothing was charged and the items went back on sale.",
+      "The payment was cancelled or not completed in time, so nothing was charged.",
     ];
   }
   return returnedFromStripe
@@ -52,38 +46,6 @@ function headline(order: Order, returnedFromStripe: boolean) {
         "Complete your payment.",
         "Your items are reserved for 30 minutes while you pay.",
       ];
-}
-
-function ResumePayment({ orderId }: { orderId: number }) {
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  async function resume() {
-    setBusy(true);
-    setError("");
-    try {
-      const { checkout_url: url } = await api<{ checkout_url: string }>(
-        "POST",
-        `/orders/${orderId}/payment`,
-      );
-      goToPayment(url);
-    } catch (failure) {
-      setError((failure as Error).message);
-      setBusy(false);
-    }
-  }
-  return (
-    <>
-      <button
-        type="button"
-        className="cp-primary"
-        disabled={busy}
-        onClick={resume}
-      >
-        Continue to payment
-      </button>
-      {error && <p role="alert">{error}</p>}
-    </>
-  );
 }
 
 function OrderDetails({
@@ -130,31 +92,7 @@ function OrderDetails({
           </span>
           <span className="cp-status">{statusLabel[order.status]}</span>
         </div>
-        <ul>
-          {order.items.map((item) => {
-            const product = (products as CatalogueProduct[]).find(
-              ({ apiId }) => apiId === item.product_id,
-            );
-            return (
-              <li key={item.product_id}>
-                <span className="cp-thumb cp-thumb--large">
-                  {product && (
-                    <HeadphoneImage image={product.image} decorative />
-                  )}
-                </span>
-                <span className="cp-line">
-                  <strong>{item.title}</strong>
-                  <span>
-                    {product ? `${product.finishName} · ` : ""}Qty {item.amount}
-                  </span>
-                </span>
-                <span>
-                  {formatPrice((item.unit_price_ore * item.amount) / 100)}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
+        <OrderLines items={order.items} />
         <dl>
           <div>
             <dt>Delivery</dt>
@@ -166,15 +104,17 @@ function OrderDetails({
           </div>
         </dl>
       </div>
-      <div className="cp-placed-actions">
-        {order.status === "pending" && !returnedFromStripe ? (
-          <ResumePayment orderId={order.id} />
-        ) : (
+      {order.status === "pending" && !returnedFromStripe ? (
+        <div className="cp-placed-payment">
+          <PaymentActions orderId={order.id} />
+        </div>
+      ) : (
+        <div className="cp-placed-actions">
           <a className="cp-primary" href={paths.store}>
             Continue shopping
           </a>
-        )}
-      </div>
+        </div>
+      )}
       <p className="cp-note">
         Payments run through Stripe in test mode. No real card is charged and
         nothing is shipped.

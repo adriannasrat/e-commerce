@@ -127,9 +127,24 @@ Payments need `STRIPE_SECRET_KEY`, a test-mode key, and `STRIPE_WEBHOOK_SECRET`
 from a Stripe webhook that sends the `checkout.session.completed`,
 `checkout.session.expired`, `checkout.session.async_payment_succeeded` and
 `checkout.session.async_payment_failed` events to `/api/v1/payments/webhook`.
-The API refuses to start with a live key. Locally, run
-`stripe listen --forward-to localhost:5001/api/v1/payments/webhook` and use the
-secret it prints.
+The API refuses to start with a live key.
+
+To pay locally, run `npm run migrate`, then start the API with the webhook
+secret of the Stripe CLI:
+
+```bash
+STRIPE_WEBHOOK_SECRET=$(stripe listen --print-secret) npm run start:api
+```
+
+In a second terminal, forward Stripe's events to it:
+
+```bash
+stripe listen --forward-to localhost:5001/api/v1/payments/webhook --events checkout.session.completed,checkout.session.expired,checkout.session.async_payment_succeeded,checkout.session.async_payment_failed
+```
+
+Pay with the test card 4242 4242 4242 4242, any future expiry date and any CVC.
+Product pictures are left out of Stripe's page locally, since Stripe cannot
+fetch them from localhost.
 
 ## Tests
 
