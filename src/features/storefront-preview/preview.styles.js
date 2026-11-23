@@ -251,7 +251,7 @@ const styles = [
       textAlign: "center",
     },
   },
-  { ".product-showcase-dark": { background: "#242523" } },
+  { ".product-showcase-dark": { background: "var(--rx-graphite)" } },
   {
     ".product-showcase-category": {
       margin: "0 0 2px",
