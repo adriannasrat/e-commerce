@@ -57,8 +57,8 @@ const loadingStyles = [
       animation: "rx-level 1s linear infinite",
     },
   },
-  { ".rx-spinner > i:nth-child(2)": { height: "1em", animationDelay: "0.25s" } },
-  { ".rx-spinner > i:nth-child(3)": { animationDelay: "0.5s" } },
+  { ".rx-spinner > i:nth-of-type(2)": { height: "1em", animationDelay: "0.25s" } },
+  { ".rx-spinner > i:nth-of-type(3)": { animationDelay: "0.5s" } },
   { ".rx-spinner--large": { fontSize: "35px", margin: 0 } },
   // Buttons that space their icon with a gap, and the arrow button that holds
   // only the bars, need no margin of their own.
