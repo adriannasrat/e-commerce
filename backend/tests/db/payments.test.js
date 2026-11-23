@@ -85,6 +85,42 @@ test("payments", async (t) => {
     assert.equal((await (await shopper())("POST", `/orders/${placed.id}/payment`)).status, 404);
   });
 
+  await t.test("cancelling a payment closes Stripe's page and puts the order back in the bag", async () => {
+    const api = await shopper();
+    const product = await stocked(5);
+    const placed = await order(api, product, 3);
+    assert.equal((await api("GET", "/cart")).body.items.length, 0);
+
+    const bag = await api("POST", `/orders/${placed.id}/cancel`);
+    assert.equal(bag.status, 200);
+    assert.deepEqual(bag.body.items.map(({ product_id: id, amount }) => [id, amount]), [[product.id, 3]]);
+    assert.equal(fakeStripe.sessions.get(`cs_test_${placed.id}`).open, false);
+    assert.equal((await api("GET", `/orders/${placed.id}`)).body.status, "cancelled");
+    assert.equal(await stockOf(product), 5);
+
+    // Repeating it, or Stripe's expiry arriving afterwards, doubles nothing.
+    await api("POST", `/orders/${placed.id}/cancel`);
+    await deliver("checkout.session.expired", placed.id);
+    assert.equal((await api("GET", "/cart")).body.items[0].amount, 3);
+    assert.equal(await stockOf(product), 5);
+    assert.equal((await (await shopper())("POST", `/orders/${placed.id}/cancel`)).status, 404);
+  });
+
+  await t.test("a payment Stripe has taken, or a paid order, is never cancelled", async () => {
+    const api = await shopper();
+    const product = await stocked(5);
+    const placed = await order(api, product, 2);
+    fakeStripe.sessions.get(`cs_test_${placed.id}`).paid = true;
+    assert.equal((await api("POST", `/orders/${placed.id}/cancel`)).status, 409);
+    assert.equal((await api("GET", `/orders/${placed.id}`)).body.status, "pending");
+
+    await deliver("checkout.session.completed", placed.id);
+    assert.equal((await api("POST", `/orders/${placed.id}/cancel`)).status, 409);
+    assert.equal((await api("GET", `/orders/${placed.id}`)).body.status, "paid");
+    assert.equal(await stockOf(product), 3);
+    assert.equal((await api("GET", "/cart")).body.items.length, 0);
+  });
+
   await t.test("if Stripe cannot open a payment page, nothing is reserved", async () => {
     const api = await shopper();
     const product = await stocked(4);

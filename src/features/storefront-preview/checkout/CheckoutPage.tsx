@@ -1,5 +1,6 @@
-import { type FormEvent, type ReactNode, useLayoutEffect, useRef, useState } from "react";
+import { type FormEvent, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import LockOutlined from "@mui/icons-material/LockOutlined";
@@ -12,6 +13,7 @@ import { Spinner } from "../ui/Loading";
 import { checkoutStyles } from "./checkout.styles";
 import { type DeliveryId, type Order, deliveries, deliveryPrice } from "./orderDetails";
 import { TEST_CARD, goToPayment } from "./payment";
+import { WaitingPayment, usePendingOrder } from "./PendingPayment";
 
 interface Product {
   id: string;
@@ -263,6 +265,19 @@ export default function CheckoutPage({ bag }: { bag: Bag }) {
   const [placing, setPlacing] = useState(false);
   const root = useRef<HTMLElement>(null);
   const signedIn = Boolean(user);
+  const pending = usePendingOrder();
+  const queryClient = useQueryClient();
+  // Coming back from Stripe with the back button can restore this page as it
+  // was left, still placing the order. It starts over with fresh data instead.
+  useEffect(() => {
+    const restored = (event: PageTransitionEvent) => {
+      if (!event.persisted) return;
+      setPlacing(false);
+      queryClient.invalidateQueries();
+    };
+    window.addEventListener("pageshow", restored);
+    return () => window.removeEventListener("pageshow", restored);
+  }, [queryClient]);
   useLayoutEffect(() => {
     if (!ready) return;
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -273,13 +288,23 @@ export default function CheckoutPage({ bag }: { bag: Bag }) {
     <section className="cp" aria-labelledby="checkout-title" ref={root}>
       <GlobalStyles styles={checkoutStyles} />
       {!ready ? null : bag.count === 0 && !placing ? (
-        <div className="cp-empty">
-          <h1 id="checkout-title" tabIndex={-1}>Your bag is empty.</h1>
-          <p>Add something you love, then check out here.</p>
-          <a className="cp-primary" href={paths.store}>Explore headphones</a>
-        </div>
+        pending ? (
+          <div className="cp-empty">
+            <h1 id="checkout-title" tabIndex={-1}>Complete your payment.</h1>
+            <WaitingPayment order={pending} />
+          </div>
+        ) : (
+          <div className="cp-empty">
+            <h1 id="checkout-title" tabIndex={-1}>Your bag is empty.</h1>
+            <p>Add something you love, then check out here.</p>
+            <a className="cp-primary" href={paths.store}>Explore headphones</a>
+          </div>
+        )
       ) : user ? (
-        <CheckoutForm bag={bag} placing={placing} setPlacing={setPlacing} />
+        <>
+          {pending && !placing && <WaitingPayment order={pending} />}
+          <CheckoutForm bag={bag} placing={placing} setPlacing={setPlacing} />
+        </>
       ) : (
         <CheckoutSignIn />
       )}
