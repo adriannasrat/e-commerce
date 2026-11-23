@@ -30,4 +30,8 @@ router.post('/:orderId/payment', wrap(async (req, res) => {
   res.json(await orderService.resumePayment(req.user.id, Number(req.params.orderId)));
 }));
 
+router.post('/:orderId/cancel', wrap(async (req, res) => {
+  res.json(await orderService.returnToBag(req.user.id, Number(req.params.orderId)));
+}));
+
 module.exports = router;

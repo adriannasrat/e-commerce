@@ -8,6 +8,7 @@ import BagDiscovery from "./BagDiscovery";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import { paths } from "../routes";
+import { WaitingPayment, usePendingOrder } from "../checkout/PendingPayment";
 
 function CheckoutActions() {
   return (
@@ -21,6 +22,7 @@ function CheckoutActions() {
 
 export default function BagPage({ bag }) {
   const heading = useRef(null);
+  const pending = usePendingOrder();
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     heading.current.focus({ preventScroll: true });
@@ -46,6 +48,7 @@ export default function BagPage({ bag }) {
           </a>
         )}
       </header>
+      {pending && <WaitingPayment order={pending} />}
       <p className="bag-sr-only" role="status">
         {bag.count} items in your bag. Total {formatPrice(bag.total)}.
       </p>

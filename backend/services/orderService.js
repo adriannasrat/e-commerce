@@ -1,6 +1,7 @@
 const { HttpError } = require('../http');
-const { Cart, CartRow, Order, OrderLine, Product } = require('../models');
+const { Cart, CartRow, Order, OrderLine, Product, ProductMedia } = require('../models');
 const { payments } = require('../payments/stripe');
+const { getCart, mergeItems, withActiveCart } = require('./cartService');
 const { inTransaction } = require('./transaction');
 
 // The server sets the price of delivery, never the request.
@@ -83,6 +84,24 @@ async function reserveOrder(userId, cartId, delivery) {
   });
 }
 
+// What the payment page shows for each line besides its name and price: the
+// model's finish and tagline, and the path of its main picture.
+async function describeItems(items) {
+  const products = await Product.findAll({
+    where: { id: items.map((item) => item.product_id) },
+    include: [{ model: ProductMedia, as: 'media', where: { role: 'main' }, required: false }],
+  });
+  const byId = new Map(products.map((product) => [product.id, product]));
+  return items.map((item) => {
+    const product = byId.get(item.product_id);
+    return {
+      ...item,
+      details: [product.finish_name, product.tagline].filter(Boolean).join(' · '),
+      image: product.media[0]?.path,
+    };
+  });
+}
+
 // Payment is collected by Stripe Checkout, opened only after the order is
 // committed: no payment call runs inside a database transaction. Only the
 // webhook marks an order paid, never the visitor returning from Stripe.
@@ -101,7 +120,7 @@ async function placeOrder(userId, { cartId, delivery = 'standard' } = {}, origin
   }
   let session;
   try {
-    session = await payments.openCheckout({ order, origin });
+    session = await payments.openCheckout({ order: { ...order, items: await describeItems(order.items) }, origin });
   } catch (error) {
     // Without a payment page the order could never be paid, so it is undone.
     await cancelOrder(id);
@@ -132,6 +151,16 @@ async function markPaid(orderId, sessionId) {
   });
 }
 
+// Cancels a pending order and puts its stock back on sale.
+async function releaseOrder(order, transaction) {
+  const lines = await OrderLine.findAll({ where: { order_id: order.id }, order: [['product_id', 'ASC']], transaction });
+  for (const line of lines) {
+    const product = await Product.findByPk(line.product_id, { lock: transaction.LOCK.UPDATE, transaction });
+    await product.update({ stock_quantity: product.stock_quantity + line.amount }, { transaction });
+  }
+  await order.update({ status: 'cancelled' }, { transaction });
+}
+
 // An unpaid order is cancelled and its stock goes back on sale. Only a pending
 // order is touched, so a paid order is never undone.
 async function cancelOrder(orderId, sessionId) {
@@ -139,13 +168,30 @@ async function cancelOrder(orderId, sessionId) {
     const order = await Order.findOne({ where: { id: orderId }, lock: transaction.LOCK.UPDATE, transaction });
     if (!order || order.status !== 'pending') return;
     if (sessionId && order.stripe_session_id !== sessionId) return;
-    const lines = await OrderLine.findAll({ where: { order_id: order.id }, order: [['product_id', 'ASC']], transaction });
-    for (const line of lines) {
-      const product = await Product.findByPk(line.product_id, { lock: transaction.LOCK.UPDATE, transaction });
-      await product.update({ stock_quantity: product.stock_quantity + line.amount }, { transaction });
-    }
-    await order.update({ status: 'cancelled' }, { transaction });
+    await releaseOrder(order, transaction);
   });
+}
+
+// The visitor stops paying. Stripe's page is closed first, outside any
+// transaction, so it can no longer take a payment. Then the order is cancelled
+// and its lines go back in the bag, where they can be changed. The bag is
+// locked before the order, in the same order as placing one, so the two cannot
+// deadlock. Repeating it never doubles the bag, and a paid order stays paid.
+async function returnToBag(userId, orderId) {
+  const order = Number.isInteger(orderId) && await Order.findOne({ where: { id: orderId, user_id: userId } });
+  if (!order) throw new HttpError(404, 'Order not found');
+  if (order.status === 'paid') throw new HttpError(409, 'This order is already paid');
+  if (order.status === 'pending' && order.stripe_session_id && !(await payments.closeCheckout(order.stripe_session_id))) {
+    throw new HttpError(409, 'This order was just paid');
+  }
+  await withActiveCart(userId, async (cart, transaction) => {
+    const locked = await Order.findOne({ where: { id: order.id }, lock: transaction.LOCK.UPDATE, transaction });
+    if (locked.status === 'paid') throw new HttpError(409, 'This order is already paid');
+    if (locked.status === 'pending') await releaseOrder(locked, transaction);
+    const lines = await OrderLine.findAll({ where: { order_id: order.id }, transaction });
+    await mergeItems(cart, lines.map(({ product_id: productId, amount }) => ({ product_id: productId, amount })), transaction);
+  });
+  return getCart(userId);
 }
 
 async function getOrders(userId) {
@@ -163,4 +209,4 @@ async function getOrder(userId, orderId) {
   return toOrder(order);
 }
 
-module.exports = { cancelOrder, getOrder, getOrders, markPaid, placeOrder, resumePayment };
+module.exports = { cancelOrder, getOrder, getOrders, markPaid, placeOrder, resumePayment, returnToBag };

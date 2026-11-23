@@ -245,14 +245,14 @@ export const checkoutStyles = ` .cp {
 	 border-radius: var(--cp-radius);
 	 background: var(--rx-gray);
 }
- .cp-summary ul, .cp-placed-card ul {
+ .cp-summary ul, .cp-lines {
 	 list-style: none;
 	 margin: 20px 0;
 	 padding: 0;
 	 display: grid;
 	 gap: 16px;
 }
- .cp-summary li, .cp-placed-card li {
+ .cp-summary li, .cp-lines li {
 	 display: grid;
 	 grid-template-columns: auto 1fr auto;
 	 gap: 14px;
@@ -460,5 +460,43 @@ export const checkoutStyles = ` .cp {
 }
  .cp h1:focus {
 	 outline: none;
+}
+ .cp-placed-payment {
+	 margin-top: 32px;
+}
+ .cp-payment-actions {
+	 display: flex;
+	 flex-wrap: wrap;
+	 justify-content: center;
+	 gap: 12px;
+}
+ .cp-payment-hint {
+	 margin: 12px 0 0;
+	 color: var(--rx-muted);
+	 font-size: 13px;
+	 text-align: center;
+}
+ .cp.cp-waiting {
+	 max-width: 720px;
+	 margin: 0 auto 40px;
+	 padding: 28px 24px;
+	 border: 1px solid var(--rx-line);
+	 border-radius: var(--cp-radius);
+	 text-align: center;
+}
+ .cp-waiting h2 {
+	 margin-bottom: 8px;
+}
+ .cp-waiting > p {
+	 margin: 0 0 20px;
+	 color: var(--rx-muted);
+	 font-size: 15px;
+}
+ .cp-waiting .cp-lines {
+	 margin: 0 0 24px;
+	 text-align: left;
+}
+ .cp-waiting a {
+	 color: var(--rx-link);
 }
  `;
