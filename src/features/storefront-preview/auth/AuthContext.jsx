@@ -38,8 +38,11 @@ export function AuthProvider({ children }) {
       signInToDemo: async () => setUser(await api("POST", "/demo/sign-in")),
       signOut: async () => {
         await api("POST", "/users/signout");
-        // The next person on this device must never see the previous cart.
-        queryClient.removeQueries({ queryKey: ["cart"] });
+        // The next person on this device must never see the previous cart
+        // or orders. A demo account is removed altogether on sign-out.
+        for (const key of ["cart", "orders", "order"]) {
+          queryClient.removeQueries({ queryKey: [key] });
+        }
         setUser(null);
       },
     };
