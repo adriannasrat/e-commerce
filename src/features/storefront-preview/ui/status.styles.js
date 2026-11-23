@@ -12,6 +12,14 @@ const styles = [
   },
   { ".storefront-status p": { margin: "0 0 16px" } },
   {
+    ".storefront-loading": {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "20px",
+    },
+  },
+  {
     ".bag-error": {
       margin: 0,
       padding: "12px 22px",

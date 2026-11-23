@@ -32,7 +32,12 @@ export default function CatalogueGate({ children }) {
       <StorefrontStyles />
       <LoadingBar />
       <main className="storefront-status">
-        {status === "loading" && <p role="status"><Spinner />Loading the collection…</p>}
+        {status === "loading" && (
+          <p role="status" className="storefront-loading">
+            <Spinner large />
+            Loading the collection…
+          </p>
+        )}
         {status === "empty" && <p role="status">The collection is empty right now. Please check back soon.</p>}
         {status === "error" && (
           <div role="alert">
