@@ -19,32 +19,42 @@ function stripe() {
 // Unpaid orders hold their stock this long. Stripe allows 30 minutes at least.
 const HOLD_MINUTES = 31;
 
+const TEST_MODE_NOTE =
+  'Stripe runs in test mode, so no real card is charged. Pay with the test card 4242 4242 4242 4242, any future expiry date and any CVC.';
+
+// What Stripe Checkout shows: every line at the price it was ordered at, with
+// its finish and picture, delivery when it costs anything, and how to pay in
+// test mode beside the pay button. Stripe fetches the pictures itself, so they
+// are only sent from a public https address, never from localhost.
+function checkoutParams({ order, origin }) {
+  const picture = (path) => (path && origin.startsWith('https://') ? [`${origin}/media/${path}`] : undefined);
+  const line = (name, unitAmount, quantity, description, images) => ({
+    quantity,
+    price_data: { currency: 'sek', unit_amount: unitAmount, product_data: { name, description, images } },
+  });
+  const lineItems = order.items.map((item) =>
+    line(item.title, item.unit_price_ore, item.amount, item.details || undefined, picture(item.image)));
+  if (order.delivery_ore) lineItems.push(line('Express delivery', order.delivery_ore, 1));
+  return {
+    mode: 'payment',
+    line_items: lineItems,
+    client_reference_id: String(order.id),
+    metadata: { order_id: String(order.id) },
+    custom_text: { submit: { message: TEST_MODE_NOTE } },
+    expires_at: Math.floor(Date.now() / 1000) + HOLD_MINUTES * 60,
+    success_url: `${origin}/order/${order.id}?payment=done`,
+    cancel_url: `${origin}/order/${order.id}`,
+  };
+}
+
 const payments = {
   assertReady() {
     stripe();
   },
 
   async openCheckout({ order, origin }) {
-    const lineItems = order.items.map((item) => ({
-      quantity: item.amount,
-      price_data: { currency: 'sek', unit_amount: item.unit_price_ore, product_data: { name: item.title } },
-    }));
-    if (order.delivery_ore) {
-      lineItems.push({
-        quantity: 1,
-        price_data: { currency: 'sek', unit_amount: order.delivery_ore, product_data: { name: 'Express delivery' } },
-      });
-    }
     const session = await stripe().checkout.sessions.create(
-      {
-        mode: 'payment',
-        line_items: lineItems,
-        client_reference_id: String(order.id),
-        metadata: { order_id: String(order.id) },
-        expires_at: Math.floor(Date.now() / 1000) + HOLD_MINUTES * 60,
-        success_url: `${origin}/order/${order.id}?payment=done`,
-        cancel_url: `${origin}/order/${order.id}`,
-      },
+      checkoutParams({ order, origin }),
       // A retried request for the same order gets the same session.
       { idempotencyKey: `order-${order.id}-checkout` },
     );
@@ -70,4 +80,4 @@ const payments = {
   },
 };
 
-module.exports = { payments };
+module.exports = { checkoutParams, payments };

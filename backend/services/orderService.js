@@ -1,5 +1,5 @@
 const { HttpError } = require('../http');
-const { Cart, CartRow, Order, OrderLine, Product } = require('../models');
+const { Cart, CartRow, Order, OrderLine, Product, ProductMedia } = require('../models');
 const { payments } = require('../payments/stripe');
 const { inTransaction } = require('./transaction');
 
@@ -83,6 +83,24 @@ async function reserveOrder(userId, cartId, delivery) {
   });
 }
 
+// What the payment page shows for each line besides its name and price: the
+// model's finish and tagline, and the path of its main picture.
+async function describeItems(items) {
+  const products = await Product.findAll({
+    where: { id: items.map((item) => item.product_id) },
+    include: [{ model: ProductMedia, as: 'media', where: { role: 'main' }, required: false }],
+  });
+  const byId = new Map(products.map((product) => [product.id, product]));
+  return items.map((item) => {
+    const product = byId.get(item.product_id);
+    return {
+      ...item,
+      details: [product.finish_name, product.tagline].filter(Boolean).join(' · '),
+      image: product.media[0]?.path,
+    };
+  });
+}
+
 // Payment is collected by Stripe Checkout, opened only after the order is
 // committed: no payment call runs inside a database transaction. Only the
 // webhook marks an order paid, never the visitor returning from Stripe.
@@ -101,7 +119,7 @@ async function placeOrder(userId, { cartId, delivery = 'standard' } = {}, origin
   }
   let session;
   try {
-    session = await payments.openCheckout({ order, origin });
+    session = await payments.openCheckout({ order: { ...order, items: await describeItems(order.items) }, origin });
   } catch (error) {
     // Without a payment page the order could never be paid, so it is undone.
     await cancelOrder(id);
