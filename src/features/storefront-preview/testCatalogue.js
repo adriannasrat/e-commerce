@@ -10,7 +10,7 @@ export const testCatalogue = [
     stock_quantity: 25,
     tagline: "A little closer to the music.",
     description:
-      "A dark, sculptural expression for your everyday listening ritual.",
+      "Brushed graphite cups and a soft woven cushion. Our signature over-ear, made for long listening.",
   },
   {
     id: 3,
@@ -20,9 +20,9 @@ export const testCatalogue = [
     category: "over-ear",
     price_ore: 249000,
     stock_quantity: 25,
-    tagline: "Your music. Your moment.",
+    tagline: "Bright metal, quiet focus.",
     description:
-      "A metallic finish with a bold presence, for moments that are yours alone.",
+      "Polished silver cups and a padded band. A bold finish that still sits lightly through a long day.",
   },
   {
     id: 9,
@@ -148,8 +148,8 @@ const film = (name, caption, alt) => ({
 const orbit = (name) =>
   film(
     "form-orbit",
-    `The ${name} silhouette, shown here in Titanium.`,
-    "Over-ear headphones in a dark titanium finish turning slowly in the air.",
+    `The ${name} silhouette, filmed here in Graphite.`,
+    "Over-ear headphones in a dark graphite finish turning slowly in the air.",
   );
 
 const media = {
