@@ -13,7 +13,6 @@ import { Spinner } from "../ui/Loading";
 import { checkoutStyles } from "./checkout.styles";
 import { type DeliveryId, type Order, deliveries, deliveryPrice } from "./orderDetails";
 import { TEST_CARD, goToPayment } from "./payment";
-import { WaitingPayment, usePendingOrder } from "./PendingPayment";
 
 interface Product {
   id: string;
@@ -261,11 +260,10 @@ function CheckoutForm({ bag, placing, setPlacing }: { bag: Bag; placing: boolean
 export default function CheckoutPage({ bag }: { bag: Bag }) {
   const { user } = useAuth() as Auth;
   const ready = user !== undefined && !bag.loading;
-  // Placing an order empties the bag a moment before the order page opens.
+  // True from placing the order until the visitor leaves for Stripe.
   const [placing, setPlacing] = useState(false);
   const root = useRef<HTMLElement>(null);
   const signedIn = Boolean(user);
-  const pending = usePendingOrder();
   const queryClient = useQueryClient();
   // Coming back from Stripe with the back button can restore this page as it
   // was left, still placing the order. It starts over with fresh data instead.
@@ -288,23 +286,13 @@ export default function CheckoutPage({ bag }: { bag: Bag }) {
     <section className="cp" aria-labelledby="checkout-title" ref={root}>
       <GlobalStyles styles={checkoutStyles} />
       {!ready ? null : bag.count === 0 && !placing ? (
-        pending ? (
-          <div className="cp-empty">
-            <h1 id="checkout-title" tabIndex={-1}>Complete your payment.</h1>
-            <WaitingPayment order={pending} />
-          </div>
-        ) : (
-          <div className="cp-empty">
-            <h1 id="checkout-title" tabIndex={-1}>Your bag is empty.</h1>
-            <p>Add something you love, then check out here.</p>
-            <a className="cp-primary" href={paths.store}>Explore headphones</a>
-          </div>
-        )
+        <div className="cp-empty">
+          <h1 id="checkout-title" tabIndex={-1}>Your bag is empty.</h1>
+          <p>Add something you love, then check out here.</p>
+          <a className="cp-primary" href={paths.store}>Explore headphones</a>
+        </div>
       ) : user ? (
-        <>
-          {pending && !placing && <WaitingPayment order={pending} />}
-          <CheckoutForm bag={bag} placing={placing} setPlacing={setPlacing} />
-        </>
+        <CheckoutForm bag={bag} placing={placing} setPlacing={setPlacing} />
       ) : (
         <CheckoutSignIn />
       )}
