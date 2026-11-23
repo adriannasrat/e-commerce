@@ -2,6 +2,7 @@ const { randomBytes } = require('node:crypto');
 const { hashPassword } = require('../auth/password');
 const sequelize = require('../config/database');
 const { User } = require('../models');
+const { cancelOpenPayments } = require('./orderService');
 
 // The stock every model starts each day with.
 const DEMO_STOCK = 25;
@@ -12,6 +13,17 @@ async function createDemoUser() {
   const name = randomBytes(6).toString('hex');
   const password = await hashPassword(randomBytes(32).toString('hex'));
   return User.create({ email: `demo-${name}@resonance.test`, password });
+}
+
+const isDemoUser = (user) => /^demo-[a-f0-9]+@resonance\.test$/.test(user.email);
+
+// A demo account lasts one visit. Signing out closes its open payments, which
+// puts their stock back on sale, then removes the account with its bag, orders
+// and sessions, so the next visit starts fresh.
+async function removeDemoUser(user) {
+  if (!isDemoUser(user)) return;
+  await cancelOpenPayments(user.id);
+  await User.destroy({ where: { id: user.id } });
 }
 
 // Removes everything visitors have created and refills the stock, so each day
@@ -28,4 +40,4 @@ async function resetDemoData() {
   });
 }
 
-module.exports = { DEMO_STOCK, createDemoUser, resetDemoData };
+module.exports = { DEMO_STOCK, createDemoUser, removeDemoUser, resetDemoData };

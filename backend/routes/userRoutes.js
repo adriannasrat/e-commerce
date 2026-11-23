@@ -2,6 +2,7 @@ const express = require('express');
 const { endSession, requireUser, startSession } = require('../auth/session');
 const { wrap } = require('../http');
 const { authenticate, createUser, toPublicUser } = require('../services/userService');
+const { removeDemoUser } = require('../services/demoService');
 
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.post('/signin', wrap(async (req, res) => {
 }));
 
 router.post('/signout', wrap(async (req, res) => {
+  if (req.user) await removeDemoUser(req.user);
   await endSession(req, res);
   res.status(204).end();
 }));
