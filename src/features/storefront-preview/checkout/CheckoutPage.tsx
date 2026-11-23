@@ -8,6 +8,7 @@ import type { Cutout } from "../catalogueMedia";
 import { useAuth } from "../auth/AuthContext";
 import { formatPrice } from "../products";
 import { paths } from "../routes";
+import { Spinner } from "../ui/Loading";
 import { checkoutStyles } from "./checkout.styles";
 import { type DeliveryId, type Order, deliveries, deliveryPrice } from "./orderDetails";
 import { TEST_CARD, goToPayment } from "./payment";
@@ -41,23 +42,24 @@ function CheckoutSignIn() {
   const [email, setEmail] = useState("");
   const [askPassword, setAskPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const [busy, setBusy] = useState(false);
+  // Which way of signing in is working: "password", "demo" or none.
+  const [busy, setBusy] = useState("");
 
-  async function attempt(work: () => Promise<void>) {
-    setBusy(true);
+  async function attempt(way: string, work: () => Promise<void>) {
+    setBusy(way);
     setMessage("");
     try {
       await work();
     } catch (error) {
       setMessage((error as Error).message);
-      setBusy(false);
+      setBusy("");
     }
   }
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!askPassword) return setAskPassword(true);
     const password = (event.currentTarget.elements.namedItem("password") as HTMLInputElement).value;
-    attempt(() => signIn({ email, password }));
+    attempt("password", () => signIn({ email, password }));
   }
 
   return (
@@ -93,7 +95,9 @@ function CheckoutSignIn() {
                   required
                   autoFocus
                 />
-                <button type="submit" aria-label="Sign in" disabled={busy}><ArrowForward /></button>
+                <button type="submit" aria-label="Sign in" disabled={Boolean(busy)} aria-busy={busy === "password"}>
+                  {busy === "password" ? <Spinner /> : <ArrowForward />}
+                </button>
               </div>
             )}
           </form>
@@ -110,7 +114,14 @@ function CheckoutSignIn() {
         <div className="cp-signin-demo">
           <h2>Try the demo</h2>
           <p>Check out with an account made just for you. No email or password needed.</p>
-          <button type="button" className="cp-primary" disabled={busy} onClick={() => attempt(signInToDemo)}>
+          <button
+            type="button"
+            className="cp-primary"
+            disabled={Boolean(busy)}
+            aria-busy={busy === "demo"}
+            onClick={() => attempt("demo", signInToDemo)}
+          >
+            {busy === "demo" && <Spinner />}
             Continue with the demo
           </button>
         </div>
@@ -233,7 +244,8 @@ function CheckoutForm({ bag, placing, setPlacing }: { bag: Bag; placing: boolean
           </section>
         </div>
         <Summary bag={bag} deliveryOre={deliveries[delivery].priceOre}>
-          <button type="button" className="cp-primary cp-wide" disabled={placing} onClick={place}>
+          <button type="button" className="cp-primary cp-wide" disabled={placing} aria-busy={placing} onClick={place}>
+            {placing && <Spinner />}
             Continue to payment
           </button>
           {error && <p role="alert">{error}</p>}
