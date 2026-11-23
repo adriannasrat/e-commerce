@@ -461,4 +461,38 @@ export const checkoutStyles = ` .cp {
  .cp h1:focus {
 	 outline: none;
 }
+ .cp-placed-payment {
+	 margin-top: 32px;
+}
+ .cp-payment-actions {
+	 display: flex;
+	 flex-wrap: wrap;
+	 justify-content: center;
+	 gap: 12px;
+}
+ .cp-payment-hint {
+	 margin: 12px 0 0;
+	 color: var(--rx-muted);
+	 font-size: 13px;
+	 text-align: center;
+}
+ .cp.cp-waiting {
+	 max-width: 720px;
+	 margin: 0 auto 40px;
+	 padding: 28px 24px;
+	 border: 1px solid var(--rx-line);
+	 border-radius: var(--cp-radius);
+	 text-align: center;
+}
+ .cp-waiting h2 {
+	 margin-bottom: 8px;
+}
+ .cp-waiting > p {
+	 margin: 0 0 20px;
+	 color: var(--rx-muted);
+	 font-size: 15px;
+}
+ .cp-waiting a {
+	 color: var(--rx-link);
+}
  `;
