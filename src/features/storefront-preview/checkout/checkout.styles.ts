@@ -1,7 +1,7 @@
 // The checkout and order pages share one layout. Plain CSS keeps the two
 // pages' rules together and readable.
 export const checkoutStyles = ` .cp {
-	 --cp-radius: 18px;
+	 --cp-radius: var(--rx-radius-card);
 	 color: var(--rx-ink);
 	 padding: 64px 22px 96px;
 }

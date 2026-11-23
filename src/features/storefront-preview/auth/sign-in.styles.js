@@ -15,7 +15,7 @@ const styles = [
       margin: "auto",
       minHeight: "710px",
       background: "#25231f",
-      borderRadius: "36px",
+      borderRadius: "var(--rx-radius-panel)",
       boxShadow: "0 24px 48px -30px #25231f70",
     },
   },
@@ -25,7 +25,7 @@ const styles = [
       isolation: "isolate",
       overflow: "hidden",
       minWidth: "0",
-      borderRadius: "36px 0 0 36px",
+      borderRadius: "var(--rx-radius-panel) 0 0 var(--rx-radius-panel)",
       color: "#ffffff",
       background:
         "radial-gradient(\n    ellipse at 55% 70%,\n    #514b40 0,\n    #292620 50%,\n    #25231f 80%\n  )",
@@ -105,7 +105,7 @@ const styles = [
     ".sign-in-panel": {
       minWidth: "0",
       background: "#fdfdfb",
-      borderRadius: "36px",
+      borderRadius: "var(--rx-radius-panel)",
       padding: "36px",
       display: "flex",
       flexDirection: "column",
@@ -205,7 +205,7 @@ const styles = [
       width: "100%",
       border: "1px solid #d2d2d7",
       background: "transparent",
-      borderRadius: "28px",
+      borderRadius: "var(--rx-radius-panel)",
       minHeight: "48px",
       padding: "12px 18px",
       color: "#1d1d1f",
@@ -264,7 +264,7 @@ const styles = [
       minHeight: "48px",
       width: "100%",
       border: "0",
-      borderRadius: "28px",
+      borderRadius: "var(--rx-radius-panel)",
       background: "#1d1d1f",
       color: "#fff",
       font: "inherit",
@@ -396,13 +396,13 @@ const styles = [
         ".sign-in-card": {
           gridTemplateColumns: "1fr",
           minHeight: "auto",
-          borderRadius: "24px",
+          borderRadius: "var(--rx-radius-panel)",
         },
       },
       {
         ".sign-in-art": {
           minHeight: "205px",
-          borderRadius: "24px 24px 0 0",
+          borderRadius: "var(--rx-radius-panel) var(--rx-radius-panel) 0 0",
           alignItems: "flex-start",
           justifyContent: "center",
           padding: "24px",
@@ -448,7 +448,7 @@ const styles = [
       },
       {
         ".sign-in-panel": {
-          borderRadius: "24px",
+          borderRadius: "var(--rx-radius-panel)",
           padding: "24px",
         },
       },

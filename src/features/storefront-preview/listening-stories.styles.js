@@ -65,7 +65,7 @@ const styles = [
       minWidth: "300px",
       minHeight: "550px",
       border: "0",
-      borderRadius: "28px",
+      borderRadius: "var(--rx-radius-panel)",
       padding: "32px",
       textAlign: "left",
       font: "inherit",
@@ -181,7 +181,7 @@ const styles = [
   },
   {
     ".listening-detail.MuiDialog-paper": {
-      borderRadius: "28px",
+      borderRadius: "var(--rx-radius-panel)",
       background: "#f5f5f2",
       color: "#1d1d1f",
       display: "grid",
@@ -299,7 +299,7 @@ const styles = [
           minWidth: "0",
           minHeight: "470px",
           padding: "26px",
-          borderRadius: "22px",
+          borderRadius: "var(--rx-radius-panel)",
         },
       },
       {
