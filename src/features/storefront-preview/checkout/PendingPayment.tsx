@@ -8,6 +8,7 @@ import { formatPrice } from "../products";
 import { paths } from "../routes";
 import { checkoutStyles } from "./checkout.styles";
 import { type Order, orderNumber } from "./orderDetails";
+import OrderLines from "./OrderLines";
 import { goToPayment } from "./payment";
 
 // The signed-in visitor's order that waits for payment, if there is one.
@@ -51,7 +52,7 @@ export function PaymentActions({ orderId }: { orderId: number }) {
     run(async () => {
       await api("POST", `/orders/${orderId}/cancel`);
       await Promise.all(
-        ["cart", "orders", "order"].map((key) =>
+        ["cart", "orders", "order", "catalogue"].map((key) =>
           queryClient.invalidateQueries({ queryKey: [key] }),
         ),
       );
@@ -90,6 +91,7 @@ export function WaitingPayment({ order }: { order: Order }) {
         {formatPrice(order.total_ore / 100)}. The items stay reserved for 30
         minutes.
       </p>
+      <OrderLines items={order.items} />
       <PaymentActions orderId={order.id} />
     </aside>
   );

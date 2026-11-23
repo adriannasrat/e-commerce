@@ -245,14 +245,14 @@ export const checkoutStyles = ` .cp {
 	 border-radius: var(--cp-radius);
 	 background: var(--rx-gray);
 }
- .cp-summary ul, .cp-placed-card ul {
+ .cp-summary ul, .cp-lines {
 	 list-style: none;
 	 margin: 20px 0;
 	 padding: 0;
 	 display: grid;
 	 gap: 16px;
 }
- .cp-summary li, .cp-placed-card li {
+ .cp-summary li, .cp-lines li {
 	 display: grid;
 	 grid-template-columns: auto 1fr auto;
 	 gap: 14px;
@@ -491,6 +491,10 @@ export const checkoutStyles = ` .cp {
 	 margin: 0 0 20px;
 	 color: var(--rx-muted);
 	 font-size: 15px;
+}
+ .cp-waiting .cp-lines {
+	 margin: 0 0 24px;
+	 text-align: left;
 }
  .cp-waiting a {
 	 color: var(--rx-link);
