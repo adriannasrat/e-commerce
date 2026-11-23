@@ -28,26 +28,31 @@ const benefitIcons = {
   pricing: SellOutlined,
 };
 
-// The cards alternate between light and dark, starting with the tone that
-// suits the first model, so the gallery reads as a steady rhythm.
-const cardTones = (models) => {
-  const first = models[0]?.image.finish === "graphite" ? "dark" : "light";
-  const other = first === "dark" ? "light" : "dark";
-  return models.map((_, index) => (index % 2 === 0 ? first : other));
-};
+// Dark models sit on a dark card and light ones on a light card, so every
+// product keeps its contrast.
+const cardTone = (model) => (model.image.finish === "graphite" ? "dark" : "light");
+
+// The gallery alternates light and dark cards. Models are taken in turn from
+// each tone, starting with the first model's, and keep their order within it.
+export function alternateTones(models) {
+  const first = models.filter((model) => cardTone(model) === cardTone(models[0]));
+  const second = models.filter((model) => cardTone(model) !== cardTone(models[0]));
+  return Array.from({ length: Math.max(first.length, second.length) }, (_, index) =>
+    [first[index], second[index]].filter(Boolean),
+  ).flat();
+}
 
 function HeroGallery({ models, collection }) {
-  const tones = cardTones(models);
   return (
     <Shelf
       className="sound-gallery"
       label={`${collection.name} highlights`}
       reveal="zoom"
     >
-      {models.map((model, index) => (
+      {alternateTones(models).map((model) => (
         <article
           key={model.id}
-          className={`sound-gallery-card sound-gallery-card--${tones[index]}`}
+          className={`sound-gallery-card sound-gallery-card--${cardTone(model)}`}
           aria-labelledby={`gallery-${model.id}`}
         >
           <div className="sound-gallery-copy">
