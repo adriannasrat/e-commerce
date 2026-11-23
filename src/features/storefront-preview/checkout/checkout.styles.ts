@@ -43,6 +43,26 @@ export const checkoutStyles = ` .cp {
  .cp-wide {
 	 width: 100%;
 }
+ /* A working button shows the loader in place of its label, which stays for
+    screen readers, so the button never changes size. */
+ .cp-primary[aria-busy=true], .cp-secondary[aria-busy=true] {
+	 position: relative;
+	 color: transparent !important;
+}
+ .cp-primary[aria-busy=true] > .rx-spinner, .cp-secondary[aria-busy=true] > .rx-spinner {
+	 position: absolute;
+	 top: 50%;
+	 left: 50%;
+	 margin: 0;
+	 font-size: 15px;
+	 transform: translate(-50%, -50%);
+}
+ .cp-primary[aria-busy=true] > .rx-spinner {
+	 color: #fff;
+}
+ .cp-secondary[aria-busy=true] > .rx-spinner {
+	 color: var(--rx-ink);
+}
  .cp-link {
 	 border: 0;
 	 background: none;
