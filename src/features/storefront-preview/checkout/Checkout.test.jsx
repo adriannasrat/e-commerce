@@ -178,26 +178,27 @@ test("an unpaid order can go back to Stripe, and a cancelled one says why", asyn
   expect(screen.getByText(/nothing was charged/)).toBeInTheDocument();
 });
 
-test("back from Stripe, checkout offers the waiting order, and cancelling refills the bag", async () => {
+test("back from Stripe, the bag still holds everything and offers the waiting payment", async () => {
   mockApi.on("GET /users/me", 200, user);
-  mockApi.on("GET /cart", 200, { id: null, items: [] });
-  mockApi.on("GET /orders", 200, [order("standard", 0, "pending")]);
-  window.history.replaceState({}, "", "/checkout");
-  render(<StorefrontPreview />);
-  expect(
-    await screen.findByRole("heading", { name: "Complete your payment." }),
-  ).toBeInTheDocument();
-  expect(screen.getByText(/RS-000042/)).toBeInTheDocument();
-
-  mockApi.on("POST /orders/42/cancel", 200, cart);
   mockApi.on("GET /cart", 200, cart);
-  mockApi.on("GET /orders", 200, [order("standard", 0, "cancelled")]);
-  fireEvent.click(screen.getByRole("button", { name: "Cancel payment" }));
+  mockApi.on("GET /orders", 200, [order("standard", 0, "pending")]);
+  window.history.replaceState({}, "", "/bag");
+  render(<StorefrontPreview />);
   expect(
     await screen.findByRole("heading", { name: /Your bag total is/ }),
   ).toBeInTheDocument();
+  expect(
+    await screen.findByRole("heading", { name: "Your payment is waiting." }),
+  ).toBeInTheDocument();
+
+  mockApi.on("POST /orders/42/cancel", 200, order("standard", 0, "cancelled"));
+  mockApi.on("GET /orders", 200, [order("standard", 0, "cancelled")]);
+  fireEvent.click(screen.getByRole("button", { name: "Cancel payment" }));
+  await waitFor(() =>
+    expect(screen.queryByText("Your payment is waiting.")).toBeNull(),
+  );
   expect(window.location.pathname).toBe("/bag");
-  expect(screen.queryByText("Your order is waiting for payment.")).toBeNull();
+  expect(screen.getByRole("heading", { name: /Your bag total is/ })).toBeInTheDocument();
 });
 
 test("an order is shown only to a signed-in owner", async () => {

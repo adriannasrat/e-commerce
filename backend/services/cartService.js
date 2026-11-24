@@ -1,8 +1,9 @@
 const { HttpError } = require('../http');
 const { Cart, CartRow, Product } = require('../models');
 const { inTransaction } = require('./transaction');
+const { cancelOpenPayments } = require('./orderService');
 
-// A cart is the bag being filled. Placing an order removes it.
+// A cart is the bag being filled. It stays until its order is paid.
 const findActiveCart = (userId) => Cart.findOne({ where: { user_id: userId } });
 
 async function getOrCreateActiveCart(userId) {
@@ -59,6 +60,8 @@ async function setItemAmount(userId, productId, amount) {
   if (amount > product.stock_quantity) {
     throw new HttpError(409, `Only ${product.stock_quantity} left in stock`);
   }
+  // A changed bag no longer matches its open payment, which is closed first.
+  await cancelOpenPayments(userId);
   await withActiveCart(userId, async (cart, transaction) => {
     if (amount === 0) {
       await CartRow.destroy({ where: { cart_id: cart.id, product_id: productId }, transaction });
@@ -76,6 +79,7 @@ async function mergeGuestItems(userId, items) {
     ({ product_id: id, amount }) => Number.isInteger(id) && Number.isInteger(amount) && amount > 0,
   );
   if (!valid) throw new HttpError(400, 'Items must list product_id and a positive amount');
+  await cancelOpenPayments(userId);
   await withActiveCart(userId, (cart, transaction) => mergeItems(cart, items, transaction));
   return getCart(userId);
 }
@@ -93,4 +97,4 @@ async function mergeItems(cart, items, transaction) {
   }
 }
 
-module.exports = { getCart, mergeGuestItems, mergeItems, setItemAmount, withActiveCart };
+module.exports = { getCart, mergeGuestItems, setItemAmount };

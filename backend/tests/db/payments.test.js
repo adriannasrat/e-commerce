@@ -85,23 +85,68 @@ test("payments", async (t) => {
     assert.equal((await (await shopper())("POST", `/orders/${placed.id}/payment`)).status, 404);
   });
 
-  await t.test("cancelling a payment closes Stripe's page and puts the order back in the bag", async () => {
+  await t.test("the bag stays until Stripe confirms the payment, and checking out again resumes it", async () => {
     const api = await shopper();
     const product = await stocked(5);
-    const placed = await order(api, product, 3);
-    assert.equal((await api("GET", "/cart")).body.items.length, 0);
+    const placed = await order(api, product, 2);
+    const bag = (await api("GET", "/cart")).body;
+    assert.deepEqual(bag.items.map(({ amount }) => amount), [2]);
 
-    const bag = await api("POST", `/orders/${placed.id}/cancel`);
-    assert.equal(bag.status, 200);
-    assert.deepEqual(bag.body.items.map(({ product_id: id, amount }) => [id, amount]), [[product.id, 3]]);
+    const again = (await api("POST", "/orders", { cartId: bag.id })).body;
+    assert.equal(again.id, placed.id);
+    assert.equal(again.checkout_url, placed.checkout_url);
+    assert.equal(await stockOf(product), 3);
+
+    await deliver("checkout.session.completed", placed.id);
+    assert.equal((await api("GET", "/cart")).body.items.length, 0);
+    assert.equal((await api("GET", `/orders/${placed.id}`)).body.status, "paid");
+  });
+
+  await t.test("changing the bag or the delivery closes the open payment", async () => {
+    const api = await shopper();
+    const product = await stocked(5);
+    const placed = await order(api, product, 2);
+    const { id: cartId } = await api("PUT", `/cart/items/${product.id}`, { amount: 3 }).then((r) => r.body);
     assert.equal(fakeStripe.sessions.get(`cs_test_${placed.id}`).open, false);
     assert.equal((await api("GET", `/orders/${placed.id}`)).body.status, "cancelled");
     assert.equal(await stockOf(product), 5);
 
-    // Repeating it, or Stripe's expiry arriving afterwards, doubles nothing.
+    const bigger = (await api("POST", "/orders", { cartId })).body;
+    assert.notEqual(bigger.id, placed.id);
+    assert.equal(bigger.items[0].amount, 3);
+    const express = (await api("POST", "/orders", { cartId, delivery: "express" })).body;
+    assert.notEqual(express.id, bigger.id);
+    assert.equal((await api("GET", `/orders/${bigger.id}`)).body.status, "cancelled");
+    assert.equal(await stockOf(product), 2);
+  });
+
+  await t.test("a payment page that expired gives the bag a new order", async () => {
+    const api = await shopper();
+    const product = await stocked(5);
+    const placed = await order(api, product, 2);
+    await deliver("checkout.session.expired", placed.id);
+    const { id: cartId } = (await api("GET", "/cart")).body;
+    const fresh = (await api("POST", "/orders", { cartId })).body;
+    assert.notEqual(fresh.id, placed.id);
+    assert.equal(fresh.status, "pending");
+    assert.equal(await stockOf(product), 3);
+  });
+
+  await t.test("cancelling a payment closes Stripe's page and keeps the bag", async () => {
+    const api = await shopper();
+    const product = await stocked(5);
+    const placed = await order(api, product, 3);
+
+    const cancelled = await api("POST", `/orders/${placed.id}/cancel`);
+    assert.equal(cancelled.status, 200);
+    assert.equal(cancelled.body.status, "cancelled");
+    assert.equal(fakeStripe.sessions.get(`cs_test_${placed.id}`).open, false);
+    assert.equal(await stockOf(product), 5);
+    assert.deepEqual((await api("GET", "/cart")).body.items.map(({ amount }) => amount), [3]);
+
+    // Repeating it, or Stripe's expiry arriving afterwards, changes nothing.
     await api("POST", `/orders/${placed.id}/cancel`);
     await deliver("checkout.session.expired", placed.id);
-    assert.equal((await api("GET", "/cart")).body.items[0].amount, 3);
     assert.equal(await stockOf(product), 5);
     assert.equal((await (await shopper())("POST", `/orders/${placed.id}/cancel`)).status, 404);
   });

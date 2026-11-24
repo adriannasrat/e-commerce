@@ -8,7 +8,6 @@ import { formatPrice } from "../products";
 import { paths } from "../routes";
 import { checkoutStyles } from "./checkout.styles";
 import { type Order, orderNumber } from "./orderDetails";
-import OrderLines from "./OrderLines";
 import { goToPayment } from "./payment";
 import { Spinner } from "../ui/Loading";
 
@@ -24,7 +23,7 @@ export function usePendingOrder() {
 }
 
 // The two ways on from an order that waits for payment: back to Stripe's page,
-// or cancel it, which puts every item back in the bag to change.
+// or cancel it. The bag keeps every item either way.
 export function PaymentActions({ orderId }: { orderId: number }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -74,28 +73,25 @@ export function PaymentActions({ orderId }: { orderId: number }) {
         </button>
       </div>
       <p className="cp-payment-hint">
-        Cancelling puts everything back in your bag, where you can change it.
+        Cancelling keeps everything in your bag, where you can change it.
       </p>
       {error && <p role="alert">{error}</p>}
     </>
   );
 }
 
-// Shown on the bag and checkout pages while an order waits for payment, so
-// leaving Stripe's page never makes the items seem to disappear.
+// Shown in the bag while its payment is open on Stripe. The bag itself lists
+// the items, so this only says what waits and how to go on.
 export function WaitingPayment({ order }: { order: Order }) {
-  const count = order.items.reduce((sum, item) => sum + item.amount, 0);
   return (
     <aside className="cp cp-waiting" aria-labelledby="waiting-title">
       <GlobalStyles styles={checkoutStyles} />
-      <h2 id="waiting-title">Your order is waiting for payment.</h2>
+      <h2 id="waiting-title">Your payment is waiting.</h2>
       <p>
         <a href={paths.order(order.id)}>{orderNumber(order.id)}</a> ·{" "}
-        {count} {count === 1 ? "item" : "items"} ·{" "}
-        {formatPrice(order.total_ore / 100)}. The items stay reserved for 30
-        minutes.
+        {formatPrice(order.total_ore / 100)}. Your items stay reserved for 30
+        minutes. Changing the bag closes this payment.
       </p>
-      <OrderLines items={order.items} />
       <PaymentActions orderId={order.id} />
     </aside>
   );

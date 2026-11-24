@@ -41,7 +41,8 @@ test("checkout", async (t) => {
       assert.equal(order.checkout_url, `https://checkout.stripe.test/${order.id}`);
       assert.equal(order.total_ore, 358000);
       assert.equal(await stockOf(product), 3);
-      assert.deepEqual((await api("GET", "/cart")).body.items, []);
+      // The bag stays until Stripe confirms the payment.
+      assert.deepEqual((await api("GET", "/cart")).body.items.map(({ amount }) => amount), [2]);
 
       await product.update({ price_ore: 999 });
       const { body: history } = await api("GET", "/orders");

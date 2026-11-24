@@ -1,7 +1,6 @@
 const { HttpError } = require('../http');
 const { Cart, CartRow, Order, OrderLine, Product, ProductMedia } = require('../models');
 const { payments } = require('../payments/stripe');
-const { getCart, mergeItems, withActiveCart } = require('./cartService');
 const { inTransaction } = require('./transaction');
 
 // The server sets the price of delivery, never the request.
@@ -34,9 +33,15 @@ const toOrder = (order) => {
 
 const findOrder = (where, transaction) => Order.findOne({ where, include: [linesWithProducts], transaction });
 
-// Stock is reserved, prices are frozen and the cart becomes a pending order,
-// together or not at all. A repeated request for the same cart finds that
-// order, so it cannot buy twice.
+// The bag's rows, or an order's lines, as product id → amount.
+const contents = (rows) => new Map(rows.map((row) => [row.product_id, row.amount]));
+const sameContents = (a, b) => a.size === b.size && [...a].every(([id, amount]) => b.get(id) === amount);
+
+// Stock is reserved, prices are frozen and the bag gets a pending order,
+// together or not at all. The bag itself stays until the payment goes
+// through. While it is unchanged, a repeated request finds its open order, and
+// once paid the bag is gone and the request finds the paid order, so nothing
+// is ever bought twice.
 async function reserveOrder(userId, cartId, delivery) {
   return inTransaction(async (transaction) => {
     const cart = await Cart.findOne({
@@ -45,13 +50,27 @@ async function reserveOrder(userId, cartId, delivery) {
       transaction,
     });
     if (!cart) {
-      const placed = await Order.findOne({ where: { cart_id: cartId, user_id: userId }, transaction });
+      const placed = await Order.findOne({
+        where: { cart_id: cartId, user_id: userId },
+        order: [['id', 'DESC']],
+        transaction,
+      });
       if (placed) return placed;
       throw new HttpError(404, 'Cart not found');
     }
 
     const rows = await CartRow.findAll({ where: { cart_id: cart.id }, transaction });
     if (!rows.length) throw new HttpError(409, 'Your cart is empty');
+
+    const open = await Order.findOne({
+      where: { cart_id: cart.id, status: 'pending' },
+      include: [{ model: OrderLine, as: 'lines' }],
+      transaction,
+    });
+    if (open) {
+      if (open.delivery === delivery && sameContents(contents(open.lines), contents(rows))) return open;
+      throw new HttpError(409, 'Your bag changed while its payment was open. Please try again.');
+    }
 
     // Locking in id order keeps parallel orders from deadlocking.
     const products = await Product.findAll({
@@ -78,8 +97,6 @@ async function reserveOrder(userId, cartId, delivery) {
         { transaction },
       );
     }
-    await CartRow.destroy({ where: { cart_id: cart.id }, transaction });
-    await cart.destroy({ transaction });
     return order;
   });
 }
@@ -110,14 +127,30 @@ async function placeOrder(userId, { cartId, delivery = 'standard' } = {}, origin
   if (!Object.hasOwn(DELIVERY_ORE, delivery)) throw new HttpError(400, 'delivery must be standard or express');
   // Checked first, so the bag stays as it is when payments are not set up.
   payments.assertReady();
-  const { id } = await reserveOrder(userId, cartId, delivery);
+  // A payment opened for a different bag or delivery is closed first.
+  const open = await Order.findOne({
+    where: { cart_id: cartId, user_id: userId, status: 'pending' },
+    include: [{ model: OrderLine, as: 'lines' }],
+  });
+  if (open) {
+    const rows = await CartRow.findAll({ where: { cart_id: cartId } });
+    if (open.delivery !== delivery || !sameContents(contents(open.lines), contents(rows))) {
+      await cancelPayment(userId, open.id);
+    }
+  }
+
+  let { id } = await reserveOrder(userId, cartId, delivery);
+  let placed = await Order.findByPk(id);
+  if (placed.status === 'pending' && placed.stripe_session_id) {
+    const url = await payments.checkoutUrl(placed.stripe_session_id);
+    if (url) return { ...toOrder(await findOrder({ id })), checkout_url: url };
+    // Its page has closed without a payment, so the bag gets a new order.
+    await cancelPayment(userId, id);
+    ({ id } = await reserveOrder(userId, cartId, delivery));
+    placed = await Order.findByPk(id);
+  }
   const order = toOrder(await findOrder({ id }));
   if (order.status !== 'pending') return order;
-
-  const placed = await Order.findByPk(id);
-  if (placed.stripe_session_id) {
-    return { ...order, checkout_url: await payments.checkoutUrl(placed.stripe_session_id) };
-  }
   let session;
   try {
     session = await payments.openCheckout({ order: { ...order, items: await describeItems(order.items) }, origin });
@@ -148,6 +181,9 @@ async function markPaid(orderId, sessionId) {
     const order = await Order.findOne({ where: { id: orderId }, lock: transaction.LOCK.UPDATE, transaction });
     if (!order || order.stripe_session_id !== sessionId || order.status !== 'pending') return;
     await order.update({ status: 'paid', paid_at: new Date() }, { transaction });
+    // The bag has been bought, so it is emptied now and not before.
+    await CartRow.destroy({ where: { cart_id: order.cart_id }, transaction });
+    await Cart.destroy({ where: { id: order.cart_id, user_id: order.user_id }, transaction });
   });
 }
 
@@ -174,24 +210,24 @@ async function cancelOrder(orderId, sessionId) {
 
 // The visitor stops paying. Stripe's page is closed first, outside any
 // transaction, so it can no longer take a payment. Then the order is cancelled
-// and its lines go back in the bag, where they can be changed. The bag is
-// locked before the order, in the same order as placing one, so the two cannot
-// deadlock. Repeating it never doubles the bag, and a paid order stays paid.
-async function returnToBag(userId, orderId) {
+// and its stock goes back on sale. The bag was never emptied, so it still
+// holds everything. A paid order stays paid.
+async function cancelPayment(userId, orderId) {
   const order = Number.isInteger(orderId) && await Order.findOne({ where: { id: orderId, user_id: userId } });
   if (!order) throw new HttpError(404, 'Order not found');
   if (order.status === 'paid') throw new HttpError(409, 'This order is already paid');
-  if (order.status === 'pending' && order.stripe_session_id && !(await payments.closeCheckout(order.stripe_session_id))) {
+  if (order.status !== 'pending') return;
+  if (order.stripe_session_id && !(await payments.closeCheckout(order.stripe_session_id))) {
     throw new HttpError(409, 'This order was just paid');
   }
-  await withActiveCart(userId, async (cart, transaction) => {
-    const locked = await Order.findOne({ where: { id: order.id }, lock: transaction.LOCK.UPDATE, transaction });
-    if (locked.status === 'paid') throw new HttpError(409, 'This order is already paid');
-    if (locked.status === 'pending') await releaseOrder(locked, transaction);
-    const lines = await OrderLine.findAll({ where: { order_id: order.id }, transaction });
-    await mergeItems(cart, lines.map(({ product_id: productId, amount }) => ({ product_id: productId, amount })), transaction);
-  });
-  return getCart(userId);
+  await cancelOrder(order.id);
+}
+
+// Every open payment of a visitor is closed, as when the bag changes, so a
+// payment always matches the bag it was opened for.
+async function cancelOpenPayments(userId) {
+  const open = await Order.findAll({ where: { user_id: userId, status: 'pending' } });
+  for (const order of open) await cancelPayment(userId, order.id);
 }
 
 async function getOrders(userId) {
@@ -209,4 +245,13 @@ async function getOrder(userId, orderId) {
   return toOrder(order);
 }
 
-module.exports = { cancelOrder, getOrder, getOrders, markPaid, placeOrder, resumePayment, returnToBag };
+module.exports = {
+  cancelOpenPayments,
+  cancelOrder,
+  cancelPayment,
+  getOrder,
+  getOrders,
+  markPaid,
+  placeOrder,
+  resumePayment,
+};

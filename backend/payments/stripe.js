@@ -26,6 +26,11 @@ const TEST_MODE_NOTE =
 // its finish and picture, delivery when it costs anything, and how to pay in
 // test mode beside the pay button. Stripe fetches the pictures itself, so they
 // are only sent from a public https address, never from localhost.
+// When the order was placed. Both the hold and the idempotency key follow
+// from it, so every request for one order is the same request to Stripe, and
+// an order id reused after a database reset never meets an older key.
+const placedAt = (order) => new Date(order.placed_at).getTime();
+
 function checkoutParams({ order, origin }) {
   const picture = (path) => (path && origin.startsWith('https://') ? [`${origin}/media/${path}`] : undefined);
   const line = (name, unitAmount, quantity, description, images) => ({
@@ -41,7 +46,7 @@ function checkoutParams({ order, origin }) {
     client_reference_id: String(order.id),
     metadata: { order_id: String(order.id) },
     custom_text: { submit: { message: TEST_MODE_NOTE } },
-    expires_at: Math.floor(Date.now() / 1000) + HOLD_MINUTES * 60,
+    expires_at: Math.floor(placedAt(order) / 1000) + HOLD_MINUTES * 60,
     success_url: `${origin}/order/${order.id}?payment=done`,
     cancel_url: `${origin}/order/${order.id}`,
   };
@@ -56,7 +61,7 @@ const payments = {
     const session = await stripe().checkout.sessions.create(
       checkoutParams({ order, origin }),
       // A retried request for the same order gets the same session.
-      { idempotencyKey: `order-${order.id}-checkout` },
+      { idempotencyKey: `order-${order.id}-${placedAt(order)}` },
     );
     return { id: session.id, url: session.url };
   },

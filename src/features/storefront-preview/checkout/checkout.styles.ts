@@ -513,10 +513,6 @@ export const checkoutStyles = ` .cp {
 	 color: var(--rx-muted);
 	 font-size: 15px;
 }
- .cp-waiting .cp-lines {
-	 margin: 0 0 24px;
-	 text-align: left;
-}
  .cp-waiting a {
 	 color: var(--rx-link);
 }

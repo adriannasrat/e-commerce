@@ -77,7 +77,11 @@ export default function usePreviewBag() {
       queryClient.setQueryData(cartKey(owner), next);
       return next;
     },
-    onSuccess: () => setError(""),
+    onSuccess: () => {
+      setError("");
+      // A changed bag closes its open payment on the server.
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
     onError: (failure) => setError(failure.message),
   });
 
@@ -85,8 +89,9 @@ export default function usePreviewBag() {
     scope: cartScope,
     mutationFn: async ({ owner, delivery }) => {
       const current = await latestCart(owner);
+      // The bag stays as it is until Stripe confirms the payment.
       const order = await api("POST", "/orders", { cartId: current.id, delivery });
-      queryClient.setQueryData(cartKey(owner), await api("GET", "/cart"));
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
       return order;
     },
   });

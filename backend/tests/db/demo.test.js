@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { startApi } = require("./helper");
+const { fakeStripe, startApi } = require("./helper");
 
 test("demo accounts and the nightly reset", async (t) => {
   process.env.CRON_SECRET = "test-cron-secret";
@@ -20,6 +20,39 @@ test("demo accounts and the nightly reset", async (t) => {
       assert.deepEqual((await first("GET", "/users/me")).body, account);
       const { body: other } = await second("POST", "/demo/sign-in");
       assert.notEqual(other.id, account.id);
+    },
+  );
+
+  await t.test(
+    "signing out of the demo closes its payments and removes the account",
+    async () => {
+      const shopper = visitor();
+      const { body: account } = await shopper("POST", "/demo/sign-in");
+      const product = await Product.create({
+        title: "Demo model", description: "d", price_ore: 100000, imageUrl: "x", stock_quantity: 4,
+      });
+      const { body: cart } = await shopper("PUT", `/cart/items/${product.id}`, { amount: 2 });
+      const { body: order } = await shopper("POST", "/orders", { cartId: cart.id });
+      assert.equal((await Product.findByPk(product.id)).stock_quantity, 2);
+
+      assert.equal((await shopper("POST", "/users/signout")).status, 204);
+      assert.equal(fakeStripe.sessions.get(`cs_test_${order.id}`).open, false);
+      assert.equal((await Product.findByPk(product.id)).stock_quantity, 4);
+      assert.equal(await User.findByPk(account.id), null);
+      assert.equal((await shopper("GET", "/users/me")).status, 401);
+    },
+  );
+
+  await t.test(
+    "signing out of a real account keeps it",
+    async () => {
+      const member = visitor();
+      const { body: account } = await member("POST", "/users/signup", {
+        email: "member@example.test",
+        password: "long enough",
+      });
+      await member("POST", "/users/signout");
+      assert.ok(await User.findByPk(account.id));
     },
   );
 

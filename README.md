@@ -40,16 +40,20 @@ carry most of the weight:
 - **Prices are stored in öre** as integers, so totals never suffer from rounding.
 - **Sessions are opaque tokens** in an httpOnly cookie, and only a digest is stored.
   Routes act on the signed-in user and never accept a user id.
-- **A cart is only the bag being filled.** The database allows one per user, and
-  placing an order turns it into an order with its own lines and an explicit
-  status: `pending`, `paid` or `cancelled`.
+- **A cart is the bag, and it stays until it is paid for.** The database allows
+  one per user. Checking out gives it an order with its own lines and an
+  explicit status: `pending`, `paid` or `cancelled`. The bag keeps its items
+  while the payment is open, changing the bag closes that payment, and only a
+  confirmed payment empties it.
 - **Placing an order runs in a single transaction.** Stock rows are locked in a
-  fixed order to avoid deadlocks, and a repeated request for the same cart
-  returns the same order.
+  fixed order to avoid deadlocks, and a repeated request for an unchanged bag
+  returns its open order.
 - **Only Stripe's signed webhook marks an order paid.** The order reserves its
   stock, then Stripe Checkout takes the payment outside any database
   transaction. A payment page that expires cancels the order and returns its
   stock, and repeated or late events change nothing.
+- **A demo account lasts one visit.** Signing out closes its open payments,
+  returns their stock and removes the account with its bag and orders.
 
 ## Run it locally
 
