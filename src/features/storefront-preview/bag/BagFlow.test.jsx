@@ -89,7 +89,7 @@ test("corrupted saved data falls back to an empty bag", () => {
   );
 });
 
-test("profile options open the corresponding preview information", async () => {
+test("profile options lead to saves and the account", async () => {
   render(<BagHarness />);
   fireEvent.click(
     screen.getByRole("button", { name: "Shopping bag, 0 items" }),
@@ -98,9 +98,9 @@ test("profile options open the corresponding preview information", async () => {
   ["Orders", "Your saves", "Account", "Sign in"].forEach((name) => {
     expect(within(profile).getByRole("button", { name })).toBeInTheDocument();
   });
-  fireEvent.click(within(profile).getByRole("button", { name: "Orders" }));
+  fireEvent.click(within(profile).getByRole("button", { name: "Your saves" }));
   expect(
-    await screen.findByRole("dialog", { name: "Orders" }),
+    await screen.findByRole("dialog", { name: "Your saves" }),
   ).toBeInTheDocument();
 });
 

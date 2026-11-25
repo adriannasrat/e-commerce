@@ -40,7 +40,8 @@ test("a rejected sign-in explains why and clears the password; a valid one signs
   mockApi.on("POST /users/signin", 200, (body) => ({ id: 1, email: body.email }));
   fireEvent.change(password, { target: { value: "demo-password" } });
   fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
-  await waitFor(() => expect(window.location.pathname).toBe("/"));
+  // The account icon brought the visitor here, so signing in leads to the account.
+  await waitFor(() => expect(window.location.pathname).toBe("/account"));
 });
 
 test("switching to registration preserves the artwork and validates matching passwords", async () => {
