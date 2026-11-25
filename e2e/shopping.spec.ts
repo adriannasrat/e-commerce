@@ -1,12 +1,19 @@
 import { expect, test, type Page } from "@playwright/test";
 
-// The storefront's own navigation, as a visitor uses it.
+// The storefront's own navigation, as a visitor uses it. After clicking in the
+// menu bar a visitor moves the pointer down to the page, which closes the
+// menu's hover panel; staying over the bar would keep it open over the page.
+async function useMenuLink(page: Page, name: string) {
+  await page.getByRole("link", { name, exact: true }).first().click();
+  await page.mouse.move(640, 600);
+  await expect(page.locator("header.rx-globalnav")).not.toHaveAttribute("data-flyout", "open");
+}
 const openBag = (page: Page) => page.getByRole("link", { name: /^Review bag/ }).first().click();
 const bagButton = (page: Page) => page.getByRole("button", { name: /^Shopping bag/ });
 
 async function addAtlasToBag(page: Page) {
   await page.goto("/");
-  await page.getByRole("link", { name: "Store", exact: true }).first().click();
+  await useMenuLink(page, "Store");
   await expect(page.getByRole("heading", { name: "The collection." })).toBeVisible();
   await page.getByRole("link", { name: "Explore Atlas in Graphite" }).first().click();
   await expect(page.getByRole("heading", { level: 1, name: "Atlas" })).toBeVisible();
