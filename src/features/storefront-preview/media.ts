@@ -25,3 +25,6 @@ export function mediaSources(path: string): MediaSource[] {
 // The same list as an <img> srcset, so the browser picks the copy it needs.
 export const mediaSrcSet = (path: string) =>
   mediaSources(path).map(({ src, width }) => `${src} ${width}w`).join(", ") || undefined;
+
+// Every film also exists 720 px wide for phones, made by scripts/whiten-films.sh.
+export const phoneFilm = (src: string) => src.replace(/\.mp4$/, "-720w.mp4");

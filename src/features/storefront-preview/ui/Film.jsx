@@ -1,5 +1,6 @@
 import FilmToggle from "./FilmToggle";
 import useFilm from "./useFilm";
+import FilmVideo from "./FilmVideo";
 
 // A silent looping film section. Nothing downloads until it comes on screen.
 export default function Film({ film }) {
@@ -16,14 +17,7 @@ export default function Film({ film }) {
         <p>{film.lead}</p>
       </header>
       <div className="rx-film-frame" data-reveal="zoom">
-        <video
-          {...videoProps}
-          src={film.src}
-          poster={film.poster}
-          aria-label={film.description}
-          loop
-          preload="none"
-        />
+        <FilmVideo {...videoProps} film={film} loop preload="none" />
         <FilmToggle playing={playing} ended={ended} onClick={toggle} />
       </div>
     </section>

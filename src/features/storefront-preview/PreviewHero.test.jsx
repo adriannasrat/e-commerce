@@ -46,7 +46,8 @@ test("the hero film plays once, rests on its last frame and can be replayed", ()
 
 test("the hero keeps its message if the film cannot load", () => {
   render(<PreviewHero />);
-  fireEvent.error(screen.getByLabelText(films.home.description));
+  // Neither copy could play: the last source reports it.
+  fireEvent.error(screen.getByLabelText(films.home.description).querySelector("source:last-of-type"));
   expect(screen.getByRole("link", { name: "Learn more" })).toBeInTheDocument();
   expect(screen.queryByRole("button", { name: /film/ })).toBeNull();
 });
