@@ -82,7 +82,7 @@ async function startApi(t) {
       const set = response.headers.get('set-cookie');
       if (set) cookie = set.split(';')[0];
       const isJson = response.headers.get('content-type')?.includes('json');
-      return { status: response.status, setCookie: set, body: isJson ? await response.json() : null };
+      return { status: response.status, headers: response.headers, setCookie: set, body: isJson ? await response.json() : null };
     };
   };
 }

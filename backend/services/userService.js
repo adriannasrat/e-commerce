@@ -1,6 +1,7 @@
 const { hashPassword, verifyPassword } = require('../auth/password');
 const { HttpError } = require('../http');
 const { User } = require('../models');
+const { assertSignInAllowed, clearFailedSignIns, recordFailedSignIn } = require('./signInLimit');
 
 const MIN_PASSWORD_LENGTH = 8;
 const normaliseEmail = (email) => email.trim().toLowerCase();
@@ -31,11 +32,17 @@ async function createUser(body) {
   }
 }
 
-async function authenticate(body) {
+// address is the visitor's network address, which limits repeated guessing.
+async function authenticate(body, address) {
   const { email, password } = readCredentials(body);
+  await assertSignInAllowed(email, address);
   const user = await User.findOne({ where: { email } });
   const valid = await verifyPassword(password, user ? user.password : await unknownUserHash);
-  if (!user || !valid) throw new HttpError(401, 'Invalid email or password');
+  if (!user || !valid) {
+    await recordFailedSignIn(email, address);
+    throw new HttpError(401, 'Invalid email or password');
+  }
+  await clearFailedSignIns(email, address);
   return user;
 }
 
