@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# Turns the warm off-white backdrop of the product films pure white.
+# Turns the warm off-white backdrop of the product films pure white, and
+# writes each film in two sizes: up to 1280 px wide for larger screens, and
+# 720 px wide as name-720w.mp4 for phones. Both are encoded for the web, small
+# enough to start quickly, with no sound.
 #
 # Reads the untouched films from design-references/film-originals and writes
-# to public/media/films, so it can be run again without losing quality.
+# to public/media/films, so it can be run again without losing quality. Name
+# films to encode only those: scripts/whiten-films.sh home-hero
 #
 # One filter pass, per pixel:
 # 1. Light tones lose their colour cast: between brightness 140 and 180 they
@@ -50,12 +54,23 @@ filter_for() {
   esac
 }
 
-for film in "$source_dir"/*.mp4; do
-  name=$(basename "$film" .mp4)
+# H.264 plays everywhere. crf sets the quality: higher is smaller, and these
+# values keep the studio gradients smooth while staying far below the
+# originals' size.
+encode=(-c:v libx264 -preset slow -profile:v high -pix_fmt yuv420p -movflags +faststart -an)
+
+names=("$@")
+if [ ${#names[@]} -eq 0 ]; then
+  for film in "$source_dir"/*.mp4; do names+=("$(basename "$film" .mp4)"); done
+fi
+
+for name in "${names[@]}"; do
   vf=$(filter_for "$name")
-  ffmpeg -v error -y -i "$film" -vf "$vf" \
-    -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -movflags +faststart -an \
-    "$target_dir/$name.mp4"
-  ffmpeg -v error -y -i "$source_dir/$name.jpg" -vf "$vf" -q:v 2 "$target_dir/$name.jpg"
+  # The filter runs once; its result is scaled to both sizes.
+  ffmpeg -v error -y -i "$source_dir/$name.mp4" \
+    -filter_complex "[0:v]$vf,format=yuv420p,split=2[large][small];[large]scale='min(1280,iw)':-2[large1280];[small]scale=720:-2[small720]" \
+    -map "[large1280]" "${encode[@]}" -crf 27 "$target_dir/$name.mp4" \
+    -map "[small720]" "${encode[@]}" -crf 28 "$target_dir/$name-720w.mp4"
+  ffmpeg -v error -y -i "$source_dir/$name.jpg" -vf "$vf,scale='min(1280,iw)':-2" -q:v 3 "$target_dir/$name.jpg"
   echo "$name"
 done
