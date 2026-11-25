@@ -6,6 +6,7 @@ const Cart = require("./Cart");
 const CartRow = require("./CartRow");
 const Rating = require("./Rating");
 const Session = require("./Session");
+const SignInFailure = require("./SignInFailure");
 const ProductMedia = require("./ProductMedia");
 const Order = require("./Order");
 const OrderLine = require("./OrderLine");
@@ -38,4 +39,4 @@ Order.hasMany(OrderLine, { foreignKey: "order_id", as: "lines", onDelete: "CASCA
 OrderLine.belongsTo(Order, { foreignKey: "order_id" });
 OrderLine.belongsTo(Product, { foreignKey: "product_id" });
 
-module.exports = { Product, ProductMedia, User, Cart, CartRow, Order, OrderLine, Rating, Session };
+module.exports = { Product, ProductMedia, User, Cart, CartRow, Order, OrderLine, Rating, Session, SignInFailure };
