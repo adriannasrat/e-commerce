@@ -7,11 +7,16 @@ const { HttpError } = require('../http');
 let client;
 let clientKey;
 function stripe() {
-  const { secretKey } = readEnvironment().stripe;
+  const { secretKey, apiUrl } = readEnvironment().stripe;
   if (!secretKey) throw new HttpError(503, 'Payments are not set up yet');
-  if (clientKey !== secretKey) {
-    client = new Stripe(secretKey);
-    clientKey = secretKey;
+  if (clientKey !== `${secretKey} ${apiUrl}`) {
+    // The end-to-end tests point the client at a local stand-in for Stripe.
+    const local = apiUrl && new URL(apiUrl);
+    client = new Stripe(
+      secretKey,
+      local ? { host: local.hostname, port: Number(local.port), protocol: 'http' } : undefined,
+    );
+    clientKey = `${secretKey} ${apiUrl}`;
   }
   return client;
 }

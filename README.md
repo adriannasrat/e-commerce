@@ -164,9 +164,13 @@ fetch them from localhost.
 | `npm run typecheck` | The TypeScript compiler on `.ts` and `.tsx` files |
 | `npm run test:api` | API configuration and startup, without a database |
 | `DB_NAME=shop_test npm run test:db` | Migrations, accounts, cart and checkout against MariaDB |
+| `DB_NAME=shop_test npm run test:e2e` | Browsing, the bag, sign-in and paying, in Chromium with Playwright |
 
-The database tests empty their database, so they refuse any name that does not
-end in `_test`. The database user needs full privileges on that database.
+The database and end-to-end tests empty their database, so they refuse any name
+that does not end in `_test`. The database user needs full privileges on that
+database. The end-to-end tests build the storefront and start it, the API and a
+local stand-in for Stripe on ports 4173, 5101 and 12111, so they need no network
+or Stripe keys. Run `npx playwright install chromium` once before the first run.
 GitHub Actions runs all of these and a production build on every pull request.
 
 ## Project layout

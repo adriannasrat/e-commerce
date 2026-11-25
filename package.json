@@ -31,10 +31,12 @@
     "migrate": "node backend/migrate.js",
     "start:api": "node backend/server.js",
     "test:api": "LOG_LEVEL=silent node --test backend/tests/*.test.js",
-    "test:db": "LOG_LEVEL=silent node --test --test-concurrency=1 backend/tests/db/*.test.js"
+    "test:db": "LOG_LEVEL=silent node --test --test-concurrency=1 backend/tests/db/*.test.js",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

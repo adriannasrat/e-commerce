@@ -2,8 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // The API runs separately. In development, Vite forwards its routes so the
-// browser sees one origin and the session cookie stays same-site.
-const api = "http://localhost:5001";
+// browser sees one origin and the session cookie stays same-site. The
+// end-to-end tests run their own API and set API_URL to reach it.
+const api = process.env.API_URL ?? "http://localhost:5001";
 
 // One prefix for every API call, so page paths never reach the API.
 const proxy = { "/api": api };

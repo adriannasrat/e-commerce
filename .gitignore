@@ -35,3 +35,7 @@ yarn-error.log*
 /.agents/skills/
 /.claude/
 /skills-lock.json
+
+# End-to-end test output
+/playwright-report/
+/test-results/
