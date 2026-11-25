@@ -45,8 +45,6 @@ filter_for() {
   case "$1" in
     # Over-ear: the product stays at least 26 % from the sides.
     home-hero | form-orbit) filter 0.08 0.22 1.0 1.2 999 ;;
-    # Close-ups begin at 10.09 s and fill the frame from then on.
-    form-film) filter 0.08 0.22 1.0 1.2 10.05 ;;
     # In-ear: the buds come within 10 % of the left edge.
     pocket-film | pocket-orbit) filter 0.02 0.08 0.95 1.15 999 ;;
     # Close-ups throughout: the dark edges are the product itself.
@@ -59,9 +57,11 @@ filter_for() {
 # originals' size.
 encode=(-c:v libx264 -preset slow -profile:v high -pix_fmt yuv420p -movflags +faststart -an)
 
+# The films the storefront shows: three in ui/films.js and the two product
+# films in the database. Other originals are left alone.
 names=("$@")
 if [ ${#names[@]} -eq 0 ]; then
-  for film in "$source_dir"/*.mp4; do names+=("$(basename "$film" .mp4)"); done
+  names=(home-hero form-detail pocket-film form-orbit pocket-orbit)
 fi
 
 for name in "${names[@]}"; do
