@@ -41,7 +41,8 @@ export const accountStyles = ` .ac {
 	 padding: 20px;
 	 border: 1px solid var(--rx-line);
 	 border-radius: var(--rx-radius-card);
-	 color: inherit;
+	 /* A whole card is the link, so it keeps the text colour, not the link colour. */
+	 color: var(--rx-ink) !important;
 	 text-decoration: none;
 	 transition: border-color 200ms ease, box-shadow 200ms ease;
 }
@@ -106,6 +107,22 @@ export const accountStyles = ` .ac {
 }
  .ac-order-arrow {
 	 color: var(--rx-muted);
+}
+ @media (max-width: 480px) {
+	 .ac-order-body {
+		 gap: 12px;
+	}
+	 .ac-order-thumbs .cp-thumb {
+		 width: 44px;
+		 height: 44px;
+	}
+	 .ac-order-thumbs .cp-thumb svg {
+		 width: 36px;
+		 height: 36px;
+	}
+	 .ac-order-thumbs .cp-thumb + .cp-thumb {
+		 margin-left: -12px;
+	}
 }
  .ac-note {
 	 display: grid;
