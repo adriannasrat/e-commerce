@@ -32,6 +32,7 @@ File paths are resolved relative to the module, not the working directory.
 | CRON_SECRET | unset | Bearer token for the nightly demo reset, which refuses all calls when unset |
 | STRIPE_SECRET_KEY | unset | Stripe test-mode secret key; a live key stops startup, and checkout refuses orders when unset |
 | STRIPE_WEBHOOK_SECRET | unset | Signing secret of the Stripe webhook; events are refused when unset |
+| STRIPE_API_URL | unset | Only for the end-to-end tests: a local `http://localhost:<port>` stand-in for Stripe; refused in production |
 
 Startup checks the configuration and reports every problem at once, by variable
 name and never by value. Ports must be integers between 1 and 65535, `NODE_ENV`
