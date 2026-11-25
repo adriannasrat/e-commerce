@@ -271,7 +271,8 @@ const styles = [
       fontSize: "13px",
       fontWeight: "600",
       cursor: "pointer",
-      transition: "background-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
+      transition:
+        "background-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -304,7 +305,8 @@ const styles = [
       font: "inherit",
       fontSize: "17px",
       cursor: "pointer",
-      transition: "border-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
+      transition:
+        "border-color 200ms ease,\n    scale var(--press-duration) var(--ease-out)",
     },
   },
   {
@@ -332,6 +334,7 @@ const styles = [
       lineHeight: "1.6",
       color: "#6e6e73",
       margin: "16px 0 0",
+      textAlign: "center",
     },
   },
   {
