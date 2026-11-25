@@ -3,6 +3,7 @@ import { formatPrice } from "./products";
 import FilmToggle from "./ui/FilmToggle";
 import { films } from "./ui/films";
 import useFilm from "./ui/useFilm";
+import FilmVideo from "./ui/FilmVideo";
 import { paths } from "./routes";
 
 const film = films.home;
@@ -33,13 +34,7 @@ export default function PreviewHero() {
       </div>
       {!failed && (
         <div className="preview-hero-film">
-          <video
-            {...videoProps}
-            src={film.src}
-            poster={film.poster}
-            aria-label={film.description}
-            preload="metadata"
-          />
+          <FilmVideo {...videoProps} film={film} preload="metadata" />
           <FilmToggle playing={playing} ended={ended} onClick={toggle} />
         </div>
       )}

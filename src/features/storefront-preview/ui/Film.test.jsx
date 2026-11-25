@@ -67,7 +67,8 @@ test("reduced motion keeps the poster until the visitor presses play", () => {
 
 test("a film that cannot load removes its whole section", () => {
   render(<Film film={film} />);
-  fireEvent.error(screen.getByLabelText(film.description));
+  // Neither copy could play: the last source reports it.
+  fireEvent.error(screen.getByLabelText(film.description).querySelector("source:last-of-type"));
   expect(screen.queryByRole("heading", { name: film.title })).toBeNull();
 });
 
@@ -78,4 +79,13 @@ test("product films come with the catalogue and play from the media folder", () 
     expect(productFilm.src).toMatch(/^\/media\/films\/.+\.mp4$/);
     expect(productFilm.poster).toMatch(/^\/media\/films\/.+\.jpg$/);
   });
+});
+
+test("phones get the 720 px copy of a film, larger screens the full one", () => {
+  render(<Film film={films["over-ear"]} />);
+  const sources = screen.getByLabelText(films["over-ear"].description).querySelectorAll("source");
+  expect([...sources].map((source) => [source.getAttribute("src"), source.getAttribute("media")])).toEqual([
+    ["/media/films/form-detail-720w.mp4", "(max-width: 734px)"],
+    ["/media/films/form-detail.mp4", null],
+  ]);
 });
