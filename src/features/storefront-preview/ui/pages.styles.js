@@ -157,16 +157,23 @@ const pageStyles = [
   {
     ".sign-in-submit": {
       borderRadius: "12px !important",
+      border: "1px solid var(--rx-accent) !important",
       background: "var(--rx-accent) !important",
       fontWeight: "400 !important",
       fontSize: "17px !important",
+      transition: "background-color 200ms ease, border-color 200ms ease, scale var(--press-duration) var(--ease-out) !important",
     },
   },
   {
     ".sign-in-submit:hover": {
       background: "var(--rx-accent-hover) !important",
+      borderColor: "#7c2d12 !important",
     },
   },
+  // The second button sits clearly apart from the first, and its border turns
+  // to the accent on hover, as the fields do on focus.
+  { ".sign-in-demo-button": { marginTop: "20px !important" } },
+  { ".sign-in-demo-button:hover": { borderColor: "var(--rx-accent) !important" } },
   {
     ".sign-in-text-button, .sign-in-panel-bottom a": {
       color: "var(--rx-link) !important",
