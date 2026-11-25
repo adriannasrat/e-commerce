@@ -104,7 +104,10 @@ Each product's cut-out, gallery views and film are rows in the `ProductMedia`
 table, which the API returns with the product. Editorial photos and films are
 listed in `lifestyleImages.js` and `ui/films.js`. Every path goes through
 `mediaUrl`, so setting `VITE_MEDIA_BASE_URL` at build time serves the media from
-another host. `scripts/whiten-films.sh` rebuilds the films from local originals.
+another host. `scripts/whiten-films.sh` rebuilds the films from local originals,
+up to 1280 px wide and again 720 px wide for phones, which load the smaller copy.
+Each film is a silent H.264 loop of a few hundred kilobytes, and none starts
+downloading before it comes on screen, except the one at the top of the home page.
 
 Each cut-out and photo also exists in smaller widths, such as
 `atlas-640w.webp`, so a phone never downloads the file a large screen needs.
