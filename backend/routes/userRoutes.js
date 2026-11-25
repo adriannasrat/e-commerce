@@ -13,7 +13,7 @@ router.post('/signup', wrap(async (req, res) => {
 }));
 
 router.post('/signin', wrap(async (req, res) => {
-  const user = await authenticate(req.body);
+  const user = await authenticate(req.body, req.ip);
   await startSession(res, user.id);
   res.json(toPublicUser(user));
 }));

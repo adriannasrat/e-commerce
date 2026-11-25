@@ -61,6 +61,13 @@ run with `LOG_LEVEL=silent`.
   database, so it refuses any `DB_NAME` that does not end in `_test`.
 
 `GET /health` is a process liveness check, not proof of database connectivity.
+
+`POST /api/v1/users/signin` answers `429` with `Retry-After` once one email has
+failed five times from one network address, or one address has failed twenty
+times, within 15 minutes. `SignInFailures` keeps only SHA-256 digests of the
+email and address, a successful sign-in clears its pair, and older rows are
+removed as new ones arrive. The API trusts one proxy hop, Vercel's edge, for
+the visitor's address.
 Each product's images and films are rows in `ProductMedia`: one main cut-out,
 optional gallery views and an optional film, with paths relative to the
 storefront's media base. The database allows one main image per product.

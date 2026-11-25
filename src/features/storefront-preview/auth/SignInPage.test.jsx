@@ -117,3 +117,19 @@ test("the demo signs a visitor in to an account of their own without credentials
   fireEvent.click(screen.getByRole("button", { name: "Try the demo" }));
   await waitFor(() => expect(window.location.pathname).toBe("/"));
 });
+
+test("after too many wrong passwords, the form says how long to wait", async () => {
+  window.history.replaceState({}, "", "/sign-in");
+  render(<StorefrontPreview />);
+  fireEvent.change(await screen.findByRole("textbox", { name: "Email address" }), {
+    target: { value: "demo@example.com" },
+  });
+  fireEvent.change(screen.getByLabelText("Password"), { target: { value: "wrong guess" } });
+  mockApi.on("POST /users/signin", 429, {
+    error: "Too many sign-in attempts. Try again in 15 minutes.",
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+  expect(
+    await screen.findByText("Too many sign-in attempts. Try again in 15 minutes."),
+  ).toBeInTheDocument();
+});
