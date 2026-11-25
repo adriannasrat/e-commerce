@@ -1,7 +1,9 @@
 class HttpError extends Error {
-  constructor(status, message) {
+  // headers are sent with the error response, such as Retry-After.
+  constructor(status, message, headers = {}) {
     super(message);
     this.status = status;
+    this.headers = headers;
   }
 }
 

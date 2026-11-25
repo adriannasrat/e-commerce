@@ -54,6 +54,9 @@ const requestLogging = (logger) => pinoHttp({
 
 function createApp({ logger = defaultLogger } = {}) {
   const app = express();
+  // Vercel's edge sets X-Forwarded-For to the visitor's address, one hop in
+  // front of the API, so req.ip is the visitor rather than the edge.
+  app.set('trust proxy', 1);
   app.use(requestLogging(logger));
   // Security headers on every response: no MIME sniffing, no framing, no
   // referrer leaks and no X-Powered-By. The API only returns JSON, so the
@@ -75,6 +78,7 @@ function createApp({ logger = defaultLogger } = {}) {
   app.use((error, req, res, next) => {
     const status = error.status || 500;
     if (status >= 500) req.log.error({ error: error.name }, 'Request failed');
+    if (status < 500 && error.headers) res.set(error.headers);
     res.status(status).json({ error: status >= 500 ? 'Something went wrong' : error.message });
   });
   return app;
