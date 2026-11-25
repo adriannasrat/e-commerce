@@ -18,14 +18,9 @@ import {
   formatDate,
   orderNumber,
   orderStages,
+  statusLabel,
 } from "./orderDetails";
 
-
-const statusLabel = {
-  pending: "Awaiting payment",
-  paid: "Paid",
-  cancelled: "Cancelled",
-};
 
 // What the page says at each step. A visitor back from Stripe waits a moment
 // for its confirmation, which arrives separately through the webhook.

@@ -2,7 +2,7 @@ export type CollectionId = "over-ear" | "in-ear";
 export type CollectionSection = "models" | "compare";
 
 export type Route =
-  | { name: "home" | "store" | "compare" | "journal" | "bag" | "signIn" | "signUp" | "checkout" }
+  | { name: "home" | "store" | "compare" | "journal" | "bag" | "signIn" | "signUp" | "checkout" | "account" }
   | { name: "product" | "added" | "order"; id: string }
   | { name: "collection"; id: CollectionId; section?: CollectionSection }
   | { name: "notFound" };
@@ -18,6 +18,7 @@ export const paths = {
   signIn: "/sign-in",
   signUp: "/sign-up",
   checkout: "/checkout",
+  account: "/account",
   order: (id: string | number) => `/order/${encodeURIComponent(id)}`,
   product: (id: string) => `/product/${encodeURIComponent(id)}`,
   added: (id: string) => `/bag/added/${encodeURIComponent(id)}`,
@@ -34,6 +35,7 @@ const pages = {
   [paths.signIn]: "signIn",
   [paths.signUp]: "signUp",
   [paths.checkout]: "checkout",
+  [paths.account]: "account",
 } as const;
 
 function decode(segment: string): string | null {

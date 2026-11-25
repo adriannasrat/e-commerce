@@ -9,6 +9,7 @@ test("every page address reads back as its own page", () => {
   expect(matchRoute(paths.bag)).toEqual({ name: "bag" });
   expect(matchRoute(paths.signIn)).toEqual({ name: "signIn" });
   expect(matchRoute(paths.signUp)).toEqual({ name: "signUp" });
+  expect(matchRoute(paths.account)).toEqual({ name: "account" });
 });
 
 test("product and added-to-bag links round-trip every catalogue slug", () => {

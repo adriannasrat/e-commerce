@@ -12,24 +12,12 @@ import { products } from "./products";
 import { productHref } from "./usePreviewRoute";
 
 const content = {
-  orders: {
-    title: "Orders",
-    text: "No orders have been placed. This preview does not submit purchases.",
-  },
   saves: {
     title: "Your saves",
     text: "Your favourite models, saved on this device.",
   },
-  signin: {
-    title: "Sign in",
-    text: "Secure sign-in is coming in a later stage. No account or password is needed to explore this demo.",
-  },
   search: {
     title: "Find your frequency",
-  },
-  account: {
-    title: "Your space",
-    text: "Sign-in and your saved details will be available in the finished store.",
   },
 };
 

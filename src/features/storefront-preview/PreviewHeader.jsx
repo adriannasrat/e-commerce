@@ -12,7 +12,8 @@ import { navigationLinks } from "./navigationLinks";
 import { getFlyouts } from "./flyouts";
 import PreviewMenu from "./PreviewMenu";
 import PreviewActionDialog from "./PreviewActionDialog";
-import { paths } from "./routes";
+import { paths, withReturn } from "./routes";
+import { useAuth } from "./auth/AuthContext";
 
 const actions = [
   { id: "search", label: "Search products", Icon: SearchIcon },
@@ -55,6 +56,7 @@ function Flyout({ id, open, onNavigate }) {
 }
 
 export default function PreviewHeader({ bag }) {
+  const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [togglePosition, setTogglePosition] = useState(null);
   const [flyout, setFlyout] = useState(null);
@@ -107,7 +109,14 @@ export default function PreviewHeader({ bag }) {
 
   function openAction(id) {
     setFlyout(null);
-    if (id === "account" || id === "signin") {
+    // Signed in, the account page lists the orders. Signed out, the visitor
+    // signs in first and comes back to it.
+    if (id === "account" || id === "orders") {
+      setAction(null);
+      navigate(user ? paths.account : withReturn(paths.signIn, paths.account));
+      return;
+    }
+    if (id === "signin") {
       setAction(null);
       navigate(paths.signIn);
       return;

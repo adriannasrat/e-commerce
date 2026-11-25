@@ -21,6 +21,7 @@ import ProductShowcase from "./ProductShowcase";
 import PageErrorBoundary from "./PageErrorBoundary";
 import CheckoutPage from "./checkout/CheckoutPage";
 import OrderPage from "./checkout/OrderPage";
+import AccountPage from "./account/AccountPage";
 import { products } from "./products";
 import usePreviewRoute from "./usePreviewRoute";
 import usePreviewBag from "./bag/usePreviewBag";
@@ -97,6 +98,7 @@ function Storefront() {
   const isNotFound = route.name === "notFound";
   const isCheckout = route.name === "checkout";
   const orderId = route.name === "order" ? route.id : null;
+  const isAccount = route.name === "account";
   function addToBag(id) {
     bag.add(id);
     navigate(paths.added(id));
@@ -110,6 +112,7 @@ function Storefront() {
     (isBag && "Your bag") ||
     (isCheckout && "Checkout") ||
     (orderId !== null && "Your order") ||
+    (isAccount && "Your account") ||
     (isSignIn && (isSignUp ? "Sign up" : "Sign in")) ||
     (isCatalog && "The collection") ||
     (isJournal && "Listening journal") ||
@@ -129,6 +132,7 @@ function Storefront() {
       isBag ||
       isCheckout ||
       orderId !== null ||
+      isAccount ||
       isSignIn ||
       addedId !== null ||
       categoryId
@@ -154,6 +158,7 @@ function Storefront() {
     isBag,
     isCheckout,
     orderId,
+    isAccount,
     addedId,
     isSignIn,
     categoryId,
@@ -211,6 +216,7 @@ function Storefront() {
             {isBag && <BagPage bag={bag} />}
             {isCheckout && <CheckoutPage bag={bag} />}
             {orderId !== null && <OrderPage key={orderId} id={orderId} />}
+            {isAccount && <AccountPage />}
             {isSignIn && <SignInPage mode={isSignUp ? "sign-up" : "sign-in"} />}
             {addedId !== null &&
               (addedProduct ? (

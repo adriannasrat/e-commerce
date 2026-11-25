@@ -13,6 +13,7 @@ Stripe in test mode, so no real money is ever taken.
 - Sign up and sign in with hashed passwords and httpOnly session cookies.
 - A bag that lives in the browser for guests and merges into the server cart on sign-in.
 - A checkout that locks stock, buys at most once per cart and freezes prices in the order history.
+- An account page at `/account` with every order, its status and a link to its details.
 - Keyboard focus handling and reduced-motion support throughout.
 
 ## Stack

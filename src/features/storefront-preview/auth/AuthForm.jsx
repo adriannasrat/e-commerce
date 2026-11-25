@@ -77,6 +77,9 @@ export default function AuthForm({ signingUp }) {
         >
           Sign out
         </button>
+        <a className="sign-in-demo-button" href={paths.account}>
+          Your account and orders
+        </a>
         <p className="sign-in-feedback" role="status">
           {message}
         </p>
