@@ -69,6 +69,8 @@ function readEnvironment(env = process.env) {
     stripe: {
       secretKey: text('STRIPE_SECRET_KEY', undefined),
       webhookSecret: text('STRIPE_WEBHOOK_SECRET', undefined),
+      // Only the end-to-end tests set this, to reach a local stand-in for Stripe.
+      apiUrl: text('STRIPE_API_URL', undefined),
     },
     database: {
       database: text('DB_NAME', 'shop_db'),
@@ -91,6 +93,13 @@ function readEnvironment(env = process.env) {
   const stripeKey = env.STRIPE_SECRET_KEY;
   if (stripeKey && !/^(sk|rk)_test_/.test(stripeKey)) {
     problems.push('STRIPE_SECRET_KEY must be a test-mode key');
+  }
+  // A deployed API always talks to Stripe itself.
+  if (env.STRIPE_API_URL !== undefined) {
+    if (nodeEnv === 'production') problems.push('STRIPE_API_URL must not be set in production');
+    else if (!/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(env.STRIPE_API_URL)) {
+      problems.push('STRIPE_API_URL must be a local http address with a port');
+    }
   }
 
   // Local defaults suit development only. A deployed API names its database.

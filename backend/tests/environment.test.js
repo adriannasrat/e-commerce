@@ -86,5 +86,14 @@ test('only Stripe test-mode keys are accepted, and the key is never echoed', () 
   for (const live of ['sk_live_secret', 'rk_live_secret', 'pk_test_wrong_kind']) {
     assert.deepEqual(problemsFor({ STRIPE_SECRET_KEY: live }), ['STRIPE_SECRET_KEY must be a test-mode key']);
   }
-  assert.deepEqual(readEnvironment({}).stripe, { secretKey: undefined, webhookSecret: undefined });
+  assert.deepEqual(readEnvironment({}).stripe, { secretKey: undefined, webhookSecret: undefined, apiUrl: undefined });
+});
+
+test('a local stand-in for Stripe is allowed in tests only', () => {
+  assert.equal(readEnvironment({ STRIPE_API_URL: 'http://localhost:12111' }).stripe.apiUrl, 'http://localhost:12111');
+  assert.deepEqual(problemsFor({ STRIPE_API_URL: 'https://api.example.com' }), [
+    'STRIPE_API_URL must be a local http address with a port',
+  ]);
+  assert.ok(problemsFor({ NODE_ENV: 'production', STRIPE_API_URL: 'http://localhost:12111' })
+    .includes('STRIPE_API_URL must not be set in production'));
 });
