@@ -70,9 +70,6 @@ export default function AuthForm({ signingUp }) {
           Welcome.
         </h1>
         <p className="sign-in-intro">Signed in as {user.email}</p>
-        <a className="sign-in-demo-button" href={paths.account}>
-          Your account and orders
-        </a>
         <button
           type="button"
           className="sign-in-submit"
@@ -80,6 +77,9 @@ export default function AuthForm({ signingUp }) {
         >
           Sign out
         </button>
+        <a className="sign-in-demo-button" href={paths.account}>
+          Your account and orders
+        </a>
         <p className="sign-in-feedback" role="status">
           {message}
         </p>
