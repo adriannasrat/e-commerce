@@ -59,7 +59,7 @@ Checkout guarantees, which every change must keep:
 - [x] Model orders with explicit statuses, separate from carts.
 - [x] Take payments through Stripe in test mode, confirmed only by its webhook.
 - [x] Add an account page with order history.
-- [ ] Limit repeated sign-in attempts.
+- [x] Limit repeated sign-in attempts.
 - [ ] Cover browse, bag, sign-in and checkout with a Playwright test in CI.
 
 ### Phase 3: Make it easy to evaluate

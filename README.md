@@ -41,6 +41,10 @@ carry most of the weight:
 - **Prices are stored in öre** as integers, so totals never suffer from rounding.
 - **Sessions are opaque tokens** in an httpOnly cookie, and only a digest is stored.
   Routes act on the signed-in user and never accept a user id.
+- **Guessing passwords is slowed down.** Five wrong passwords for one email from
+  one address, or twenty from one address in all, pause sign-in there for 15
+  minutes. Only digests of the email and address are kept, and someone guessing
+  elsewhere cannot lock the owner out.
 - **A cart is the bag, and it stays until it is paid for.** The database allows
   one per user. Checking out gives it an order with its own lines and an
   explicit status: `pending`, `paid` or `cancelled`. The bag keeps its items
