@@ -25,6 +25,12 @@ export const deliveries: Record<DeliveryId, { title: string; detail: string; pri
 export const deliveryPrice = (ore: number, format: (kronor: number) => string) =>
   ore ? format(ore / 100) : "Free";
 
+export const statusLabel: Record<OrderStatus, string> = {
+  pending: "Awaiting payment",
+  paid: "Paid",
+  cancelled: "Cancelled",
+};
+
 export const orderNumber = (id: number) => `RS-${String(id).padStart(6, "0")}`;
 
 const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long" });

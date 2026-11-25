@@ -1,25 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { api } from "../api";
-import { useAuth } from "../auth/AuthContext";
 import { formatPrice } from "../products";
 import { paths } from "../routes";
 import { checkoutStyles } from "./checkout.styles";
 import { type Order, orderNumber } from "./orderDetails";
 import { goToPayment } from "./payment";
+import { useOrders } from "./useOrders";
 import { Spinner } from "../ui/Loading";
 
 // The signed-in visitor's order that waits for payment, if there is one.
 export function usePendingOrder() {
-  const { user } = useAuth() as { user: { id: number } | null | undefined };
-  const orders = useQuery({
-    queryKey: ["orders", user?.id],
-    queryFn: () => api<Order[]>("GET", "/orders"),
-    enabled: Boolean(user),
-  });
-  return orders.data?.find((order) => order.status === "pending");
+  return useOrders().data?.find((order) => order.status === "pending");
 }
 
 // The two ways on from an order that waits for payment: back to Stripe's page,
