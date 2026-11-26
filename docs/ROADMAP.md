@@ -64,7 +64,7 @@ Checkout guarantees, which every change must keep:
 
 ### Phase 3: Make it easy to evaluate
 
-- [ ] Add screenshots, an architecture diagram and the demo link to the README.
+- [x] Add screenshots, an architecture diagram and the demo link to the README.
 - [ ] Record major decisions in `docs/adr/`.
 - [ ] Publish Lighthouse results and a short case study of the checkout design.
 

@@ -6,6 +6,22 @@ A headphone storefront built as a portfolio project with React, Express and
 MariaDB. Accounts, the cart and checkout are real, and payments run through
 Stripe in test mode, so no real money is ever taken.
 
+**Live demo: [resonance-commerce.vercel.app](https://resonance-commerce.vercel.app)**
+
+Add something to the bag and check out with *Continue with the demo*, which needs
+no email or password. Pay with Stripe's test card 4242 4242 4242 4242, any future
+expiry date and any CVC. Demo accounts and their orders are cleared every night.
+
+<p align="center">
+  <img src="docs/screenshots/home.jpg" alt="The home page: Less noise. More feeling., above graphite over-ear headphones" width="70%">
+  <img src="docs/screenshots/home-phone.jpg" alt="The home page on a phone" width="22%">
+</p>
+<p align="center">
+  <img src="docs/screenshots/collection.jpg" alt="The over-ear collection with a gallery of models" width="31%">
+  <img src="docs/screenshots/product.jpg" alt="The Atlas product page with its finishes and Add to bag" width="31%">
+  <img src="docs/screenshots/bag.jpg" alt="The bag with Atlas and two Prism" width="31%">
+</p>
+
 ## Features
 
 - A catalogue of over-ear and in-ear models served by the API, with loading, empty and error states.
@@ -27,6 +43,27 @@ Stripe in test mode, so no real money is ever taken.
 | Tests | Vitest and React Testing Library, Node's test runner, GitHub Actions |
 
 ## Architecture
+
+```mermaid
+flowchart TB
+  visitor(["Visitor's browser"])
+  subgraph vercel["Vercel"]
+    direction LR
+    site["Storefront<br/>React build, pictures and films on the CDN"]
+    api["API<br/>Express in one serverless function<br/>routes → services → models"]
+    cron["Vercel Cron<br/>every night at 03:00 UTC"]
+  end
+  stripe["Stripe Checkout<br/>test mode"]
+  db[("TiDB Cloud<br/>MySQL-compatible database")]
+
+  visitor -- "pages, pictures, films" --> site
+  visitor -- "/api/v1 with a session cookie" --> api
+  visitor -- "pays on Stripe's page" --> stripe
+  cron -- "demo reset" --> api
+  api -- "opens and closes payment pages" --> stripe
+  api -- "Sequelize, migrations on deploy" --> db
+  stripe -- "signed webhook" --> api
+```
 
 The frontend lives in `src/features/storefront-preview/`, grouped by feature with
 styles beside their components. Every page has its own URL, such as `/store` or
@@ -59,6 +96,25 @@ carry most of the weight:
   stock, and repeated or late events change nothing.
 - **A demo account lasts one visit.** Signing out closes its open payments,
   returns their stock and removes the account with its bag and orders.
+
+Paying for the bag, from checkout to a paid order:
+
+```mermaid
+sequenceDiagram
+  participant B as Browser
+  participant A as API
+  participant D as Database
+  participant S as Stripe
+  B->>A: POST /orders with the bag and delivery
+  A->>D: One transaction: lock the bag and stock, reserve stock, create a pending order
+  A->>S: Open a Checkout page, outside the transaction
+  A-->>B: checkout_url
+  B->>S: Pay with the test card
+  S->>A: checkout.session.completed, signed
+  A->>D: Mark the order paid and empty the bag
+  S-->>B: Back to /order/:id
+  B->>A: Check the order until it is paid
+```
 
 ## Run it locally
 
