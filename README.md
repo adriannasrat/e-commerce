@@ -13,13 +13,20 @@ no email or password. Pay with Stripe's test card 4242 4242 4242 4242, any futur
 expiry date and any CVC. Demo accounts and their orders are cleared every night.
 
 <p align="center">
-  <img src="docs/screenshots/home.jpg" alt="The home page: Less noise. More feeling., above graphite over-ear headphones" width="70%">
-  <img src="docs/screenshots/home-phone.jpg" alt="The home page on a phone" width="22%">
+  <img src="docs/screenshots/home.jpg" alt="The home page: Less noise. More feeling., above graphite over-ear headphones" width="74%">
+  <img src="docs/screenshots/home-phone.jpg" alt="The home page on a phone" width="24%">
 </p>
+
 <p align="center">
-  <img src="docs/screenshots/collection.jpg" alt="The over-ear collection with a gallery of models" width="31%">
-  <img src="docs/screenshots/product.jpg" alt="The Atlas product page with its finishes and Add to bag" width="31%">
-  <img src="docs/screenshots/bag.jpg" alt="The bag with Atlas and two Prism" width="31%">
+  <img src="docs/screenshots/collection.jpg" alt="The over-ear collection with a gallery of models" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/product.jpg" alt="The Atlas product page with its finishes and Add to bag" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/bag.jpg" alt="The bag with Atlas and two Prism" width="100%">
 </p>
 
 ## Features
