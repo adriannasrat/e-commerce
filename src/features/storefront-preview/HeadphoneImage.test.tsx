@@ -75,3 +75,26 @@ test("an image without copies uses its original", () => {
   );
   expect(href(container)).toBe("/media/products/x.webp");
 });
+
+test("a picture far down the page loads only once it comes near the screen", () => {
+  let nearScreen: (entries: { isIntersecting: boolean }[]) => void = () => {};
+  let margin = "";
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      constructor(callback: typeof nearScreen, options: { rootMargin: string }) {
+        nearScreen = callback;
+        margin = options.rootMargin;
+      }
+      observe() {}
+      disconnect() {}
+    },
+  );
+  drawnWidth = 200;
+  const { container } = render(<HeadphoneImage image={image} />);
+  expect(href(container)).toBeUndefined();
+  expect(margin).toBe("50% 50%");
+
+  act(() => nearScreen([{ isIntersecting: true }]));
+  expect(href(container)).toBe("/media/products/x-640w.webp");
+});
