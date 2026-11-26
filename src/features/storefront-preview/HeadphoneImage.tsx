@@ -14,7 +14,9 @@ const opticalScale: Record<string, number> = { "in-ear": 1.24 };
 // SVG images have no srcset, so the frame measures how wide it draws the photo
 // and picks the smallest copy that is still sharp at that size. It only moves
 // to larger copies, so making the window smaller never loads another file.
-// Until the frame has a size, as while it is hidden, nothing is loaded.
+// Until the frame has a size, as while it is hidden, nothing is loaded, and
+// like <img loading="lazy"> nothing loads until the frame comes within half a
+// screen of view, so pictures far down the page wait until they are needed.
 function useSource(
   frame: RefObject<SVGSVGElement | null>,
   image: Cutout,
@@ -25,7 +27,9 @@ function useSource(
   useLayoutEffect(() => {
     const svg = frame.current;
     if (!svg || typeof ResizeObserver === "undefined") return;
+    let near = typeof IntersectionObserver === "undefined";
     const pick = () => {
+      if (!near) return;
       const drawn = svg.getBoundingClientRect().width;
       if (!drawn) return;
       const needed = ((drawn * width) / frameWidth) * window.devicePixelRatio;
@@ -37,9 +41,25 @@ function useSource(
           : { for: src, index },
       );
     };
-    const observer = new ResizeObserver(pick);
-    observer.observe(svg);
-    return () => observer.disconnect();
+    const sizes = new ResizeObserver(pick);
+    sizes.observe(svg);
+    const view = near
+      ? null
+      : new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) return;
+            near = true;
+            view?.disconnect();
+            pick();
+          },
+          // Half a screen ahead in every direction, also along swipeable shelves.
+          { rootMargin: "50% 50%" },
+        );
+    view?.observe(svg);
+    return () => {
+      sizes.disconnect();
+      view?.disconnect();
+    };
   }, [frame, src, sources, width, frameWidth]);
 
   // Without copies, or where nothing can be measured, the original is used.
